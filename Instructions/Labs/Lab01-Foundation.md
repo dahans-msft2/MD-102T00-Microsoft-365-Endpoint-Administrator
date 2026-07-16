@@ -59,15 +59,25 @@ This lab requires:
 >
 > **Steps (takes about two minutes):**
 >
-> 1. In the **Microsoft Intune admin center** (`intune.microsoft.com`), expand **Tenant administration** and select **Intune add-ons**.
+> 1. In the **Microsoft Intune admin center** (`intune.microsoft.com`), select **Tenant administration** and then select **Intune add-ons**.
 > 2. Select the **All add-ons** tab.
-> 3. In the row for **Microsoft Intune Suite**, in the **Try or buy** column, select **View details**.
+> 3. In the row for **Microsoft Intune Suite**, under the **Try or buy** column, select **View details**.
 > 4. In the details pane, select **To try or buy, go to Microsoft 365 admin center**. A new tab opens to the Microsoft 365 admin center product page.
 > 5. On the **Microsoft Intune Suite** offer page, select **Start free trial**.
-> 6. On the **Checkout** page, confirm: **Microsoft Intune Suite Trial**, 90-day term, 250 licenses, **USD 0.00**, no payment method required. Select **Try now**.
-> 7. Return to the Intune admin center. Refresh **Tenant administration → Intune add-ons**. Select the **Your add-ons** tab — within a few minutes you should see **Microsoft Intune Suite Trial** listed with a **Purchased quantity** of **250**. The Suite includes: **Intune Plan 2**, **Remote Help**, **Endpoint Privilege Management**, **Enterprise App Management**, **Advanced Analytics**, and **Cloud PKI**.
+> 6. On the **Checkout** page, confirm: **Microsoft Intune Suite Trial**, 90-day term, 250 licenses, **USD 0.00**, no payment method required.
+> 7. Select **Edit**, fill the organization profile form with the following information, then select **Save**:
+> - First name: MOD
+> - Last name: Administrator1
+> - Address line 1: 1 Microsoft Way
+> - City: Redmond
+> - State: Washington
+> - ZIP: 98052
+> - Phone: 425-555-1234
+> - Email address: admin@<TenantPrefix>.onmicrosoft.com
+> 8. Select **Try Now** to activate the trial.
+> 9. Return to the Intune admin center. Refresh **Tenant administration → Intune add-ons**. Select the **Your add-ons** tab — within a few minutes you should see **Microsoft Intune Suite Trial** listed with a **Purchased quantity** of **250**. The Suite includes: **Intune Plan 2**, **Remote Help**, **Endpoint Privilege Management**, **Enterprise App Management**, **Advanced Analytics**, and **Cloud PKI**.
 >
-> **Don't be misled by the All add-ons tab.** The **Microsoft Intune Suite** row will show **"~90 days left in trial"** in the Subscription status column, but the individual capability rows (Intune Plan 2, Endpoint Privilege Management, Remote Help, Enterprise App Management, Advanced Analytics, Cloud PKI) will continue to show **"Available for trial or purchase"**. That's expected — those are the *standalone* add-on SKUs; the Suite trial bundles all of them at the Suite level. To confirm a capability is actually usable, browse to its blade (e.g., **Endpoint security → Endpoint Privilege Management** or **Tenant administration → Cloud PKI**) and look for the *"\~89/90 days left in trial"* banner at the top.
+> **Don't be misled by the All add-ons tab.** The **Microsoft Intune Suite** row will show **"~90 days left in trial"** in the Subscription status column, but the individual capability rows (Intune Plan 2, Endpoint Privilege Management, Remote Help, Enterprise App Management, Advanced Analytics, Cloud PKI) will continue to show **"Available for trial or purchase"**. That's expected — those are the *standalone* add-on SKUs; the Suite trial bundles all of them at the Suite level. Confirm that the Microsoft Intune Suite trial is active by verifying that the Subscription status column displays approximately 89–90 days left in trial.
 >
 > The trial runs for 90 days, followed by a 30-day grace period. **You can only start the trial once per tenant**, so plan to complete Labs 02–06 inside that window. If the trial is already active, you'll see **Active** in the Subscription status column and can skip the steps above.
 
