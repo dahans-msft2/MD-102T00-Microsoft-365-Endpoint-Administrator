@@ -1,3 +1,17 @@
+---
+lab:
+  title: 'Lab 01: Foundation — Identity, enrollment, and Autopilot'
+  description: 'In this lab, you configure Microsoft Entra ID identity governance, device registration and enrollment policies, and Windows Autopilot to prepare a Microsoft 365 tenant for Intune device management.'
+  duration: 90 minutes
+  level: 200
+  islab: true
+  primarytopics:
+    - Microsoft Intune
+    - Microsoft Entra ID
+    - Windows
+    - Windows Autopilot
+---
+
 # Lab 01: Foundation — Identity, enrollment, and Autopilot
 
 ## Lab scenario
@@ -1072,12 +1086,12 @@ Autopilot deployment profiles define the OOBE experience and determine which set
 
 1. On the **Assignments** page, under **Assign to**, select **Add groups**.
 
-1. Search for and select **dyn-Windows-Devices**.
+1. Search for and select **dyn-Autopilot-Devices**.
 
 1. Select **Select**.
 
    > [!NOTE]
-   > By assigning the profile to the dyn-Windows-Devices group, any Windows device registered in Autopilot will automatically receive this deployment profile.
+   > By assigning the profile to `dyn-Autopilot-Devices`, any device registered in Autopilot — enrolled or not — automatically receives this deployment profile, which is what actually lets CL3's Profile status reach **Assigned** in Task 4.
 
 1. Select **Next**.
 
@@ -1094,12 +1108,12 @@ Autopilot deployment profiles define the OOBE experience and determine which set
 1. Select **CL3** from the Autopilot devices list.
 
 1. Review the device details:
-   - **Profile status:** Should now show **Assigned** (it may take a few minutes for the profile assignment to sync)
+   - **Profile status:** Should now show **Assigned** (it may take a few minutes for the dynamic group to populate and the profile assignment to sync)
    - **Group tag:** None
    - **Assigned user:** None
 
    > [!NOTE]
-   > The profile status updates automatically once the device syncs with the Intune service. If it still shows "Not assigned," select **Sync** from the top toolbar to force a sync.
+   > If it still shows "Not assigned" after several minutes, select **Sync** from the toolbar on the **Devices** list to force a sync. Also double check `dyn-Autopilot-Devices` actually shows CL3 as a member (**Groups** → `dyn-Autopilot-Devices` → **Members**) — if CL3 isn't there, re-check the rule syntax from Task 3.
 
 1. Close the device details pane.
 

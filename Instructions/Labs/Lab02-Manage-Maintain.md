@@ -1,3 +1,16 @@
+---
+lab:
+  title: 'Lab 02: Manage and maintain devices'
+  description: 'In this lab, you create device configuration profiles, compliance policies, and Windows Update rings, analyze Group Policy Objects for migration, and enable Endpoint analytics and proactive remediations.'
+  duration: 100 minutes
+  level: 200
+  islab: true
+  primarytopics:
+    - Microsoft Intune
+    - Windows
+    - Windows Update for Business
+---
+
 # Lab 02: Manage and maintain devices
 
 ## Lab scenario
@@ -82,21 +95,17 @@ The Settings Catalog provides access to thousands of individual settings across 
 1. In the settings picker, search for `power`.
 
 1. Expand **Power** and check the following settings:
-   - **Select The Active Power Plan**
-   - **Turn Off The Display After** (under **Power Settings**)
-   - **Specify The System Sleep Timeout** (under **Power Settings**)
+   - **Unattended Sleep Timeout Plugged In**
+   - **Unattended Sleep Timeout On Battery**
 
 1. Select **Close** to return to the configuration settings page.
 
 1. Configure the settings:
-   - **Select The Active Power Plan:** High Performance
-   - **Turn Off The Display After (on battery):** 10 minutes
-   - **Turn Off The Display After (plugged in):** 15 minutes
-   - **Specify The System Sleep Timeout (on battery):** 30 minutes
-   - **Specify The System Sleep Timeout (plugged in):** Never
+   - **Unattended Sleep Timeout Plugged In:** `0` (0 seconds = never sleep unattended)
+   - **Unattended Sleep Timeout On Battery:** `1800` (seconds = 30 minutes)
 
    > [!NOTE]
-   > These settings ensure devices remain awake when plugged in (useful for kiosk or always-on devices) and conserve battery when running on battery power.
+   > These settings are configured in **seconds**, not minutes — that's how the underlying CSP (`Policy CSP - Power`) is defined, and the Settings Catalog doesn't convert the unit for you. A value of `0` means Windows never automatically sleeps when unattended (useful for kiosk or always-on devices plugged in); a nonzero value conserves battery when unplugged.
 
 1. Select **Next**.
 
@@ -104,6 +113,8 @@ The Settings Catalog provides access to thousands of individual settings across 
 
    > [!NOTE]
    > Applying scope tags at policy-creation time is what makes delegated administration actually work. The Pharmacy Helpdesk role you created in Lab 01 will be able to see and act on this policy (in **Lab 05 Exercise 3**) because of this tag.
+   >
+   > **Leave the Default scope tag checked too — don't remove it.** Unlike a role *definition's* own scope tag (Lab 01 Exercise 2 Task 6, where removing Default made sense because that role is Pharmacy-exclusive), this is a general policy assigned to every Windows device in the tenant, not a Pharmacy-only artifact. Adding Pharmacy alongside Default just gives the Pharmacy Helpdesk admin visibility into it too — it doesn't change what the policy actually applies to. This same rule applies everywhere else in the lab series you add the Pharmacy scope tag to a policy, app, or profile.
 
 1. On the **Assignments** page, under **Assign to**, select **Add groups**.
 
@@ -140,14 +151,15 @@ Templates provide pre-configured bundles of settings for common scenarios.
 1. Select **Next**.
 
 1. On the **Configuration settings** page, expand **General** and configure:
-   - **Screen capture:** Block
+   - **Screen capture (mobile only):** Block
    - **Copy and paste (mobile only):** Not configured
    - **Manual unenrollment:** Block
 
 1. Expand **Password** and configure:
    - **Password:** Require
+   - **Required password type:** Alphanumeric
+   - **Password complexity:** Numbers, lowercase, uppercase and special characters required
    - **Minimum password length:** 8
-   - **Password complexity:** Require letters, numbers, and symbols
    - **Number of sign-in failures before wiping device:** 10
 
 1. Expand **Microsoft Defender Antivirus** and configure:
@@ -203,7 +215,7 @@ Assignment filters refine policy targeting based on device properties without fo
    > [!NOTE]
    > Compound filter rules use the same `-and` / `-or` / parentheses syntax as dynamic group rules. The rule-syntax editor is the only way to author compound filters — the simple property/operator/value picker is single-clause.
 
-1. Select **Next**.
+1. Select **Next**, skip **Scope Tags**.
 
 1. On the **Review + create** page, select **Create**.
 
@@ -226,7 +238,7 @@ Assignment filters refine policy targeting based on device properties without fo
    > [!NOTE]
    > You're targeting CL1 with **Equals** here — the include-vs-exclude decision happens when you **apply** the filter to a policy in Task 4 (you'll choose **Exclude filtered devices from assignment**).
 
-1. Select **Next**.
+1. Select **Next**, skip **Scope Tags**.
 
 1. On the **Review + create** page, select **Create**.
 
@@ -296,8 +308,6 @@ You'll create two Settings Catalog profiles for the pilot cohort that disagree o
 
 1. On the **Assignments** page, under **Assign to**, select **Add groups**, search for and select **sg-Intune-Pilot-Users**, then **Select**. Select **Next**.
 
-1. On the **Applicability Rules** page, select **Next**.
-
 1. On the **Review + create** page, select **Create**.
 
 **Profile 2 — `WIN - Camera - Disabled (Pilot)`** (the conflicting twin)
@@ -321,8 +331,6 @@ You'll create two Settings Catalog profiles for the pilot cohort that disagree o
 1. On the **Scope tags** page, add **Pharmacy** and select **Next**.
 
 1. On the **Assignments** page, assign to **sg-Intune-Pilot-Users** (same group). Select **Next**.
-
-1. On the **Applicability Rules** page, select **Next**.
 
 1. On the **Review + create** page, select **Create**.
 
@@ -349,6 +357,7 @@ Compliance policies define security and health requirements for devices. Non-com
 1. Select **Create policy**.
 1. In the **Create a policy** pane, configure:
    - **Platform:** Windows 10 and later
+   - **Profile type:** Windows 10/11 compliance policy
 
 1. Select **Create**.
 
@@ -359,9 +368,9 @@ Compliance policies define security and health requirements for devices. Non-com
 1. Select **Next**.
 
 1. On the **Compliance settings** page, expand **Device Health** and configure:
-   - **Require BitLocker:** Require
-   - **Require Secure Boot to be enabled on the device:** Require
-   - **Require code integrity:** Require
+   - **BitLocker:** Require
+   - **Secure Boot:** Require
+   - **Code integrity:** Require
 
 1. Expand **Device Properties** and configure:
    - **Minimum OS version:** `10.0.19045` (Windows 11 22H2 or Windows 10 21H2)
@@ -370,13 +379,16 @@ Compliance policies define security and health requirements for devices. Non-com
    - **Require a password to unlock mobile devices:** Require
    - **Simple passwords:** Block
    - **Password type:** Alphanumeric
+   - **Password Complexity:** Require digits, lowercase, uppercase, and special characters
    - **Minimum password length:** 8
    - **Require encryption of data storage on device:** Require
    - **Firewall:** Require
    - **Antivirus:** Require
    - **Antispyware:** Require
+   - **Microsoft Defender Antimalware:** Require
    - **Microsoft Defender Antimalware minimum version:** Leave blank (any version)
-   - **Microsoft Defender Antimalware signature up-to-date:** Require
+   - **Microsoft Defender Antimalware intelligence up-to-date:** Require
+   - **Real-tiem protection:** Require
 
 1. Select **Next**.
 
