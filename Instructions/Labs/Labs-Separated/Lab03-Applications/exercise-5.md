@@ -71,13 +71,13 @@ For this task, you'll simulate a new version by creating a second Win32 app entr
 
 ### Task 2: Verify app supersedence behavior
 
-1. On **CL1**, force a device sync.
+1. On **SEA-DEV1**, force a device sync.
 
 1. Wait 10–15 minutes for Intune to detect the supersedence relationship and upgrade the app.
 
 1. In the **Microsoft Intune admin center**, navigate to **Apps** → **All apps** → **7-Zip Portable v2.0**.
 
-1. Select **Device install status** and verify CL1 shows **Installed**.
+1. Select **Device install status** and verify SEA-DEV1 shows **Installed**.
 
 1. Navigate to **7-Zip Portable** (the original app) and select **Device install status**.
 

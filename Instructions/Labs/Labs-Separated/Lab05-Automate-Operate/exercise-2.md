@@ -6,7 +6,7 @@ Proactive remediations automatically detect and fix common device issues before 
 
 ### Task 1: Create detection and remediation scripts
 
-1. On **CL1**, create a folder for remediation scripts:
+1. On **SEA-DEV1**, create a folder for remediation scripts:
 
    ```powershell
    New-Item -Path "C:\LabScripts\Remediations" -ItemType Directory -Force

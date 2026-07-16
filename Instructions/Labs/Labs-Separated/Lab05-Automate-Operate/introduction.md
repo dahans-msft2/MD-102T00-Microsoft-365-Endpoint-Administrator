@@ -43,8 +43,8 @@ This lab requires:
 - Completion of **Lab 01** (devices enrolled, groups configured)
 - Access to the Contoso Microsoft 365 tenant (`<TenantPrefix>.onmicrosoft.com`)
 - Global Administrator credentials
-- **CL1** (enrolled device, Megan Bowen signed in)
-- Microsoft Graph PowerShell SDK installed on CL1
+- **SEA-DEV1** (enrolled device, Megan Bowen signed in)
+- Microsoft Graph PowerShell SDK installed on SEA-DEV1
 
 ---
 

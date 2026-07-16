@@ -64,12 +64,12 @@ BitLocker encrypts the entire OS drive, protecting data at rest. You'll configur
 
 ### Task 2: Monitor BitLocker encryption status
 
-1. On **CL1**, wait 10–15 minutes for the BitLocker policy to apply.
+1. On **SEA-DEV1**, wait 10–15 minutes for the BitLocker policy to apply.
 
    > [!NOTE]
    > BitLocker encryption can take 1–3 hours to complete depending on drive size and system performance. For lab purposes, you'll verify the policy was applied and encryption started.
 
-1. On **CL1**, open **Windows Terminal (Admin)**.
+1. On **SEA-DEV1**, open **Windows Terminal (Admin)**.
 
 1. Check BitLocker status:
 
@@ -83,7 +83,7 @@ BitLocker encrypts the entire OS drive, protecting data at rest. You'll configur
    - **Protection Status:** Protection On
    - **Lock Status:** Unlocked
 
-1. In the **Microsoft Intune admin center**, navigate to **Devices** → **All devices** → **CL1**.
+1. In the **Microsoft Intune admin center**, navigate to **Devices** → **All devices** → **SEA-DEV1**.
 
 1. Select **Recovery keys** from the left navigation.
 
@@ -98,7 +98,7 @@ BitLocker encrypts the entire OS drive, protecting data at rest. You'll configur
 
 ### Task 3: Retrieve a BitLocker recovery key
 
-1. In the **Microsoft Intune admin center**, navigate to **Devices** → **All devices** → **CL1**.
+1. In the **Microsoft Intune admin center**, navigate to **Devices** → **All devices** → **SEA-DEV1**.
 
 1. Select **Recovery keys** from the left navigation.
 

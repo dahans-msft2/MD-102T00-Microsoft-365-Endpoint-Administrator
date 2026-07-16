@@ -46,8 +46,8 @@ This lab requires:
 - Completion of **Lab 01** (devices enrolled, groups configured)
 - Access to the Contoso Microsoft 365 tenant (`<TenantPrefix>.onmicrosoft.com`)
 - Global Administrator or Intune Administrator credentials
-- **CL1** (enrolled device, Megan Bowen signed in)
-- **CL2** (enrolled device, Joni Sherman signed in)
+- **SEA-DEV1** (enrolled device, Megan Bowen signed in)
+- **SEA-DEV2** (enrolled device, Joni Sherman signed in)
 - Group Policy backup XML files (provided in lab assets)
 
 > [!NOTE]

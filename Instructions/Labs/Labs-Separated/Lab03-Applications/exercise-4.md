@@ -74,7 +74,7 @@ The Enterprise App Catalog (part of Microsoft Intune Suite) provides a curated l
 
 ### Task 3: Verify app availability in Company Portal
 
-1. On **CL1**, open the **Start menu** and search for `Company Portal`.
+1. On **SEA-DEV1**, open the **Start menu** and search for `Company Portal`.
 
 1. Launch the **Company Portal** app.
 

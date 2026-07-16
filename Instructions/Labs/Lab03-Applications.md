@@ -29,8 +29,8 @@ This lab requires:
 - Completion of **Lab 01** (devices enrolled, groups configured)
 - Access to the Contoso Microsoft 365 tenant (`<TenantPrefix>.onmicrosoft.com`)
 - Global Administrator or Intune Administrator credentials
-- **CL1** (enrolled device, Megan Bowen signed in)
-- **CL2** (enrolled device, Joni Sherman signed in)
+- **SEA-DEV1** (enrolled device, Megan Bowen signed in)
+- **SEA-DEV2** (enrolled device, Joni Sherman signed in)
 - Win32 app source files (provided in lab assets at `C:\LabAssets\Win32-App\`)
 - **Microsoft Intune Suite trial active** (activated in **Lab 01** prerequisites) — required for Exercise 4 (Enterprise App Catalog)
 
@@ -44,7 +44,7 @@ Microsoft Store apps are modern Windows applications distributed through the Mic
 
 ### Task 1: Add a Microsoft Store app
 
-1. On **CL1**, open **Microsoft Edge** and navigate to **https://intune.microsoft.com**.
+1. On **SEA-DEV1**, open **Microsoft Edge** and navigate to **https://intune.microsoft.com**.
 
 1. Sign in as **admin@<TenantPrefix>.onmicrosoft.com**.
 
@@ -89,9 +89,9 @@ Microsoft Store apps are modern Windows applications distributed through the Mic
 
 ---
 
-### Task 2: Verify app installation on CL1
+### Task 2: Verify app installation on SEA-DEV1
 
-1. On **CL1**, wait 5–10 minutes for the app to install automatically.
+1. On **SEA-DEV1**, wait 5–10 minutes for the app to install automatically.
 
    > [!NOTE]
    > Intune checks for new app assignments every 8 hours by default, or when the device syncs. You can force a sync to speed up installation.
@@ -122,7 +122,7 @@ Win32 apps are traditional Windows desktop applications (.exe, .msi installers).
 
 ### Task 1: Prepare the Win32 app package
 
-1. On **CL1**, verify the Win32 Content Prep Tool is available at `C:\Program Files\IntuneWinAppUtil\IntuneWinAppUtil.exe`.
+1. On **SEA-DEV1**, verify the Win32 Content Prep Tool is available at `C:\Program Files\IntuneWinAppUtil\IntuneWinAppUtil.exe`.
 
    > [!NOTE]
    > If the tool is not present, download it from https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/releases and extract to the specified path.
@@ -245,7 +245,7 @@ Win32 apps are traditional Windows desktop applications (.exe, .msi installers).
 
 ### Task 3: Monitor Win32 app installation
 
-1. On **CL1**, force a device sync:
+1. On **SEA-DEV1**, force a device sync:
    - **Settings** → **Accounts** → **Access work or school** → **Connected to Contoso** → **Info** → **Sync**
 
 1. Wait 10–15 minutes for the app to install.
@@ -325,7 +325,7 @@ Microsoft 365 Apps (formerly Office 365 ProPlus) provide Word, Excel, PowerPoint
 
 ### Task 2: Monitor Microsoft 365 Apps installation
 
-1. On **CL1**, force a device sync.
+1. On **SEA-DEV1**, force a device sync.
 
 1. Wait 15–30 minutes for Microsoft 365 Apps to download and install.
 
@@ -338,7 +338,7 @@ Microsoft 365 Apps (formerly Office 365 ProPlus) provide Word, Excel, PowerPoint
 
 1. Review the installation progress for each device.
 
-1. After installation completes, on **CL1**, open the **Start menu** and verify the following apps are present:
+1. After installation completes, on **SEA-DEV1**, open the **Start menu** and verify the following apps are present:
    - **Excel**
    - **Word**
    - **PowerPoint**
@@ -424,7 +424,7 @@ The Enterprise App Catalog (part of Microsoft Intune Suite) provides a curated l
 
 ### Task 3: Verify app availability in Company Portal
 
-1. On **CL1**, open the **Start menu** and search for `Company Portal`.
+1. On **SEA-DEV1**, open the **Start menu** and search for `Company Portal`.
 
 1. Launch the **Company Portal** app.
 
@@ -517,13 +517,13 @@ For this task, you'll simulate a new version by creating a second Win32 app entr
 
 ### Task 2: Verify app supersedence behavior
 
-1. On **CL1**, force a device sync.
+1. On **SEA-DEV1**, force a device sync.
 
 1. Wait 10–15 minutes for Intune to detect the supersedence relationship and upgrade the app.
 
 1. In the **Microsoft Intune admin center**, navigate to **Apps** → **All apps** → **7-Zip Portable v2.0**.
 
-1. Select **Device install status** and verify CL1 shows **Installed**.
+1. Select **Device install status** and verify SEA-DEV1 shows **Installed**.
 
 1. Navigate to **7-Zip Portable** (the original app) and select **Device install status**.
 
@@ -778,9 +778,9 @@ App assignment intents can collide just like configuration profiles can. The cla
    > [!IMPORTANT]
    > You've now told Intune: "Uninstall **7-Zip Portable** from pilot users" AND (via the v2.0 supersedence relationship) "Install **7-Zip Portable v2.0** on pilot users, replacing v1." These two intents partially overlap and produce a conflict.
 
-1. Trigger a sync on **CL1** (Settings → Accounts → Access work or school → Sync). Wait 5–10 minutes for Intune to evaluate.
+1. Trigger a sync on **SEA-DEV1** (Settings → Accounts → Access work or school → Sync). Wait 5–10 minutes for Intune to evaluate.
 
-1. In **Apps** → **All apps** → **7-Zip Portable**, select **Device install status**. Locate CL1 (or any pilot device) and observe the status — you should see **Conflict** or an explicit failure with an error message indicating multiple intents.
+1. In **Apps** → **All apps** → **7-Zip Portable**, select **Device install status**. Locate SEA-DEV1 (or any pilot device) and observe the status — you should see **Conflict** or an explicit failure with an error message indicating multiple intents.
 
    > [!NOTE]
    > Intune surfaces app conflicts as either **Conflict** in the device install status column, or as a specific error in the per-device drill-in. **App install status** is the single most useful surface for diagnosing app assignment fights, the same way **Per-setting status** is for configuration profile conflicts (Lab 02 Exercise 6).
@@ -790,7 +790,7 @@ App assignment intents can collide just like configuration profiles can. The cla
    - Under **Uninstall**, hover over **sg-Intune-Pilot-Users** and select the **Remove** icon (trash can).
    - Select **Review + save** → **Save**.
 
-1. Trigger another sync on CL1, wait 5–10 minutes, and re-check **Device install status** on **7-Zip Portable v2.0**. Confirm CL1 shows **Installed** with no remaining conflict on the v1 app.
+1. Trigger another sync on SEA-DEV1, wait 5–10 minutes, and re-check **Device install status** on **7-Zip Portable v2.0**. Confirm SEA-DEV1 shows **Installed** with no remaining conflict on the v1 app.
 
    > [!NOTE]
    > In production, the upper-intermediate move is to set up **assignment audits** — review the **Audit logs** for app-assignment edits when you find a conflict to see who added the conflicting intent and when. You'll inspect audit logs in **Lab 05 Exercise 4**.

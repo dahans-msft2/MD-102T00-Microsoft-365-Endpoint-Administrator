@@ -46,8 +46,8 @@ This lab requires:
 - Completion of **Lab 01** (devices enrolled, groups configured)
 - Access to the Contoso Microsoft 365 tenant (`<TenantPrefix>.onmicrosoft.com`)
 - Global Administrator or Intune Administrator credentials
-- **CL1** (enrolled device, Megan Bowen signed in)
-- **CL2** (enrolled device, Joni Sherman signed in)
+- **SEA-DEV1** (enrolled device, Megan Bowen signed in)
+- **SEA-DEV2** (enrolled device, Joni Sherman signed in)
 - Group Policy backup XML files (provided in lab assets)
 
 > [!NOTE]
@@ -67,7 +67,7 @@ Configuration profiles allow you to manage device settings at scale. You'll crea
 
 The Settings Catalog provides access to thousands of individual settings across Windows, macOS, iOS, and Android.
 
-1. On **CL1**, open **Microsoft Edge** and navigate to **https://intune.microsoft.com**.
+1. On **SEA-DEV1**, open **Microsoft Edge** and navigate to **https://intune.microsoft.com**.
 
 1. Sign in as **admin@<TenantPrefix>.onmicrosoft.com**.
 
@@ -219,13 +219,13 @@ Assignment filters refine policy targeting based on device properties without fo
 
 1. On the **Review + create** page, select **Create**.
 
-#### Filter 2 — simple exclude filter (CL1)
+#### Filter 2 — simple exclude filter (SEA-DEV1)
 
 1. On the **Assignment filters** page, select **Create** → **Managed devices**.
 
 1. On the **Basics** page, enter:
-   - **Name:** `Filter - CL1 Exclude`
-   - **Description:** `Excludes device CL1 from policy assignments`
+   - **Name:** `Filter - SEA-DEV1 Exclude`
+   - **Description:** `Excludes device SEA-DEV1 from policy assignments`
    - **Platform:** Windows 10 and later
 
 1. Select **Next**.
@@ -233,10 +233,10 @@ Assignment filters refine policy targeting based on device properties without fo
 1. On the **Rule syntax** page, configure:
    - **Property:** Device name
    - **Operator:** Equals
-   - **Value:** `CL1`
+   - **Value:** `SEA-DEV1`
 
    > [!NOTE]
-   > You're targeting CL1 with **Equals** here — the include-vs-exclude decision happens when you **apply** the filter to a policy in Task 4 (you'll choose **Exclude filtered devices from assignment**).
+   > You're targeting SEA-DEV1 with **Equals** here — the include-vs-exclude decision happens when you **apply** the filter to a policy in Task 4 (you'll choose **Exclude filtered devices from assignment**).
 
 1. Select **Next**, skip **Scope Tags**.
 
@@ -251,7 +251,7 @@ Assignment filters refine policy targeting based on device properties without fo
 
 ### Task 4: Apply the assignment filter to a profile
 
-You'll modify the Device Restrictions profile to exclude CL1 using the filter you created in Task 3.
+You'll modify the Device Restrictions profile to exclude SEA-DEV1 using the filter you created in Task 3.
 
 1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Manage devices** → **Configuration**.
 
@@ -263,12 +263,12 @@ You'll modify the Device Restrictions profile to exclude CL1 using the filter yo
 
 1. Under the **sg-Intune-Pilot-Users** group assignment, expand the **Filter** dropdown and select **Exclude filtered devices from assignment**.
 
-1. Under **Select filter**, choose **Filter - CL1 Exclude**.
+1. Under **Select filter**, choose **Filter - SEA-DEV1 Exclude**.
 
 1. Select **Review + save** → **Save**.
 
    > [!NOTE]
-   > The Device Restrictions profile will now apply to all devices in `sg-Intune-Pilot-Users` **except** CL1. This is the include-vs-exclude pattern from Task 3: the filter defines "CL1", and the apply-time mode (**Exclude**) flips its meaning. The same `Filter - CL1 Exclude` could be used in **Include** mode on a different policy to *only* target CL1.
+   > The Device Restrictions profile will now apply to all devices in `sg-Intune-Pilot-Users` **except** SEA-DEV1. This is the include-vs-exclude pattern from Task 3: the filter defines "SEA-DEV1", and the apply-time mode (**Exclude**) flips its meaning. The same `Filter - SEA-DEV1 Exclude` could be used in **Include** mode on a different policy to *only* target SEA-DEV1.
 
 **You have successfully applied an assignment filter to a configuration profile.**
 
@@ -445,7 +445,7 @@ Compliance policies define security and health requirements for devices. Non-com
 
 1. Navigate to **Devices** → **All devices**.
 
-1. Select **CL1** from the device list.
+1. Select **SEA-DEV1** from the device list.
 
 1. Review the **Compliance** tab:
    - **Compliance status:** May show "Not evaluated," "Compliant," or "Not compliant"
@@ -515,7 +515,7 @@ Contoso has existing Group Policy Objects (GPOs) from an on-premises Active Dire
 
 ### Task 1: Import a Group Policy backup
 
-1. On **CL1**, ensure the GPO backup XML files are accessible (provided in lab assets at `C:\LabAssets\GPO-Backups\`).
+1. On **SEA-DEV1**, ensure the GPO backup XML files are accessible (provided in lab assets at `C:\LabAssets\GPO-Backups\`).
 
    > [!NOTE]
    > If the files are not present, ask your lab instructor or copy them from the lab hosting platform's file share.
@@ -714,9 +714,9 @@ The pilot cohort (`sg-Intune-Pilot-Users`, created in **Lab 01 Exercise 1**) is 
    - **Cancelled**
    - **On hold**
 
-1. Navigate to **Devices** → **All devices** → Select **CL1**.
+1. Navigate to **Devices** → **All devices** → Select **SEA-DEV1**.
 
-1. In the CL1 device blade, select **Monitor** in the left navigation, then select **Windows update**.
+1. In the SEA-DEV1 device blade, select **Monitor** in the left navigation, then select **Windows update**.
 
 1. Review the update status:
    - **Last check-in:** Timestamp of last Windows Update check
@@ -957,9 +957,9 @@ The Troubleshooting blade provides a consolidated view of a user's devices, poli
 
 1. Scroll to the **Devices** section.
 
-1. Verify **CL1** is listed in Megan Bowen's devices.
+1. Verify **SEA-DEV1** is listed in Megan Bowen's devices.
 
-1. Select **CL1** from the list to open the device blade.
+1. Select **SEA-DEV1** from the list to open the device blade.
 
 1. Review:
    - **Enrollment date**
@@ -977,7 +977,7 @@ The Troubleshooting blade provides a consolidated view of a user's devices, poli
 In **Exercise 1 Task 5** you intentionally created two configuration profiles — `WIN - Camera - Enabled (Pilot)` and `WIN - Camera - Disabled (Pilot)` — that conflict on the **Allow Camera** setting for the `sg-Intune-Pilot-Users` group. Now you'll find that conflict in the portal and resolve it. **Per-setting status** is the single most useful surface for this in Intune.
 
 > [!IMPORTANT]
-> **Device prerequisite.** The **Conflict** state only appears after a Windows device has actually checked in with the conflicting policies applied. **CL1** (enrolled in **Lab 01 Exercise 5**) must be online and have synced at least once with the two camera profiles assigned. If you don't see **Conflict** in the steps below — only **Pending** or **Not evaluated** — go to **Devices** → **CL1** → **Sync** and wait 5\u201310 minutes. If CL1 isn't enrolled yet, return to **Lab 01 Exercise 5** before continuing.
+> **Device prerequisite.** The **Conflict** state only appears after a Windows device has actually checked in with the conflicting policies applied. **SEA-DEV1** (enrolled in **Lab 01 Exercise 5**) must be online and have synced at least once with the two camera profiles assigned. If you don't see **Conflict** in the steps below — only **Pending** or **Not evaluated** — go to **Devices** → **SEA-DEV1** → **Sync** and wait 5\u201310 minutes. If SEA-DEV1 isn't enrolled yet, return to **Lab 01 Exercise 5** before continuing.
 
 1. On the **Troubleshoot** page (with **Megan Bowen** selected if she's a pilot member, or another pilot-cohort user), scroll to the **Configuration** section.
 
@@ -988,7 +988,7 @@ In **Exercise 1 Task 5** you intentionally created two configuration profiles �
 
 1. Select one of the two conflicting profiles to open its detail blade.
 
-1. In the profile blade, select **Device and user check-in status** → select the affected device (e.g., **CL1**) → then drill into **Per-setting status**.
+1. In the profile blade, select **Device and user check-in status** → select the affected device (e.g., **SEA-DEV1**) → then drill into **Per-setting status**.
 
    > [!NOTE]
    > The Per-setting status view is the canonical conflict-diagnosis surface. It shows every individual setting in the profile and the device's resolution state for each (**Success**, **Pending**, **Error**, **Conflict**, **Not applicable**). A **Conflict** row means two or more policies are trying to set the same setting to different values — Intune cannot resolve, so it applies neither, and the device retains its existing local value.
@@ -1013,7 +1013,7 @@ In **Exercise 1 Task 5** you intentionally created two configuration profiles �
 
 ### Task 3: Force a device sync from the Troubleshooting blade
 
-1. On the **Troubleshoot** page (with Megan Bowen selected), in the **Devices** section, select **CL1**.
+1. On the **Troubleshoot** page (with Megan Bowen selected), in the **Devices** section, select **SEA-DEV1**.
 
 1. Select **Sync** from the device actions toolbar.
 

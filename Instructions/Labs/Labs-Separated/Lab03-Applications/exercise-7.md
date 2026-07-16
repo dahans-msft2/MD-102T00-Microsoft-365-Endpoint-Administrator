@@ -90,9 +90,9 @@ App assignment intents can collide just like configuration profiles can. The cla
    > [!IMPORTANT]
    > You've now told Intune: "Uninstall **7-Zip Portable** from pilot users" AND (via the v2.0 supersedence relationship) "Install **7-Zip Portable v2.0** on pilot users, replacing v1." These two intents partially overlap and produce a conflict.
 
-1. Trigger a sync on **CL1** (Settings → Accounts → Access work or school → Sync). Wait 5–10 minutes for Intune to evaluate.
+1. Trigger a sync on **SEA-DEV1** (Settings → Accounts → Access work or school → Sync). Wait 5–10 minutes for Intune to evaluate.
 
-1. In **Apps** → **All apps** → **7-Zip Portable**, select **Device install status**. Locate CL1 (or any pilot device) and observe the status — you should see **Conflict** or an explicit failure with an error message indicating multiple intents.
+1. In **Apps** → **All apps** → **7-Zip Portable**, select **Device install status**. Locate SEA-DEV1 (or any pilot device) and observe the status — you should see **Conflict** or an explicit failure with an error message indicating multiple intents.
 
    > [!NOTE]
    > Intune surfaces app conflicts as either **Conflict** in the device install status column, or as a specific error in the per-device drill-in. **App install status** is the single most useful surface for diagnosing app assignment fights, the same way **Per-setting status** is for configuration profile conflicts (Lab 02 Exercise 6).
@@ -102,7 +102,7 @@ App assignment intents can collide just like configuration profiles can. The cla
    - Under **Uninstall**, hover over **sg-Intune-Pilot-Users** and select the **Remove** icon (trash can).
    - Select **Review + save** → **Save**.
 
-1. Trigger another sync on CL1, wait 5–10 minutes, and re-check **Device install status** on **7-Zip Portable v2.0**. Confirm CL1 shows **Installed** with no remaining conflict on the v1 app.
+1. Trigger another sync on SEA-DEV1, wait 5–10 minutes, and re-check **Device install status** on **7-Zip Portable v2.0**. Confirm SEA-DEV1 shows **Installed** with no remaining conflict on the v1 app.
 
    > [!NOTE]
    > In production, the upper-intermediate move is to set up **assignment audits** — review the **Audit logs** for app-assignment edits when you find a conflict to see who added the conflicting intent and when. You'll inspect audit logs in **Lab 05 Exercise 4**.

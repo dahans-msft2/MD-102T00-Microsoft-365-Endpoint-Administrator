@@ -6,7 +6,7 @@ Microsoft Store apps are modern Windows applications distributed through the Mic
 
 ### Task 1: Add a Microsoft Store app
 
-1. On **CL1**, open **Microsoft Edge** and navigate to **https://intune.microsoft.com**.
+1. On **SEA-DEV1**, open **Microsoft Edge** and navigate to **https://intune.microsoft.com**.
 
 1. Sign in as **admin@<TenantPrefix>.onmicrosoft.com**.
 
@@ -51,9 +51,9 @@ Microsoft Store apps are modern Windows applications distributed through the Mic
 
 ---
 
-### Task 2: Verify app installation on CL1
+### Task 2: Verify app installation on SEA-DEV1
 
-1. On **CL1**, wait 5–10 minutes for the app to install automatically.
+1. On **SEA-DEV1**, wait 5–10 minutes for the app to install automatically.
 
    > [!NOTE]
    > Intune checks for new app assignments every 8 hours by default, or when the device syncs. You can force a sync to speed up installation.

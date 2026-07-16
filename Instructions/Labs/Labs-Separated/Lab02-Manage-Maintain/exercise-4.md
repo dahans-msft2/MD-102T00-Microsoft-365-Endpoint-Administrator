@@ -127,9 +127,9 @@ The pilot cohort (`sg-Intune-Pilot-Users`, created in **Lab 01 Exercise 1**) is 
    - **Cancelled**
    - **On hold**
 
-1. Navigate to **Devices** → **All devices** → Select **CL1**.
+1. Navigate to **Devices** → **All devices** → Select **SEA-DEV1**.
 
-1. In the CL1 device blade, select **Monitor** in the left navigation, then select **Windows update**.
+1. In the SEA-DEV1 device blade, select **Monitor** in the left navigation, then select **Windows update**.
 
 1. Review the update status:
    - **Last check-in:** Timestamp of last Windows Update check

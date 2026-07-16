@@ -98,12 +98,12 @@ Endpoint Detection and Response policies onboard devices to Defender for Endpoin
 
 1. In the **Microsoft Defender portal**, expand **Assets** in the left navigation and select **Devices**.
 
-1. Wait 10–15 minutes for CL1 and CL2 to onboard to Defender for Endpoint.
+1. Wait 10–15 minutes for SEA-DEV1 and SEA-DEV2 to onboard to Defender for Endpoint.
 
    > [!NOTE]
    > Device onboarding can take 10–30 minutes after the EDR policy is applied. You can force a device sync in Intune to accelerate the process.
 
-1. After devices appear, select **CL1** from the device list.
+1. After devices appear, select **SEA-DEV1** from the device list.
 
 1. Review the device details:
    - **Risk level:** Low, Medium, High, or Secure

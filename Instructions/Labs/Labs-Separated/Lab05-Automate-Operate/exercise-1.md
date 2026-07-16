@@ -6,7 +6,7 @@ Microsoft Graph is a REST API that provides programmatic access to Microsoft 365
 
 ### Task 1: Install the Microsoft Graph PowerShell SDK
 
-1. On **CL1**, open **Windows Terminal (Admin)**.
+1. On **SEA-DEV1**, open **Windows Terminal (Admin)**.
 
 1. Install the Microsoft Graph PowerShell SDK:
 
@@ -33,7 +33,7 @@ Microsoft Graph is a REST API that provides programmatic access to Microsoft 365
 
 For interactive automation, you can use delegated permissions (user signs in). For unattended automation (e.g., scheduled scripts), you need application permissions and a client secret or certificate.
 
-1. On **CL1**, open **Microsoft Edge** and navigate to **https://entra.microsoft.com**.
+1. On **SEA-DEV1**, open **Microsoft Edge** and navigate to **https://entra.microsoft.com**.
 
 1. Sign in as **admin@<TenantPrefix>.onmicrosoft.com**.
 
@@ -106,7 +106,7 @@ For interactive automation, you can use delegated permissions (user signs in). F
    > [!WARNING]
    > The client secret is only displayed once. If you lose it, you must generate a new secret.
 
-1. Save the secret securely (e.g., in Azure Key Vault or a password manager). For lab purposes, save it in a text file on CL1 (e.g., `C:\LabScripts\ClientSecret.txt`).
+1. Save the secret securely (e.g., in Azure Key Vault or a password manager). For lab purposes, save it in a text file on SEA-DEV1 (e.g., `C:\LabScripts\ClientSecret.txt`).
 
 **You have successfully created a client secret for unattended authentication.**
 
@@ -114,7 +114,7 @@ For interactive automation, you can use delegated permissions (user signs in). F
 
 ### Task 5: Authenticate with Microsoft Graph using application credentials
 
-1. On **CL1**, open **Windows Terminal** (Admin).
+1. On **SEA-DEV1**, open **Windows Terminal** (Admin).
 
 1. Create a folder for automation scripts:
 
@@ -169,7 +169,7 @@ For interactive automation, you can use delegated permissions (user signs in). F
    Get-MgDeviceManagementManagedDevice | Select-Object DeviceName, OperatingSystem, ComplianceState, LastSyncDateTime
    ```
 
-1. Review the output. You should see CL1 and CL2 listed with their compliance status.
+1. Review the output. You should see SEA-DEV1 and SEA-DEV2 listed with their compliance status.
 
 1. Query devices with specific filters:
 

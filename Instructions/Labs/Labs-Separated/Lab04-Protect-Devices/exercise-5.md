@@ -187,9 +187,9 @@ SCEP (Simple Certificate Enrollment Protocol) profiles allow devices to request 
 
 ---
 
-### Task 6: Verify certificate enrollment on CL1
+### Task 6: Verify certificate enrollment on SEA-DEV1
 
-1. On **CL1**, wait 10–15 minutes for the SCEP profile to apply and the certificate to be issued.
+1. On **SEA-DEV1**, wait 10–15 minutes for the SCEP profile to apply and the certificate to be issued.
 
 1. Open **Windows Terminal (Admin)** and run:
 
@@ -198,7 +198,7 @@ SCEP (Simple Certificate Enrollment Protocol) profiles allow devices to request 
    ```
 
 1. Verify a certificate issued by **Contoso Issuing CA** is present with:
-   - **Subject:** CN=CL1.contoso.com (or similar)
+   - **Subject:** CN=SEA-DEV1.contoso.com (or similar)
    - **Enhanced Key Usage:** Client Authentication
 
 1. Open **Microsoft Management Console** (`mmc.exe`).

@@ -6,7 +6,7 @@ Contoso has existing Group Policy Objects (GPOs) from an on-premises Active Dire
 
 ### Task 1: Import a Group Policy backup
 
-1. On **CL1**, ensure the GPO backup XML files are accessible (provided in lab assets at `C:\LabAssets\GPO-Backups\`).
+1. On **SEA-DEV1**, ensure the GPO backup XML files are accessible (provided in lab assets at `C:\LabAssets\GPO-Backups\`).
 
    > [!NOTE]
    > If the files are not present, ask your lab instructor or copy them from the lab hosting platform's file share.

@@ -102,7 +102,7 @@ Compliance policies define security and health requirements for devices. Non-com
 
 1. Navigate to **Devices** → **All devices**.
 
-1. Select **CL1** from the device list.
+1. Select **SEA-DEV1** from the device list.
 
 1. Review the **Compliance** tab:
    - **Compliance status:** May show "Not evaluated," "Compliant," or "Not compliant"

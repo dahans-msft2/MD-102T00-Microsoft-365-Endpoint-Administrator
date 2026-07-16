@@ -88,7 +88,7 @@ Remote Help requires Microsoft Intune Suite licensing.
 
 ### Task 4: Initiate a Remote Help session
 
-1. On **CL1** (helper device—Megan Bowen), wait for Remote Help to install.
+1. On **SEA-DEV1** (helper device—Megan Bowen), wait for Remote Help to install.
 
 1. After installation, launch **Remote Help** from the Start menu.
 
@@ -98,7 +98,7 @@ Remote Help requires Microsoft Intune Suite licensing.
 
 1. A 6-digit help code is displayed (e.g., `123-456`).
 
-1. On **CL2** (sharer device—Joni Sherman), sign in as **JoniS@<TenantPrefix>.OnMicrosoft.com**.
+1. On **SEA-DEV2** (sharer device—Joni Sherman), sign in as **JoniS@<TenantPrefix>.OnMicrosoft.com**.
 
 1. Launch **Remote Help** from the Start menu.
 
@@ -106,13 +106,13 @@ Remote Help requires Microsoft Intune Suite licensing.
 
 1. In the Remote Help app, select **Get help** → **Enter help code**.
 
-1. Enter the 6-digit code from CL1.
+1. Enter the 6-digit code from SEA-DEV1.
 
-1. On **CL2**, a consent prompt appears asking Joni to approve the remote session.
+1. On **SEA-DEV2**, a consent prompt appears asking Joni to approve the remote session.
 
 1. Select **Allow** to grant Megan remote access.
 
-1. On **CL1**, Megan can now view Joni's desktop.
+1. On **SEA-DEV1**, Megan can now view Joni's desktop.
 
    > [!NOTE]
    > By default, Remote Help provides view-only access. Megan can request full control by selecting **Request control** in the Remote Help toolbar. Joni must approve the full control request.
@@ -165,7 +165,7 @@ The `Pharmacy Helpdesk` role assigned to **Lee Gu** in **Lab 05 Exercise 3** gra
    > [!NOTE]
    > Lee Gu sees only devices that are in `dyn-Windows-Devices` AND are tagged with the Pharmacy scope tag (per the role assignment configured in Lab 05 Exercise 3 Task 3). Depending on which devices you tagged with Pharmacy when you created them, this list may be smaller than what your Global Admin sees.
 
-1. Select a Pharmacy-tagged device (e.g., **CL1** if you tagged it).
+1. Select a Pharmacy-tagged device (e.g., **SEA-DEV1** if you tagged it).
 
 1. In the device blade, locate the **New remote assistance session** option (toolbar or device actions menu).
 

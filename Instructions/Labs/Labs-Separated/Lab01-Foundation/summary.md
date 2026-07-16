@@ -30,15 +30,15 @@ In this lab, you accomplished the following:
 - Blocked personally owned Android enrollment with a custom platform restriction
 
 **Exercise 5: Enroll Windows devices**
-- Enrolled CL1 (as Megan Bowen) via Microsoft Entra join
-- Enrolled CL2 (as Joni Sherman) via Microsoft Entra join
+- Enrolled SEA-DEV1 (as Megan Bowen) via Microsoft Entra join
+- Enrolled SEA-DEV2 (as Joni Sherman) via Microsoft Entra join
 - Verified both devices in Intune and dynamic group membership
 
 **Exercise 6: Configure Windows Autopilot**
-- Generated the Autopilot hardware hash for CL3
+- Generated the Autopilot hardware hash for SEA-DEV3
 - Uploaded the hardware hash to Intune
 - Created a Windows Autopilot deployment profile
-- Assigned the profile to CL3
+- Assigned the profile to SEA-DEV3
 
 **Key Takeaways:**
 - Microsoft Entra ID is the foundation for modern device management—devices must be joined or registered before enrolling in Intune
@@ -51,7 +51,7 @@ In this lab, you accomplished the following:
 - Windows Autopilot streamlines device provisioning by pre-registering devices and applying deployment profiles during OOBE
 
 **Next Steps:**
-The devices you enrolled in this lab (CL1 and CL2) will be used in subsequent labs to deploy configuration profiles, compliance policies, applications, and security baselines. Lab 02 focuses on managing and maintaining these devices using Intune policies.
+The devices you enrolled in this lab (SEA-DEV1 and SEA-DEV2) will be used in subsequent labs to deploy configuration profiles, compliance policies, applications, and security baselines. Lab 02 focuses on managing and maintaining these devices using Intune policies.
 
 ---
 

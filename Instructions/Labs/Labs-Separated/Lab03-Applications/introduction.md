@@ -42,8 +42,8 @@ This lab requires:
 - Completion of **Lab 01** (devices enrolled, groups configured)
 - Access to the Contoso Microsoft 365 tenant (`<TenantPrefix>.onmicrosoft.com`)
 - Global Administrator or Intune Administrator credentials
-- **CL1** (enrolled device, Megan Bowen signed in)
-- **CL2** (enrolled device, Joni Sherman signed in)
+- **SEA-DEV1** (enrolled device, Megan Bowen signed in)
+- **SEA-DEV2** (enrolled device, Joni Sherman signed in)
 - Win32 app source files (provided in lab assets at `C:\LabAssets\Win32-App\`)
 - **Microsoft Intune Suite trial active** (activated in **Lab 01** prerequisites) — required for Exercise 4 (Enterprise App Catalog)
 

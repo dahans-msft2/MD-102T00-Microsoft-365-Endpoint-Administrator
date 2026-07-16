@@ -54,7 +54,7 @@ Microsoft 365 Apps (formerly Office 365 ProPlus) provide Word, Excel, PowerPoint
 
 ### Task 2: Monitor Microsoft 365 Apps installation
 
-1. On **CL1**, force a device sync.
+1. On **SEA-DEV1**, force a device sync.
 
 1. Wait 15–30 minutes for Microsoft 365 Apps to download and install.
 
@@ -67,7 +67,7 @@ Microsoft 365 Apps (formerly Office 365 ProPlus) provide Word, Excel, PowerPoint
 
 1. Review the installation progress for each device.
 
-1. After installation completes, on **CL1**, open the **Start menu** and verify the following apps are present:
+1. After installation completes, on **SEA-DEV1**, open the **Start menu** and verify the following apps are present:
    - **Excel**
    - **Word**
    - **PowerPoint**

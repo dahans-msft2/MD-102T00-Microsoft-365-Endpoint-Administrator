@@ -45,10 +45,10 @@ This lab requires:
 - Completion of **Lab 01** (devices enrolled)
 - Access to the Contoso Microsoft 365 tenant (`<TenantPrefix>.onmicrosoft.com`)
 - **Microsoft 365 E5** licensing (includes Defender for Endpoint P2)
-- **Microsoft Intune Suite trial active** (activated in **Lab 01** prerequisites) — required for Cloud PKI (Exercise 5). Microsoft Tunnel (Exercise 4) is included in Intune Plan 1 and doesn't require the Suite, but it does require the **LX1** Ubuntu server
+- **Microsoft Intune Suite trial active** (activated in **Lab 01** prerequisites) — required for Cloud PKI (Exercise 5). Microsoft Tunnel (Exercise 4) is included in Intune Plan 1 and doesn't require the Suite, but it does require the **LIN-SRV1** Ubuntu server
 - Global Administrator or Intune Administrator credentials
-- **CL1** and **CL2** (enrolled Windows 11 devices)
-- **LX1** (Ubuntu 22.04 server for Microsoft Tunnel Gateway)
+- **SEA-DEV1** and **SEA-DEV2** (enrolled Windows 11 devices)
+- **LIN-SRV1** (Ubuntu 22.04 server for Microsoft Tunnel Gateway)
 
 ---
 

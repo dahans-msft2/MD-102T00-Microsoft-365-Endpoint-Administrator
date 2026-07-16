@@ -42,7 +42,7 @@ By the end of this lab, you'll have:
 This lab requires:
 - Access to the Contoso Microsoft 365 tenant (`<TenantPrefix>.onmicrosoft.com` or equivalent)
 - Global Administrator credentials
-- Four virtual machines: **CL1**, **CL2**, **CL3**, and **LX1**
+- Four virtual machines: **SEA-DEV1**, **SEA-DEV2**, **SEA-DEV3**, and **LIN-SRV1**
 - Internet connectivity from all VMs
 
 **Important:** This is the foundational lab for the MD-102 lab series. All subsequent labs assume the configuration completed in this lab (enrolled devices, users, groups, and policies).

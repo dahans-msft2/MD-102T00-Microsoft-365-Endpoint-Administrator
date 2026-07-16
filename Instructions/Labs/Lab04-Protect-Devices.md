@@ -32,10 +32,10 @@ This lab requires:
 - Completion of **Lab 01** (devices enrolled)
 - Access to the Contoso Microsoft 365 tenant (`<TenantPrefix>.onmicrosoft.com`)
 - **Microsoft 365 E5** licensing (includes Defender for Endpoint P2)
-- **Microsoft Intune Suite trial active** (activated in **Lab 01** prerequisites) — required for Cloud PKI (Exercise 5). Microsoft Tunnel (Exercise 4) is included in Intune Plan 1 and doesn't require the Suite, but it does require the **LX1** Ubuntu server
+- **Microsoft Intune Suite trial active** (activated in **Lab 01** prerequisites) — required for Cloud PKI (Exercise 5). Microsoft Tunnel (Exercise 4) is included in Intune Plan 1 and doesn't require the Suite, but it does require the **LIN-SRV1** Ubuntu server
 - Global Administrator or Intune Administrator credentials
-- **CL1** and **CL2** (enrolled Windows 11 devices)
-- **LX1** (Ubuntu 22.04 server for Microsoft Tunnel Gateway)
+- **SEA-DEV1** and **SEA-DEV2** (enrolled Windows 11 devices)
+- **LIN-SRV1** (Ubuntu 22.04 server for Microsoft Tunnel Gateway)
 
 ---
 
@@ -139,12 +139,12 @@ Endpoint Detection and Response policies onboard devices to Defender for Endpoin
 
 1. In the **Microsoft Defender portal**, expand **Assets** in the left navigation and select **Devices**.
 
-1. Wait 10–15 minutes for CL1 and CL2 to onboard to Defender for Endpoint.
+1. Wait 10–15 minutes for SEA-DEV1 and SEA-DEV2 to onboard to Defender for Endpoint.
 
    > [!NOTE]
    > Device onboarding can take 10–30 minutes after the EDR policy is applied. You can force a device sync in Intune to accelerate the process.
 
-1. After devices appear, select **CL1** from the device list.
+1. After devices appear, select **SEA-DEV1** from the device list.
 
 1. Review the device details:
    - **Risk level:** Low, Medium, High, or Secure
@@ -447,12 +447,12 @@ BitLocker encrypts the entire OS drive, protecting data at rest. You'll configur
 
 ### Task 2: Monitor BitLocker encryption status
 
-1. On **CL1**, wait 10–15 minutes for the BitLocker policy to apply.
+1. On **SEA-DEV1**, wait 10–15 minutes for the BitLocker policy to apply.
 
    > [!NOTE]
    > BitLocker encryption can take 1–3 hours to complete depending on drive size and system performance. For lab purposes, you'll verify the policy was applied and encryption started.
 
-1. On **CL1**, open **Windows Terminal (Admin)**.
+1. On **SEA-DEV1**, open **Windows Terminal (Admin)**.
 
 1. Check BitLocker status:
 
@@ -466,7 +466,7 @@ BitLocker encrypts the entire OS drive, protecting data at rest. You'll configur
    - **Protection Status:** Protection On
    - **Lock Status:** Unlocked
 
-1. In the **Microsoft Intune admin center**, navigate to **Devices** → **All devices** → **CL1**.
+1. In the **Microsoft Intune admin center**, navigate to **Devices** → **All devices** → **SEA-DEV1**.
 
 1. Select **Recovery keys** from the left navigation.
 
@@ -481,7 +481,7 @@ BitLocker encrypts the entire OS drive, protecting data at rest. You'll configur
 
 ### Task 3: Retrieve a BitLocker recovery key
 
-1. In the **Microsoft Intune admin center**, navigate to **Devices** → **All devices** → **CL1**.
+1. In the **Microsoft Intune admin center**, navigate to **Devices** → **All devices** → **SEA-DEV1**.
 
 1. Select **Recovery keys** from the left navigation.
 
@@ -505,16 +505,16 @@ BitLocker encrypts the entire OS drive, protecting data at rest. You'll configur
 
 ### Scenario
 
-Microsoft Tunnel is a VPN gateway solution that provides secure access to on-premises and cloud resources for mobile devices. You'll deploy the Tunnel Gateway on an Ubuntu server (LX1), register it with Intune, and author the VPN profile mobile devices would consume.
+Microsoft Tunnel is a VPN gateway solution that provides secure access to on-premises and cloud resources for mobile devices. You'll deploy the Tunnel Gateway on an Ubuntu server (LIN-SRV1), register it with Intune, and author the VPN profile mobile devices would consume.
 
 > [!IMPORTANT]
-> **Scope.** This exercise covers gateway deployment, Intune registration, and VPN profile authoring. The lab environment doesn't include a mobile device, so **live client VPN connectivity through the gateway is out of scope** — similar to how Lab 01 scopes out the live Autopilot OOBE. The lab is complete when the LX1 server appears as **Online** in **Tenant administration** → **Microsoft Tunnel Gateway** → **Servers** (Task 3), and the VPN profile is authored and assigned (Task 4).
+> **Scope.** This exercise covers gateway deployment, Intune registration, and VPN profile authoring. The lab environment doesn't include a mobile device, so **live client VPN connectivity through the gateway is out of scope** — similar to how Lab 01 scopes out the live Autopilot OOBE. The lab is complete when the LIN-SRV1 server appears as **Online** in **Tenant administration** → **Microsoft Tunnel Gateway** → **Servers** (Task 3), and the VPN profile is authored and assigned (Task 4).
 >
-> Microsoft Tunnel Gateway is included with **Intune Plan 1** (no Suite required). If LX1 isn't available in your lab environment, review the steps conceptually or skip to Exercise 5.
+> Microsoft Tunnel Gateway is included with **Intune Plan 1** (no Suite required). If LIN-SRV1 isn't available in your lab environment, review the steps conceptually or skip to Exercise 5.
 
-### Task 1: Prepare the LX1 server
+### Task 1: Prepare the LIN-SRV1 server
 
-1. Switch to **LX1** (Ubuntu 22.04 server).
+1. Switch to **LIN-SRV1** (Ubuntu 22.04 server).
 
 1. Sign in with the provided credentials (typically `ubuntu` user with key-based or password auth).
 
@@ -546,15 +546,15 @@ Microsoft Tunnel is a VPN gateway solution that provides secure access to on-pre
    hostname -f
    ```
 
-   Note the internal IP/hostname (e.g., `10.0.1.10` or `lx1.lab.local`). The gateway only needs **outbound** access to Microsoft Intune endpoints to register — no inbound ports, no public FQDN, and no publicly-trusted certificate are required for this lab.
+   Note the internal IP/hostname (e.g., `10.0.1.10` or `LIN-SRV1.lab.local`). The gateway only needs **outbound** access to Microsoft Intune endpoints to register — no inbound ports, no public FQDN, and no publicly-trusted certificate are required for this lab.
 
-**You have successfully prepared the LX1 server for Microsoft Tunnel installation.**
+**You have successfully prepared the LIN-SRV1 server for Microsoft Tunnel installation.**
 
 ---
 
 ### Task 2: Download and install Microsoft Tunnel
 
-1. On **LX1**, download the Microsoft Tunnel installation script:
+1. On **LIN-SRV1**, download the Microsoft Tunnel installation script:
 
    ```bash
    wget https://aka.ms/microsofttunneldownload -O mstunnel-setup
@@ -586,13 +586,13 @@ Microsoft Tunnel is a VPN gateway solution that provides secure access to on-pre
 
    The output should show **active (running)**.
 
-**You have successfully installed Microsoft Tunnel Gateway on LX1.**
+**You have successfully installed Microsoft Tunnel Gateway on LIN-SRV1.**
 
 ---
 
 ### Task 3: Register the Tunnel Gateway in Intune
 
-1. On **CL1**, in the **Microsoft Intune admin center**, navigate to **Tenant administration** → **Microsoft Tunnel Gateway**.
+1. On **SEA-DEV1**, in the **Microsoft Intune admin center**, navigate to **Tenant administration** → **Microsoft Tunnel Gateway**.
 
 1. Select the **Sites** tab.
 
@@ -601,15 +601,15 @@ Microsoft Tunnel is a VPN gateway solution that provides secure access to on-pre
 1. On the **Create a site** page, enter:
    - **Name:** `Contoso HQ Tunnel`
    - **Description:** `Microsoft Tunnel Gateway for mobile device VPN access`
-   - **Public address:** Enter the LX1 server's internal IP or hostname (e.g., `10.0.1.10` or `lx1.lab.local`). In production this would be the public FQDN mobile clients connect to; for this lab it's a required field with no client traffic behind it.
+   - **Public address:** Enter the LIN-SRV1 server's internal IP or hostname (e.g., `10.0.1.10` or `LIN-SRV1.lab.local`). In production this would be the public FQDN mobile clients connect to; for this lab it's a required field with no client traffic behind it.
 
 1. Select **Create**.
 
 1. After the site is created, select **Servers** tab.
 
-1. Select **Add** to register the LX1 server.
+1. Select **Add** to register the LIN-SRV1 server.
 
-1. On **LX1**, generate a registration token:
+1. On **LIN-SRV1**, generate a registration token:
 
    ```bash
    sudo mstunnel register
@@ -617,7 +617,7 @@ Microsoft Tunnel is a VPN gateway solution that provides secure access to on-pre
 
    The command will output a registration token (a long alphanumeric string).
 
-1. On **CL1**, in the **Add server** dialog, paste the registration token.
+1. On **SEA-DEV1**, in the **Add server** dialog, paste the registration token.
 
 1. Select **Add**.
 
@@ -656,7 +656,7 @@ Microsoft Tunnel is a VPN gateway solution that provides secure access to on-pre
 1. On the **Configuration settings** page, configure:
    - **Connection name:** `Contoso VPN`
    - **Connection type:** Microsoft Tunnel (Standalone client)
-   - **Server address:** Enter the LX1 server's address (e.g., `lx1.lab.local` — same value used when registering the Tunnel site in Task 3)
+   - **Server address:** Enter the LIN-SRV1 server's address (e.g., `LIN-SRV1.lab.local` — same value used when registering the Tunnel site in Task 3)
    - **Per-app VPN:** Not configured (or configure specific apps if desired)
    - **Always-on VPN:** Enable (recommended for corporate-owned devices)
 
@@ -859,9 +859,9 @@ SCEP (Simple Certificate Enrollment Protocol) profiles allow devices to request 
 
 ---
 
-### Task 6: Verify certificate enrollment on CL1
+### Task 6: Verify certificate enrollment on SEA-DEV1
 
-1. On **CL1**, wait 10–15 minutes for the SCEP profile to apply and the certificate to be issued.
+1. On **SEA-DEV1**, wait 10–15 minutes for the SCEP profile to apply and the certificate to be issued.
 
 1. Open **Windows Terminal (Admin)** and run:
 
@@ -870,7 +870,7 @@ SCEP (Simple Certificate Enrollment Protocol) profiles allow devices to request 
    ```
 
 1. Verify a certificate issued by **Contoso Issuing CA** is present with:
-   - **Subject:** CN=CL1.contoso.com (or similar)
+   - **Subject:** CN=SEA-DEV1.contoso.com (or similar)
    - **Enhanced Key Usage:** Client Authentication
 
 1. Open **Microsoft Management Console** (`mmc.exe`).

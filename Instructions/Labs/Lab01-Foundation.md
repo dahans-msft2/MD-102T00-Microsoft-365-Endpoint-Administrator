@@ -42,7 +42,7 @@ By the end of this lab, you'll have:
 This lab requires:
 - Access to the Contoso Microsoft 365 tenant (`<TenantPrefix>.onmicrosoft.com` or equivalent)
 - Global Administrator credentials
-- Four virtual machines: **CL1**, **CL2**, **CL3**, and **LX1**
+- Four virtual machines: **SEA-DEV1**, **SEA-DEV2**, **SEA-DEV3**, and **LIN-SRV1**
 - Internet connectivity from all VMs
 
 **Important:** This is the foundational lab for the MD-102 lab series. All subsequent labs assume the configuration completed in this lab (enrolled devices, users, groups, and policies).
@@ -81,7 +81,7 @@ Contoso has 33 existing users across multiple departments (Marketing, Legal, IT,
 
 ### Task 1: Review existing users and licenses
 
-1. On **CL1**, open **Microsoft Edge**.
+1. On **SEA-DEV1**, open **Microsoft Edge**.
 
 1. Navigate to **https://admin.microsoft.com**.
 
@@ -627,7 +627,7 @@ Microsoft Entra LAPS automatically manages and rotates local administrator passw
 
 ### Scenario
 
-In Exercise 5 your colleagues will sign in to **CL1** and **CL2** and perform a Microsoft Entra join, and in Exercise 6 you'll register **CL3** for Windows Autopilot. Before any of that happens, you need to make sure the tenant is configured so the **first-run experience is right**: devices get automatically enrolled in Intune, the user can't start working until critical apps and policies are in place, and you have guardrails on how many devices each user can enroll.
+In Exercise 5 your colleagues will sign in to **SEA-DEV1** and **SEA-DEV2** and perform a Microsoft Entra join, and in Exercise 6 you'll register **SEA-DEV3** for Windows Autopilot. Before any of that happens, you need to make sure the tenant is configured so the **first-run experience is right**: devices get automatically enrolled in Intune, the user can't start working until critical apps and policies are in place, and you have guardrails on how many devices each user can enroll.
 
 In this exercise you'll:
 
@@ -742,7 +742,7 @@ Pilot users at Contoso Healthcare receive corporate laptops pre-staged for clini
 
 ### Task 4: Review default enrollment restrictions
 
-Enrollment restrictions control which device platforms can enroll in Intune. Reviewing the defaults helps you understand what the Contoso tenant will accept before CL1 and CL2 enroll in Exercise 5.
+Enrollment restrictions control which device platforms can enroll in Intune. Reviewing the defaults helps you understand what the Contoso tenant will accept before SEA-DEV1 and SEA-DEV2 enroll in Exercise 5.
 
 1. In the **Microsoft Intune admin center**, on the **Enrollment** page, on the **Windows** tab, under **Enrollment options**, select **Device platform restriction**.
 
@@ -753,7 +753,7 @@ Enrollment restrictions control which device platforms can enroll in Intune. Rev
    - **Platform configurations:** Review specific restrictions (for example, personally owned devices, versions)
 
    > [!NOTE]
-   > The default policy allows all platforms and personally owned devices. In production you might block personally owned Windows devices or restrict specific OS versions, but for the lab leave the defaults in place so CL1 and CL2 can enroll in Exercise 5.
+   > The default policy allows all platforms and personally owned devices. In production you might block personally owned Windows devices or restrict specific OS versions, but for the lab leave the defaults in place so SEA-DEV1 and SEA-DEV2 can enroll in Exercise 5.
 
 1. Close the policy details pane without making changes.
 
@@ -844,11 +844,11 @@ Contoso Healthcare doesn't want personal Android phones enrolling in Intune — 
 
 ### Scenario
 
-You'll now enroll two Windows 11 devices (CL1 and CL2) into Intune by performing a Microsoft Entra join. This simulates a user-driven enrollment scenario where an employee joins their device to the corporate tenant.
+You'll now enroll two Windows 11 devices (SEA-DEV1 and SEA-DEV2) into Intune by performing a Microsoft Entra join. This simulates a user-driven enrollment scenario where an employee joins their device to the corporate tenant.
 
-### Task 1: Perform a Microsoft Entra join and enrollment on CL1
+### Task 1: Perform a Microsoft Entra join and enrollment on SEA-DEV1
 
-1. On **CL1**, sign out of the current session if signed in.
+1. On **SEA-DEV1**, sign out of the current session if signed in.
 
 1. At the Windows sign-in screen, select **Other user**.
 
@@ -877,37 +877,37 @@ You'll now enroll two Windows 11 devices (CL1 and CL2) into Intune by performing
    > [!NOTE]
    > The device is now Microsoft Entra joined and automatically enrolled in Intune. Megan sees the Enrollment Status Page you configured in Exercise 4 while apps and policies are applied. Because Megan isn't in the `sg-Intune-Pilot-Users` group, she gets the non-blocking **Default** profile rather than the stricter **ESP - Pilot - Blocking** profile.
 
-**You have successfully enrolled CL1 in Microsoft Entra and Intune.**
+**You have successfully enrolled SEA-DEV1 in Microsoft Entra and Intune.**
 
 ---
 
-### Task 2: Verify CL1 enrollment in the Intune admin center
+### Task 2: Verify SEA-DEV1 enrollment in the Intune admin center
 
-1. On **CL1**, open **Microsoft Edge** and navigate to **https://intune.microsoft.com**.
+1. On **SEA-DEV1**, open **Microsoft Edge** and navigate to **https://intune.microsoft.com**.
 
 1. Sign in as **admin@<TenantPrefix>.onmicrosoft.com** (if not already signed in).
 
 1. In the **Microsoft Intune admin center**, expand **Devices** and select **All devices**.
 
-1. Verify that **CL1** appears in the device list with:
+1. Verify that **SEA-DEV1** appears in the device list with:
    - **Managed by:** Intune
    - **Ownership:** Corporate
    - **Compliance:** (may show "Not evaluated" initially)
 
-1. Select **CL1** from the list to view device details.
+1. Select **SEA-DEV1** from the list to view device details.
 
 1. Review the following tabs:
    - **Overview:** Device name, OS version, last check-in time
    - **Hardware:** Serial number, TPM version, total storage
    - **Discovered apps:** (will populate over time as app inventory syncs)
 
-**You have successfully verified CL1 enrollment in Intune.**
+**You have successfully verified SEA-DEV1 enrollment in Intune.**
 
 ---
 
-### Task 3: Perform a Microsoft Entra join and enrollment on CL2
+### Task 3: Perform a Microsoft Entra join and enrollment on SEA-DEV2
 
-1. Switch to **CL2**.
+1. Switch to **SEA-DEV2**.
 
 1. Sign in with the local administrator account:
    - **Username:** `Admin`
@@ -931,27 +931,27 @@ You'll now enroll two Windows 11 devices (CL1 and CL2) into Intune by performing
 
 1. On the **You're all set!** page, select **Done**.
 
-1. Restart **CL2**.
+1. Restart **SEA-DEV2**.
 
 1. After restart, sign in as:
    - **User:** `JoniS@<TenantPrefix>.OnMicrosoft.com`
    - **Password:** (Joni Sherman's password)
 
-**You have successfully enrolled CL2 in Microsoft Entra and Intune.**
+**You have successfully enrolled SEA-DEV2 in Microsoft Entra and Intune.**
 
 ---
 
 ### Task 4: Verify both devices are enrolled
 
-1. On **CL1**, in the **Microsoft Intune admin center**, navigate to **Devices** → **All devices**.
+1. On **SEA-DEV1**, in the **Microsoft Intune admin center**, navigate to **Devices** → **All devices**.
 
-1. Verify both **CL1** and **CL2** appear in the device list.
+1. Verify both **SEA-DEV1** and **SEA-DEV2** appear in the device list.
 
 1. Verify the **dyn-Windows-Devices** dynamic group now contains both devices:
    - In the **Microsoft Intune admin center**, navigate to **Groups** → **All groups**.
    - Select **dyn-Windows-Devices**.
    - Select the **Members** tab.
-   - Verify CL1 and CL2 are listed (may take 5–10 minutes for dynamic group membership to update).
+   - Verify SEA-DEV1 and SEA-DEV2 are listed (may take 5–10 minutes for dynamic group membership to update).
 
 **You have successfully verified both devices are enrolled and automatically added to the dynamic device group.**
 
@@ -961,7 +961,7 @@ You'll now enroll two Windows 11 devices (CL1 and CL2) into Intune by performing
 
 ### Scenario
 
-Windows Autopilot streamlines device provisioning by automatically joining devices to Microsoft Entra ID and enrolling them in Intune during the out-of-box experience (OOBE). You'll register CL3 for Autopilot, create a deployment profile, and assign it to the device.
+Windows Autopilot streamlines device provisioning by automatically joining devices to Microsoft Entra ID and enrolling them in Intune during the out-of-box experience (OOBE). You'll register SEA-DEV3 for Autopilot, create a deployment profile, and assign it to the device.
 
 > [!NOTE]
 > Due to lab time constraints, you will not perform a full Autopilot OOBE (which requires resetting the device). You'll complete the registration and configuration steps to understand the Autopilot deployment workflow.
@@ -969,11 +969,11 @@ Windows Autopilot streamlines device provisioning by automatically joining devic
 > [!NOTE]
 > **This is classic Autopilot (hardware-hash based), not Windows Autopilot device preparation.** Device preparation is a newer, simpler re-architecture that skips manual hash registration entirely for its supported scenarios (user-driven, physical devices) — devices just enroll and get added to a security group at enrollment time. But it doesn't yet support pre-provisioned, self-deploying, existing-devices, hybrid join, or Autopilot Reset scenarios — those still require classic Autopilot. Manual hardware-hash registration (what you're doing here) is Microsoft's own documented approach for **testing and evaluation**, which is exactly this lab's context; production registration normally happens automatically via the OEM/reseller/CSP instead.
 
-### Task 1: Generate the Autopilot hardware hash for CL3
+### Task 1: Generate the Autopilot hardware hash for SEA-DEV3
 
 The Autopilot hardware hash uniquely identifies a device and is required for Autopilot registration.
 
-1. Switch to **CL3**.
+1. Switch to **SEA-DEV3**.
 
 1. Sign in with the local administrator account:
    - **Username:** `Admin`
@@ -992,13 +992,13 @@ The Autopilot hardware hash uniquely identifies a device and is required for Aut
 1. After installation completes, generate the Autopilot hardware hash and export it to a CSV file:
 
    ```powershell
-   Get-WindowsAutopilotInfo -OutputFile C:\Autopilot\CL3-AutopilotHash.csv
+   Get-WindowsAutopilotInfo -OutputFile C:\Autopilot\SEA-DEV3-AutopilotHash.csv
    ```
 
 1. Verify the CSV file was created:
 
    ```powershell
-   Test-Path C:\Autopilot\CL3-AutopilotHash.csv
+   Test-Path C:\Autopilot\SEA-DEV3-AutopilotHash.csv
    ```
 
    The output should return **True**.
@@ -1006,7 +1006,7 @@ The Autopilot hardware hash uniquely identifies a device and is required for Aut
 1. Open the CSV file to verify the hardware hash was captured:
 
    ```powershell
-   notepad C:\Autopilot\CL3-AutopilotHash.csv
+   notepad C:\Autopilot\SEA-DEV3-AutopilotHash.csv
    ```
 
 1. Review the CSV contents. It should contain:
@@ -1016,13 +1016,13 @@ The Autopilot hardware hash uniquely identifies a device and is required for Aut
 
 1. Close Notepad.
 
-**You have successfully generated the Autopilot hardware hash for CL3.**
+**You have successfully generated the Autopilot hardware hash for SEA-DEV3.**
 
 ---
 
 ### Task 2: Upload the hardware hash to Intune
 
-1. Switch to **CL1**.
+1. Switch to **SEA-DEV1**.
 
 1. In **Microsoft Edge**, navigate to **https://intune.microsoft.com** (sign in as admin if needed).
 
@@ -1034,23 +1034,23 @@ The Autopilot hardware hash uniquely identifies a device and is required for Aut
 
 1. In the **Import Windows Autopilot devices** pane, select the folder icon to browse for the CSV file.
 
-1. Navigate to **\\\CL3\C$\Autopilot\\** (or copy the CSV file from CL3 to CL1 using a shared folder or USB).
+1. Navigate to **\\\SEA-DEV3\C$\Autopilot\\** (or copy the CSV file from SEA-DEV3 to SEA-DEV1 using a shared folder or USB).
 
    > [!NOTE]
-   > If you cannot access CL3's file system from CL1, manually copy the CSV file to CL1 (e.g., save to a USB drive, or use the lab platform's file transfer mechanism).
+   > If you cannot access SEA-DEV3's file system from SEA-DEV1, manually copy the CSV file to SEA-DEV1 (e.g., save to a USB drive, or use the lab platform's file transfer mechanism).
 
-1. Select **CL3-AutopilotHash.csv** and select **Open**.
+1. Select **SEA-DEV3-AutopilotHash.csv** and select **Open**.
 
 1. In the **Import Windows Autopilot devices** pane, select **Import**.
 
 1. Wait for the import to complete. A notification will appear when the import finishes (typically 1–2 minutes).
 
-1. After import completes, refresh the **Devices** page. You should see **CL3** appear in the Autopilot devices list.
+1. After import completes, refresh the **Devices** page. You should see **SEA-DEV3** appear in the Autopilot devices list.
 
    > [!NOTE]
    > It may take 5–10 minutes for the device to fully sync and appear in the list. If the device doesn't appear immediately, refresh the page periodically.
 
-**You have successfully uploaded the CL3 hardware hash to Intune.**
+**You have successfully uploaded the SEA-DEV3 hardware hash to Intune.**
 
 ---
 
@@ -1091,7 +1091,7 @@ Autopilot deployment profiles define the OOBE experience and determine which set
 1. Select **Select**.
 
    > [!NOTE]
-   > By assigning the profile to `dyn-Autopilot-Devices`, any device registered in Autopilot — enrolled or not — automatically receives this deployment profile, which is what actually lets CL3's Profile status reach **Assigned** in Task 4.
+   > By assigning the profile to `dyn-Autopilot-Devices`, any device registered in Autopilot — enrolled or not — automatically receives this deployment profile, which is what actually lets SEA-DEV3's Profile status reach **Assigned** in Task 4.
 
 1. Select **Next**.
 
@@ -1101,11 +1101,11 @@ Autopilot deployment profiles define the OOBE experience and determine which set
 
 ---
 
-### Task 4: Review the Autopilot profile status for CL3
+### Task 4: Review the Autopilot profile status for SEA-DEV3
 
 1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Enrollment** → **Devices** (under Windows Autopilot).
 
-1. Select **CL3** from the Autopilot devices list.
+1. Select **SEA-DEV3** from the Autopilot devices list.
 
 1. Review the device details:
    - **Profile status:** Should now show **Assigned** (it may take a few minutes for the dynamic group to populate and the profile assignment to sync)
@@ -1113,19 +1113,19 @@ Autopilot deployment profiles define the OOBE experience and determine which set
    - **Assigned user:** None
 
    > [!NOTE]
-   > If it still shows "Not assigned" after several minutes, select **Sync** from the toolbar on the **Devices** list to force a sync. Also double check `dyn-Autopilot-Devices` actually shows CL3 as a member (**Groups** → `dyn-Autopilot-Devices` → **Members**) — if CL3 isn't there, re-check the rule syntax from Task 3.
+   > If it still shows "Not assigned" after several minutes, select **Sync** from the toolbar on the **Devices** list to force a sync. Also double check `dyn-Autopilot-Devices` actually shows SEA-DEV3 as a member (**Groups** → `dyn-Autopilot-Devices` → **Members**) — if SEA-DEV3 isn't there, re-check the rule syntax from Task 3.
 
 1. Close the device details pane.
 
-**You have successfully assigned the Autopilot deployment profile to CL3.**
+**You have successfully assigned the Autopilot deployment profile to SEA-DEV3.**
 
 ---
 
 ### Task 5: (Optional) Understand the Autopilot OOBE flow
 
-In a production environment, the next step would be to reset CL3 and go through the Autopilot OOBE. Here's what would happen:
+In a production environment, the next step would be to reset SEA-DEV3 and go through the Autopilot OOBE. Here's what would happen:
 
-1. **Device boots:** CL3 is powered on (factory-reset or new device).
+1. **Device boots:** SEA-DEV3 is powered on (factory-reset or new device).
 
 1. **Autopilot recognition:** During OOBE, Windows contacts the Autopilot service and recognizes the device by its hardware hash.
 
@@ -1141,7 +1141,7 @@ In a production environment, the next step would be to reset CL3 and go through 
 1. **User desktop:** The user reaches the desktop with a fully configured device.
 
 > [!NOTE]
-> Resetting CL3 and completing a live Autopilot OOBE takes 20–30 minutes and is beyond the scope of this lab. However, you've completed all the prerequisites (hardware hash registration, profile creation, and assignment) required for Autopilot deployment.
+> Resetting SEA-DEV3 and completing a live Autopilot OOBE takes 20–30 minutes and is beyond the scope of this lab. However, you've completed all the prerequisites (hardware hash registration, profile creation, and assignment) required for Autopilot deployment.
 
 **You now understand the Windows Autopilot deployment workflow.**
 
@@ -1179,15 +1179,15 @@ In this lab, you accomplished the following:
 - Blocked personally owned Android enrollment with a custom platform restriction
 
 **Exercise 5: Enroll Windows devices**
-- Enrolled CL1 (as Megan Bowen) via Microsoft Entra join
-- Enrolled CL2 (as Joni Sherman) via Microsoft Entra join
+- Enrolled SEA-DEV1 (as Megan Bowen) via Microsoft Entra join
+- Enrolled SEA-DEV2 (as Joni Sherman) via Microsoft Entra join
 - Verified both devices in Intune and dynamic group membership
 
 **Exercise 6: Configure Windows Autopilot**
-- Generated the Autopilot hardware hash for CL3
+- Generated the Autopilot hardware hash for SEA-DEV3
 - Uploaded the hardware hash to Intune
 - Created a Windows Autopilot deployment profile
-- Assigned the profile to CL3
+- Assigned the profile to SEA-DEV3
 
 **Key Takeaways:**
 - Microsoft Entra ID is the foundation for modern device management—devices must be joined or registered before enrolling in Intune
@@ -1200,7 +1200,7 @@ In this lab, you accomplished the following:
 - Windows Autopilot streamlines device provisioning by pre-registering devices and applying deployment profiles during OOBE
 
 **Next Steps:**
-The devices you enrolled in this lab (CL1 and CL2) will be used in subsequent labs to deploy configuration profiles, compliance policies, applications, and security baselines. Lab 02 focuses on managing and maintaining these devices using Intune policies.
+The devices you enrolled in this lab (SEA-DEV1 and SEA-DEV2) will be used in subsequent labs to deploy configuration profiles, compliance policies, applications, and security baselines. Lab 02 focuses on managing and maintaining these devices using Intune policies.
 
 ---
 

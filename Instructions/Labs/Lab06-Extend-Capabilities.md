@@ -34,7 +34,7 @@ This lab requires:
 - **Microsoft Intune Suite trial active** (activated in **Lab 01** prerequisites) — required for Endpoint Privilege Management, Remote Help, and Advanced Analytics
 - Access to the Contoso Microsoft 365 tenant (`<TenantPrefix>.onmicrosoft.com`)
 - Global Administrator or Intune Administrator credentials
-- **CL1**, **CL2**, and **CL3** (enrolled Windows 11 devices)
+- **SEA-DEV1**, **SEA-DEV2**, and **SEA-DEV3** (enrolled Windows 11 devices)
 
 ---
 
@@ -198,9 +198,9 @@ Support-approved elevation rules require a help desk agent to approve elevation 
 
 ---
 
-### Task 6: Test EPM elevation on CL3
+### Task 6: Test EPM elevation on SEA-DEV3
 
-1. Switch to **CL3** (this device should be enrolled with a standard user account, e.g., Alex Wilber).
+1. Switch to **SEA-DEV3** (this device should be enrolled with a standard user account, e.g., Alex Wilber).
 
 1. Sign in as **AlexW@<TenantPrefix>.OnMicrosoft.com** (standard user, not a local administrator).
 
@@ -234,7 +234,7 @@ Support-approved elevation rules require a help desk agent to approve elevation 
 
 ### Task 7: Monitor EPM elevation reports
 
-1. On **CL1**, in the **Microsoft Intune admin center**, navigate to **Endpoint security** → **Endpoint privilege management** → **Reports**.
+1. On **SEA-DEV1**, in the **Microsoft Intune admin center**, navigate to **Endpoint security** → **Endpoint privilege management** → **Reports**.
 
 1. Select **Elevation summary** report.
 
@@ -347,7 +347,7 @@ Remote Help requires Microsoft Intune Suite licensing.
 
 ### Task 4: Initiate a Remote Help session
 
-1. On **CL1** (helper device—Megan Bowen), wait for Remote Help to install.
+1. On **SEA-DEV1** (helper device—Megan Bowen), wait for Remote Help to install.
 
 1. After installation, launch **Remote Help** from the Start menu.
 
@@ -357,7 +357,7 @@ Remote Help requires Microsoft Intune Suite licensing.
 
 1. A 6-digit help code is displayed (e.g., `123-456`).
 
-1. On **CL2** (sharer device—Joni Sherman), sign in as **JoniS@<TenantPrefix>.OnMicrosoft.com**.
+1. On **SEA-DEV2** (sharer device—Joni Sherman), sign in as **JoniS@<TenantPrefix>.OnMicrosoft.com**.
 
 1. Launch **Remote Help** from the Start menu.
 
@@ -365,13 +365,13 @@ Remote Help requires Microsoft Intune Suite licensing.
 
 1. In the Remote Help app, select **Get help** → **Enter help code**.
 
-1. Enter the 6-digit code from CL1.
+1. Enter the 6-digit code from SEA-DEV1.
 
-1. On **CL2**, a consent prompt appears asking Joni to approve the remote session.
+1. On **SEA-DEV2**, a consent prompt appears asking Joni to approve the remote session.
 
 1. Select **Allow** to grant Megan remote access.
 
-1. On **CL1**, Megan can now view Joni's desktop.
+1. On **SEA-DEV1**, Megan can now view Joni's desktop.
 
    > [!NOTE]
    > By default, Remote Help provides view-only access. Megan can request full control by selecting **Request control** in the Remote Help toolbar. Joni must approve the full control request.
@@ -424,7 +424,7 @@ The `Pharmacy Helpdesk` role assigned to **Lee Gu** in **Lab 05 Exercise 3** gra
    > [!NOTE]
    > Lee Gu sees only devices that are in `dyn-Windows-Devices` AND are tagged with the Pharmacy scope tag (per the role assignment configured in Lab 05 Exercise 3 Task 3). Depending on which devices you tagged with Pharmacy when you created them, this list may be smaller than what your Global Admin sees.
 
-1. Select a Pharmacy-tagged device (e.g., **CL1** if you tagged it).
+1. Select a Pharmacy-tagged device (e.g., **SEA-DEV1** if you tagged it).
 
 1. In the device blade, locate the **New remote assistance session** option (toolbar or device actions menu).
 
@@ -455,10 +455,10 @@ The Intune Suite trial (activated in **Lab 01** prerequisites) includes Advanced
 > **Device prerequisite for Device Query.** A device must be **enrolled in Endpoint Analytics** before it shows up in Device Query results. Endpoint Analytics enrollment is enabled tenant-wide via **Reports** → **Endpoint analytics** → **Settings**. If you completed **Lab 02 Exercise 5 Task 1** (Enable Endpoint analytics), your devices are already enrolled and ready.
 
 > [!NOTE]
-> **Empty results are normal on a fresh tenant.** Until at least one Windows device has actually checked in to Endpoint Analytics, every multi-device Device Query in Task 3 will return **0 items**. The Get started → Prerequisites pane on the Device Query page repeats this: *"For a device to appear in device queries, it must be enrolled in Endpoint Analytics."* If your CL1/CL2 haven't checked in yet, run a single-device query against the device blade (Task 2) instead — those run live and don't depend on the Endpoint Analytics catalog.
+> **Empty results are normal on a fresh tenant.** Until at least one Windows device has actually checked in to Endpoint Analytics, every multi-device Device Query in Task 3 will return **0 items**. The Get started → Prerequisites pane on the Device Query page repeats this: *"For a device to appear in device queries, it must be enrolled in Endpoint Analytics."* If your SEA-DEV1/SEA-DEV2 haven't checked in yet, run a single-device query against the device blade (Task 2) instead — those run live and don't depend on the Endpoint Analytics catalog.
 
 > [!NOTE]
-> **Telemetry latency.** Advanced Analytics dashboards (anomaly detection, resource performance, battery health) need approximately **24 hours of device telemetry** to populate meaningfully. Device Query, by contrast, runs against the device's **live state** and returns results within seconds. If your CL1/CL2 devices were enrolled less than 24 hours ago, the dashboards in Task 1 may show "Insufficient data" — Tasks 2 and 3 (Device Query) will still work.
+> **Telemetry latency.** Advanced Analytics dashboards (anomaly detection, resource performance, battery health) need approximately **24 hours of device telemetry** to populate meaningfully. Device Query, by contrast, runs against the device's **live state** and returns results within seconds. If your SEA-DEV1/SEA-DEV2 devices were enrolled less than 24 hours ago, the dashboards in Task 1 may show "Insufficient data" — Tasks 2 and 3 (Device Query) will still work.
 
 ### Task 1: Review Advanced Analytics dashboards
 
@@ -489,11 +489,11 @@ The Intune Suite trial (activated in **Lab 01** prerequisites) includes Advanced
 
 Single-device Device Query runs a KQL query against one Windows device's live state. It's the canonical replacement for opening a remote control session just to check a service, a registry value, or an installed app version.
 
-1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Windows** → select **CL1**.
+1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Windows** → select **SEA-DEV1**.
 
 1. Under the **Monitor** section, select **Device query**.
 
-1. In the query editor, enter and run the following query to list the CPU information for CL1:
+1. In the query editor, enter and run the following query to list the CPU information for SEA-DEV1:
 
    ```kusto
    Cpu
@@ -505,7 +505,7 @@ Single-device Device Query runs a KQL query against one Windows device's live st
    > [!NOTE]
    > Single-device Device Query has a **15 queries / minute** rate limit per admin and a **2048-character** query input limit. The result set is capped at 128 KB.
 
-1. Replace the query with this one to check BitLocker encryption status on CL1's drives:
+1. Replace the query with this one to check BitLocker encryption status on SEA-DEV1's drives:
 
    ```kusto
    EncryptableVolume
@@ -513,7 +513,7 @@ Single-device Device Query runs a KQL query against one Windows device's live st
    | join LogicalDrive on Device
    ```
 
-1. Select **Run**. Confirm CL1's OS drive shows **PROTECTED** — this verifies the BitLocker policy from **Lab 04 Exercise 3** is actively encrypting the drive (rather than just "assigned" in the Intune portal).
+1. Select **Run**. Confirm SEA-DEV1's OS drive shows **PROTECTED** — this verifies the BitLocker policy from **Lab 04 Exercise 3** is actively encrypting the drive (rather than just "assigned" in the Intune portal).
 
 1. Replace the query with this one to verify the device's OS version:
 
@@ -522,7 +522,7 @@ Single-device Device Query runs a KQL query against one Windows device's live st
    | project Device, OsVersion, OsBuildNumber, OsArchitecture
    ```
 
-1. Select **Run**. Confirm CL1 is running the Windows 11 24H2 build you pinned via the Feature update profile in **Lab 02 Exercise 4**.
+1. Select **Run**. Confirm SEA-DEV1 is running the Windows 11 24H2 build you pinned via the Feature update profile in **Lab 02 Exercise 4**.
 
 **You have successfully run live Device Query against a single device.**
 

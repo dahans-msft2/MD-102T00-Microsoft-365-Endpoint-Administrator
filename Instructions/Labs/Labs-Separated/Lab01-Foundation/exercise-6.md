@@ -2,7 +2,7 @@
 
 ### Scenario
 
-Windows Autopilot streamlines device provisioning by automatically joining devices to Microsoft Entra ID and enrolling them in Intune during the out-of-box experience (OOBE). You'll register CL3 for Autopilot, create a deployment profile, and assign it to the device.
+Windows Autopilot streamlines device provisioning by automatically joining devices to Microsoft Entra ID and enrolling them in Intune during the out-of-box experience (OOBE). You'll register SEA-DEV3 for Autopilot, create a deployment profile, and assign it to the device.
 
 > [!NOTE]
 > Due to lab time constraints, you will not perform a full Autopilot OOBE (which requires resetting the device). You'll complete the registration and configuration steps to understand the Autopilot deployment workflow.
@@ -10,11 +10,11 @@ Windows Autopilot streamlines device provisioning by automatically joining devic
 > [!NOTE]
 > **This is classic Autopilot (hardware-hash based), not Windows Autopilot device preparation.** Device preparation is a newer, simpler re-architecture that skips manual hash registration entirely for its supported scenarios (user-driven, physical devices) — devices just enroll and get added to a security group at enrollment time. But it doesn't yet support pre-provisioned, self-deploying, existing-devices, hybrid join, or Autopilot Reset scenarios — those still require classic Autopilot. Manual hardware-hash registration (what you're doing here) is Microsoft's own documented approach for **testing and evaluation**, which is exactly this lab's context; production registration normally happens automatically via the OEM/reseller/CSP instead.
 
-### Task 1: Generate the Autopilot hardware hash for CL3
+### Task 1: Generate the Autopilot hardware hash for SEA-DEV3
 
 The Autopilot hardware hash uniquely identifies a device and is required for Autopilot registration.
 
-1. Switch to **CL3**.
+1. Switch to **SEA-DEV3**.
 
 1. Sign in with the local administrator account:
    - **Username:** `Admin`
@@ -33,13 +33,13 @@ The Autopilot hardware hash uniquely identifies a device and is required for Aut
 1. After installation completes, generate the Autopilot hardware hash and export it to a CSV file:
 
    ```powershell
-   Get-WindowsAutopilotInfo -OutputFile C:\Autopilot\CL3-AutopilotHash.csv
+   Get-WindowsAutopilotInfo -OutputFile C:\Autopilot\SEA-DEV3-AutopilotHash.csv
    ```
 
 1. Verify the CSV file was created:
 
    ```powershell
-   Test-Path C:\Autopilot\CL3-AutopilotHash.csv
+   Test-Path C:\Autopilot\SEA-DEV3-AutopilotHash.csv
    ```
 
    The output should return **True**.
@@ -47,7 +47,7 @@ The Autopilot hardware hash uniquely identifies a device and is required for Aut
 1. Open the CSV file to verify the hardware hash was captured:
 
    ```powershell
-   notepad C:\Autopilot\CL3-AutopilotHash.csv
+   notepad C:\Autopilot\SEA-DEV3-AutopilotHash.csv
    ```
 
 1. Review the CSV contents. It should contain:
@@ -57,13 +57,13 @@ The Autopilot hardware hash uniquely identifies a device and is required for Aut
 
 1. Close Notepad.
 
-**You have successfully generated the Autopilot hardware hash for CL3.**
+**You have successfully generated the Autopilot hardware hash for SEA-DEV3.**
 
 ---
 
 ### Task 2: Upload the hardware hash to Intune
 
-1. Switch to **CL1**.
+1. Switch to **SEA-DEV1**.
 
 1. In **Microsoft Edge**, navigate to **https://intune.microsoft.com** (sign in as admin if needed).
 
@@ -75,23 +75,23 @@ The Autopilot hardware hash uniquely identifies a device and is required for Aut
 
 1. In the **Import Windows Autopilot devices** pane, select the folder icon to browse for the CSV file.
 
-1. Navigate to **\\\CL3\C$\Autopilot\\** (or copy the CSV file from CL3 to CL1 using a shared folder or USB).
+1. Navigate to **\\\SEA-DEV3\C$\Autopilot\\** (or copy the CSV file from SEA-DEV3 to SEA-DEV1 using a shared folder or USB).
 
    > [!NOTE]
-   > If you cannot access CL3's file system from CL1, manually copy the CSV file to CL1 (e.g., save to a USB drive, or use the lab platform's file transfer mechanism).
+   > If you cannot access SEA-DEV3's file system from SEA-DEV1, manually copy the CSV file to SEA-DEV1 (e.g., save to a USB drive, or use the lab platform's file transfer mechanism).
 
-1. Select **CL3-AutopilotHash.csv** and select **Open**.
+1. Select **SEA-DEV3-AutopilotHash.csv** and select **Open**.
 
 1. In the **Import Windows Autopilot devices** pane, select **Import**.
 
 1. Wait for the import to complete. A notification will appear when the import finishes (typically 1–2 minutes).
 
-1. After import completes, refresh the **Devices** page. You should see **CL3** appear in the Autopilot devices list.
+1. After import completes, refresh the **Devices** page. You should see **SEA-DEV3** appear in the Autopilot devices list.
 
    > [!NOTE]
    > It may take 5–10 minutes for the device to fully sync and appear in the list. If the device doesn't appear immediately, refresh the page periodically.
 
-**You have successfully uploaded the CL3 hardware hash to Intune.**
+**You have successfully uploaded the SEA-DEV3 hardware hash to Intune.**
 
 ---
 
@@ -132,7 +132,7 @@ Autopilot deployment profiles define the OOBE experience and determine which set
 1. Select **Select**.
 
    > [!NOTE]
-   > By assigning the profile to `dyn-Autopilot-Devices`, any device registered in Autopilot — enrolled or not — automatically receives this deployment profile, which is what actually lets CL3's Profile status reach **Assigned** in Task 4.
+   > By assigning the profile to `dyn-Autopilot-Devices`, any device registered in Autopilot — enrolled or not — automatically receives this deployment profile, which is what actually lets SEA-DEV3's Profile status reach **Assigned** in Task 4.
 
 1. Select **Next**.
 
@@ -142,11 +142,11 @@ Autopilot deployment profiles define the OOBE experience and determine which set
 
 ---
 
-### Task 4: Review the Autopilot profile status for CL3
+### Task 4: Review the Autopilot profile status for SEA-DEV3
 
 1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Enrollment** → **Devices** (under Windows Autopilot).
 
-1. Select **CL3** from the Autopilot devices list.
+1. Select **SEA-DEV3** from the Autopilot devices list.
 
 1. Review the device details:
    - **Profile status:** Should now show **Assigned** (it may take a few minutes for the dynamic group to populate and the profile assignment to sync)
@@ -154,19 +154,19 @@ Autopilot deployment profiles define the OOBE experience and determine which set
    - **Assigned user:** None
 
    > [!NOTE]
-   > If it still shows "Not assigned" after several minutes, select **Sync** from the toolbar on the **Devices** list to force a sync. Also double check `dyn-Autopilot-Devices` actually shows CL3 as a member (**Groups** → `dyn-Autopilot-Devices` → **Members**) — if CL3 isn't there, re-check the rule syntax from Task 3.
+   > If it still shows "Not assigned" after several minutes, select **Sync** from the toolbar on the **Devices** list to force a sync. Also double check `dyn-Autopilot-Devices` actually shows SEA-DEV3 as a member (**Groups** → `dyn-Autopilot-Devices` → **Members**) — if SEA-DEV3 isn't there, re-check the rule syntax from Task 3.
 
 1. Close the device details pane.
 
-**You have successfully assigned the Autopilot deployment profile to CL3.**
+**You have successfully assigned the Autopilot deployment profile to SEA-DEV3.**
 
 ---
 
 ### Task 5: (Optional) Understand the Autopilot OOBE flow
 
-In a production environment, the next step would be to reset CL3 and go through the Autopilot OOBE. Here's what would happen:
+In a production environment, the next step would be to reset SEA-DEV3 and go through the Autopilot OOBE. Here's what would happen:
 
-1. **Device boots:** CL3 is powered on (factory-reset or new device).
+1. **Device boots:** SEA-DEV3 is powered on (factory-reset or new device).
 
 1. **Autopilot recognition:** During OOBE, Windows contacts the Autopilot service and recognizes the device by its hardware hash.
 
@@ -182,7 +182,7 @@ In a production environment, the next step would be to reset CL3 and go through 
 1. **User desktop:** The user reaches the desktop with a fully configured device.
 
 > [!NOTE]
-> Resetting CL3 and completing a live Autopilot OOBE takes 20–30 minutes and is beyond the scope of this lab. However, you've completed all the prerequisites (hardware hash registration, profile creation, and assignment) required for Autopilot deployment.
+> Resetting SEA-DEV3 and completing a live Autopilot OOBE takes 20–30 minutes and is beyond the scope of this lab. However, you've completed all the prerequisites (hardware hash registration, profile creation, and assignment) required for Autopilot deployment.
 
 **You now understand the Windows Autopilot deployment workflow.**
 

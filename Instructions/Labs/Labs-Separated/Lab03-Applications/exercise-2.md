@@ -6,7 +6,7 @@ Win32 apps are traditional Windows desktop applications (.exe, .msi installers).
 
 ### Task 1: Prepare the Win32 app package
 
-1. On **CL1**, verify the Win32 Content Prep Tool is available at `C:\Program Files\IntuneWinAppUtil\IntuneWinAppUtil.exe`.
+1. On **SEA-DEV1**, verify the Win32 Content Prep Tool is available at `C:\Program Files\IntuneWinAppUtil\IntuneWinAppUtil.exe`.
 
    > [!NOTE]
    > If the tool is not present, download it from https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/releases and extract to the specified path.
@@ -129,7 +129,7 @@ Win32 apps are traditional Windows desktop applications (.exe, .msi installers).
 
 ### Task 3: Monitor Win32 app installation
 
-1. On **CL1**, force a device sync:
+1. On **SEA-DEV1**, force a device sync:
    - **Settings** → **Accounts** → **Access work or school** → **Connected to Contoso** → **Info** → **Sync**
 
 1. Wait 10–15 minutes for the app to install.

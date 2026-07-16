@@ -22,9 +22,9 @@ The Troubleshooting blade provides a consolidated view of a user's devices, poli
 
 1. Scroll to the **Devices** section.
 
-1. Verify **CL1** is listed in Megan Bowen's devices.
+1. Verify **SEA-DEV1** is listed in Megan Bowen's devices.
 
-1. Select **CL1** from the list to open the device blade.
+1. Select **SEA-DEV1** from the list to open the device blade.
 
 1. Review:
    - **Enrollment date**
@@ -42,7 +42,7 @@ The Troubleshooting blade provides a consolidated view of a user's devices, poli
 In **Exercise 1 Task 5** you intentionally created two configuration profiles — `WIN - Camera - Enabled (Pilot)` and `WIN - Camera - Disabled (Pilot)` — that conflict on the **Allow Camera** setting for the `sg-Intune-Pilot-Users` group. Now you'll find that conflict in the portal and resolve it. **Per-setting status** is the single most useful surface for this in Intune.
 
 > [!IMPORTANT]
-> **Device prerequisite.** The **Conflict** state only appears after a Windows device has actually checked in with the conflicting policies applied. **CL1** (enrolled in **Lab 01 Exercise 5**) must be online and have synced at least once with the two camera profiles assigned. If you don't see **Conflict** in the steps below — only **Pending** or **Not evaluated** — go to **Devices** → **CL1** → **Sync** and wait 5\u201310 minutes. If CL1 isn't enrolled yet, return to **Lab 01 Exercise 5** before continuing.
+> **Device prerequisite.** The **Conflict** state only appears after a Windows device has actually checked in with the conflicting policies applied. **SEA-DEV1** (enrolled in **Lab 01 Exercise 5**) must be online and have synced at least once with the two camera profiles assigned. If you don't see **Conflict** in the steps below — only **Pending** or **Not evaluated** — go to **Devices** → **SEA-DEV1** → **Sync** and wait 5\u201310 minutes. If SEA-DEV1 isn't enrolled yet, return to **Lab 01 Exercise 5** before continuing.
 
 1. On the **Troubleshoot** page (with **Megan Bowen** selected if she's a pilot member, or another pilot-cohort user), scroll to the **Configuration** section.
 
@@ -53,7 +53,7 @@ In **Exercise 1 Task 5** you intentionally created two configuration profiles �
 
 1. Select one of the two conflicting profiles to open its detail blade.
 
-1. In the profile blade, select **Device and user check-in status** → select the affected device (e.g., **CL1**) → then drill into **Per-setting status**.
+1. In the profile blade, select **Device and user check-in status** → select the affected device (e.g., **SEA-DEV1**) → then drill into **Per-setting status**.
 
    > [!NOTE]
    > The Per-setting status view is the canonical conflict-diagnosis surface. It shows every individual setting in the profile and the device's resolution state for each (**Success**, **Pending**, **Error**, **Conflict**, **Not applicable**). A **Conflict** row means two or more policies are trying to set the same setting to different values — Intune cannot resolve, so it applies neither, and the device retains its existing local value.
@@ -78,7 +78,7 @@ In **Exercise 1 Task 5** you intentionally created two configuration profiles �
 
 ### Task 3: Force a device sync from the Troubleshooting blade
 
-1. On the **Troubleshoot** page (with Megan Bowen selected), in the **Devices** section, select **CL1**.
+1. On the **Troubleshoot** page (with Megan Bowen selected), in the **Devices** section, select **SEA-DEV1**.
 
 1. Select **Sync** from the device actions toolbar.
 

@@ -47,7 +47,7 @@ This lab requires:
 - **Microsoft Intune Suite trial active** (activated in **Lab 01** prerequisites) — required for Endpoint Privilege Management, Remote Help, and Advanced Analytics
 - Access to the Contoso Microsoft 365 tenant (`<TenantPrefix>.onmicrosoft.com`)
 - Global Administrator or Intune Administrator credentials
-- **CL1**, **CL2**, and **CL3** (enrolled Windows 11 devices)
+- **SEA-DEV1**, **SEA-DEV2**, and **SEA-DEV3** (enrolled Windows 11 devices)
 
 ---
 

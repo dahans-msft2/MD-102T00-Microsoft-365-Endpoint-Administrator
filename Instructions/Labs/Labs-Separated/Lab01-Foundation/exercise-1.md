@@ -6,7 +6,7 @@ Contoso has 33 existing users across multiple departments (Marketing, Legal, IT,
 
 ### Task 1: Review existing users and licenses
 
-1. On **CL1**, open **Microsoft Edge**.
+1. On **SEA-DEV1**, open **Microsoft Edge**.
 
 1. Navigate to **https://admin.microsoft.com**.
 
@@ -214,7 +214,7 @@ You'll create a dynamic group that automatically includes all Windows devices en
 
 ### Task 6: Create a dynamic device group for Windows Autopilot
 
-You'll create a second dynamic device group, this one for Windows Autopilot registration. You'll use it in **Exercise 6** when you register CL3 for Autopilot and assign it a deployment profile.
+You'll create a second dynamic device group, this one for Windows Autopilot registration. You'll use it in **Exercise 6** when you register SEA-DEV3 for Autopilot and assign it a deployment profile.
 
 1. In the **Microsoft Entra admin center**, on the **All groups** page, select **New group**.
 

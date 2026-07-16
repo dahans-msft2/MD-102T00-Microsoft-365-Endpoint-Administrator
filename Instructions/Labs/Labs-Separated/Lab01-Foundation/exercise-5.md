@@ -2,11 +2,11 @@
 
 ### Scenario
 
-You'll now enroll two Windows 11 devices (CL1 and CL2) into Intune by performing a Microsoft Entra join. This simulates a user-driven enrollment scenario where an employee joins their device to the corporate tenant.
+You'll now enroll two Windows 11 devices (SEA-DEV1 and SEA-DEV2) into Intune by performing a Microsoft Entra join. This simulates a user-driven enrollment scenario where an employee joins their device to the corporate tenant.
 
-### Task 1: Perform a Microsoft Entra join and enrollment on CL1
+### Task 1: Perform a Microsoft Entra join and enrollment on SEA-DEV1
 
-1. On **CL1**, sign out of the current session if signed in.
+1. On **SEA-DEV1**, sign out of the current session if signed in.
 
 1. At the Windows sign-in screen, select **Other user**.
 
@@ -35,37 +35,37 @@ You'll now enroll two Windows 11 devices (CL1 and CL2) into Intune by performing
    > [!NOTE]
    > The device is now Microsoft Entra joined and automatically enrolled in Intune. Megan sees the Enrollment Status Page you configured in Exercise 4 while apps and policies are applied. Because Megan isn't in the `sg-Intune-Pilot-Users` group, she gets the non-blocking **Default** profile rather than the stricter **ESP - Pilot - Blocking** profile.
 
-**You have successfully enrolled CL1 in Microsoft Entra and Intune.**
+**You have successfully enrolled SEA-DEV1 in Microsoft Entra and Intune.**
 
 ---
 
-### Task 2: Verify CL1 enrollment in the Intune admin center
+### Task 2: Verify SEA-DEV1 enrollment in the Intune admin center
 
-1. On **CL1**, open **Microsoft Edge** and navigate to **https://intune.microsoft.com**.
+1. On **SEA-DEV1**, open **Microsoft Edge** and navigate to **https://intune.microsoft.com**.
 
 1. Sign in as **admin@<TenantPrefix>.onmicrosoft.com** (if not already signed in).
 
 1. In the **Microsoft Intune admin center**, expand **Devices** and select **All devices**.
 
-1. Verify that **CL1** appears in the device list with:
+1. Verify that **SEA-DEV1** appears in the device list with:
    - **Managed by:** Intune
    - **Ownership:** Corporate
    - **Compliance:** (may show "Not evaluated" initially)
 
-1. Select **CL1** from the list to view device details.
+1. Select **SEA-DEV1** from the list to view device details.
 
 1. Review the following tabs:
    - **Overview:** Device name, OS version, last check-in time
    - **Hardware:** Serial number, TPM version, total storage
    - **Discovered apps:** (will populate over time as app inventory syncs)
 
-**You have successfully verified CL1 enrollment in Intune.**
+**You have successfully verified SEA-DEV1 enrollment in Intune.**
 
 ---
 
-### Task 3: Perform a Microsoft Entra join and enrollment on CL2
+### Task 3: Perform a Microsoft Entra join and enrollment on SEA-DEV2
 
-1. Switch to **CL2**.
+1. Switch to **SEA-DEV2**.
 
 1. Sign in with the local administrator account:
    - **Username:** `Admin`
@@ -89,27 +89,27 @@ You'll now enroll two Windows 11 devices (CL1 and CL2) into Intune by performing
 
 1. On the **You're all set!** page, select **Done**.
 
-1. Restart **CL2**.
+1. Restart **SEA-DEV2**.
 
 1. After restart, sign in as:
    - **User:** `JoniS@<TenantPrefix>.OnMicrosoft.com`
    - **Password:** (Joni Sherman's password)
 
-**You have successfully enrolled CL2 in Microsoft Entra and Intune.**
+**You have successfully enrolled SEA-DEV2 in Microsoft Entra and Intune.**
 
 ---
 
 ### Task 4: Verify both devices are enrolled
 
-1. On **CL1**, in the **Microsoft Intune admin center**, navigate to **Devices** → **All devices**.
+1. On **SEA-DEV1**, in the **Microsoft Intune admin center**, navigate to **Devices** → **All devices**.
 
-1. Verify both **CL1** and **CL2** appear in the device list.
+1. Verify both **SEA-DEV1** and **SEA-DEV2** appear in the device list.
 
 1. Verify the **dyn-Windows-Devices** dynamic group now contains both devices:
    - In the **Microsoft Intune admin center**, navigate to **Groups** → **All groups**.
    - Select **dyn-Windows-Devices**.
    - Select the **Members** tab.
-   - Verify CL1 and CL2 are listed (may take 5–10 minutes for dynamic group membership to update).
+   - Verify SEA-DEV1 and SEA-DEV2 are listed (may take 5–10 minutes for dynamic group membership to update).
 
 **You have successfully verified both devices are enrolled and automatically added to the dynamic device group.**
 

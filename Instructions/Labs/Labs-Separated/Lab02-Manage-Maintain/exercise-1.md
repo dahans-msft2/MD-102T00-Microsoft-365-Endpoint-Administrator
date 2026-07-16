@@ -8,7 +8,7 @@ Configuration profiles allow you to manage device settings at scale. You'll crea
 
 The Settings Catalog provides access to thousands of individual settings across Windows, macOS, iOS, and Android.
 
-1. On **CL1**, open **Microsoft Edge** and navigate to **https://intune.microsoft.com**.
+1. On **SEA-DEV1**, open **Microsoft Edge** and navigate to **https://intune.microsoft.com**.
 
 1. Sign in as **admin@<TenantPrefix>.onmicrosoft.com**.
 
@@ -160,13 +160,13 @@ Assignment filters refine policy targeting based on device properties without fo
 
 1. On the **Review + create** page, select **Create**.
 
-#### Filter 2 — simple exclude filter (CL1)
+#### Filter 2 — simple exclude filter (SEA-DEV1)
 
 1. On the **Assignment filters** page, select **Create** → **Managed devices**.
 
 1. On the **Basics** page, enter:
-   - **Name:** `Filter - CL1 Exclude`
-   - **Description:** `Excludes device CL1 from policy assignments`
+   - **Name:** `Filter - SEA-DEV1 Exclude`
+   - **Description:** `Excludes device SEA-DEV1 from policy assignments`
    - **Platform:** Windows 10 and later
 
 1. Select **Next**.
@@ -174,10 +174,10 @@ Assignment filters refine policy targeting based on device properties without fo
 1. On the **Rule syntax** page, configure:
    - **Property:** Device name
    - **Operator:** Equals
-   - **Value:** `CL1`
+   - **Value:** `SEA-DEV1`
 
    > [!NOTE]
-   > You're targeting CL1 with **Equals** here — the include-vs-exclude decision happens when you **apply** the filter to a policy in Task 4 (you'll choose **Exclude filtered devices from assignment**).
+   > You're targeting SEA-DEV1 with **Equals** here — the include-vs-exclude decision happens when you **apply** the filter to a policy in Task 4 (you'll choose **Exclude filtered devices from assignment**).
 
 1. Select **Next**, skip **Scope Tags**.
 
@@ -192,7 +192,7 @@ Assignment filters refine policy targeting based on device properties without fo
 
 ### Task 4: Apply the assignment filter to a profile
 
-You'll modify the Device Restrictions profile to exclude CL1 using the filter you created in Task 3.
+You'll modify the Device Restrictions profile to exclude SEA-DEV1 using the filter you created in Task 3.
 
 1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Manage devices** → **Configuration**.
 
@@ -204,12 +204,12 @@ You'll modify the Device Restrictions profile to exclude CL1 using the filter yo
 
 1. Under the **sg-Intune-Pilot-Users** group assignment, expand the **Filter** dropdown and select **Exclude filtered devices from assignment**.
 
-1. Under **Select filter**, choose **Filter - CL1 Exclude**.
+1. Under **Select filter**, choose **Filter - SEA-DEV1 Exclude**.
 
 1. Select **Review + save** → **Save**.
 
    > [!NOTE]
-   > The Device Restrictions profile will now apply to all devices in `sg-Intune-Pilot-Users` **except** CL1. This is the include-vs-exclude pattern from Task 3: the filter defines "CL1", and the apply-time mode (**Exclude**) flips its meaning. The same `Filter - CL1 Exclude` could be used in **Include** mode on a different policy to *only* target CL1.
+   > The Device Restrictions profile will now apply to all devices in `sg-Intune-Pilot-Users` **except** SEA-DEV1. This is the include-vs-exclude pattern from Task 3: the filter defines "SEA-DEV1", and the apply-time mode (**Exclude**) flips its meaning. The same `Filter - SEA-DEV1 Exclude` could be used in **Include** mode on a different policy to *only* target SEA-DEV1.
 
 **You have successfully applied an assignment filter to a configuration profile.**
 

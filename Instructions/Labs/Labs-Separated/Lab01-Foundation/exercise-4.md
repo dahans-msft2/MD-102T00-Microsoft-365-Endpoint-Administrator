@@ -2,7 +2,7 @@
 
 ### Scenario
 
-In Exercise 5 your colleagues will sign in to **CL1** and **CL2** and perform a Microsoft Entra join, and in Exercise 6 you'll register **CL3** for Windows Autopilot. Before any of that happens, you need to make sure the tenant is configured so the **first-run experience is right**: devices get automatically enrolled in Intune, the user can't start working until critical apps and policies are in place, and you have guardrails on how many devices each user can enroll.
+In Exercise 5 your colleagues will sign in to **SEA-DEV1** and **SEA-DEV2** and perform a Microsoft Entra join, and in Exercise 6 you'll register **SEA-DEV3** for Windows Autopilot. Before any of that happens, you need to make sure the tenant is configured so the **first-run experience is right**: devices get automatically enrolled in Intune, the user can't start working until critical apps and policies are in place, and you have guardrails on how many devices each user can enroll.
 
 In this exercise you'll:
 
@@ -117,7 +117,7 @@ Pilot users at Contoso Healthcare receive corporate laptops pre-staged for clini
 
 ### Task 4: Review default enrollment restrictions
 
-Enrollment restrictions control which device platforms can enroll in Intune. Reviewing the defaults helps you understand what the Contoso tenant will accept before CL1 and CL2 enroll in Exercise 5.
+Enrollment restrictions control which device platforms can enroll in Intune. Reviewing the defaults helps you understand what the Contoso tenant will accept before SEA-DEV1 and SEA-DEV2 enroll in Exercise 5.
 
 1. In the **Microsoft Intune admin center**, on the **Enrollment** page, on the **Windows** tab, under **Enrollment options**, select **Device platform restriction**.
 
@@ -128,7 +128,7 @@ Enrollment restrictions control which device platforms can enroll in Intune. Rev
    - **Platform configurations:** Review specific restrictions (for example, personally owned devices, versions)
 
    > [!NOTE]
-   > The default policy allows all platforms and personally owned devices. In production you might block personally owned Windows devices or restrict specific OS versions, but for the lab leave the defaults in place so CL1 and CL2 can enroll in Exercise 5.
+   > The default policy allows all platforms and personally owned devices. In production you might block personally owned Windows devices or restrict specific OS versions, but for the lab leave the defaults in place so SEA-DEV1 and SEA-DEV2 can enroll in Exercise 5.
 
 1. Close the policy details pane without making changes.
 

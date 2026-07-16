@@ -158,9 +158,9 @@ Support-approved elevation rules require a help desk agent to approve elevation 
 
 ---
 
-### Task 6: Test EPM elevation on CL3
+### Task 6: Test EPM elevation on SEA-DEV3
 
-1. Switch to **CL3** (this device should be enrolled with a standard user account, e.g., Alex Wilber).
+1. Switch to **SEA-DEV3** (this device should be enrolled with a standard user account, e.g., Alex Wilber).
 
 1. Sign in as **AlexW@<TenantPrefix>.OnMicrosoft.com** (standard user, not a local administrator).
 
@@ -194,7 +194,7 @@ Support-approved elevation rules require a help desk agent to approve elevation 
 
 ### Task 7: Monitor EPM elevation reports
 
-1. On **CL1**, in the **Microsoft Intune admin center**, navigate to **Endpoint security** → **Endpoint privilege management** → **Reports**.
+1. On **SEA-DEV1**, in the **Microsoft Intune admin center**, navigate to **Endpoint security** → **Endpoint privilege management** → **Reports**.
 
 1. Select **Elevation summary** report.
 
