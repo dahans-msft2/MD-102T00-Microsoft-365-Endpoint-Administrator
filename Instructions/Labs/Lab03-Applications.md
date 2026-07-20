@@ -46,22 +46,24 @@ Microsoft Store apps are modern Windows applications distributed through the Mic
 
 1. On **SEA-DEV1**, open **Microsoft Edge** and navigate to **https://intune.microsoft.com**.
 
+1. If prompted to stay signed in, select **No**.
+
 1. Sign in as **admin@<TenantPrefix>.onmicrosoft.com**.
 
-1. In the **Microsoft Intune admin center**, expand **Apps** and select **All apps**.
+1. In the **Microsoft Intune admin center**, select **Apps**, and then select **All apps**.
 
 1. Select **+ Create** from the top toolbar.
 
-1. In the **Select app type** pane, set **Platform** to **Windows**, then set **App type** to **Microsoft Store app (new)**. Select **Create**.
+1. In the **Select app type** pane, set **Platform** to **Windows**, then set **App type** to **Microsoft Store app (new)**. Select **Select**.
 
    > [!NOTE]
    > The portal flow is a two-step picker: choose Platform first (Windows / iOS/iPadOS / macOS / Android), then the App type list filters to that platform. The "new" Microsoft Store app type uses the Microsoft Store for Business backend and provides better reliability than the legacy connector.
 
-1. On the **App information** page, select **Search the Microsoft Store app (new)**.
+1. On the **App information** tab, select **Search the Microsoft Store app (new)**.
 
-1. In the Store search dialog, search for `Microsoft To Do`.
+1. In the **Search the Microsoft Store app (new)** pane, search for `Microsoft To Do`.
 
-1. Select **Microsoft To Do** from the search results.
+1. Select **Microsoft To Do: Lists, Tasks & Reminders** from the search results.
 
 1. Select **Select**.
 
@@ -70,7 +72,7 @@ Microsoft Store apps are modern Windows applications distributed through the Mic
    - **Publisher:** Microsoft Corporation
    - **Description:** (auto-populated from Store)
 
-1. Select **Next**.
+1. Select **Next**, then select **Next** again to skip the **Scope tags** tab.
 
 1. On the **Assignments** page, under **Required**, select **Add group**.
 
@@ -83,7 +85,7 @@ Microsoft Store apps are modern Windows applications distributed through the Mic
 
 1. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully added and assigned a Microsoft Store app.**
 
@@ -131,7 +133,9 @@ Win32 apps are traditional Windows desktop applications (.exe, .msi installers).
    - **Source folder:** `C:\LabAssets\Win32-App\Source\` (contains the app installer and files)
    - **Setup file:** `7z-portable.exe` (or substitute with another small portable app like Notepad++, Paint.NET, etc.)
 
-1. Open **Windows Terminal (Admin)** (right-click Start → Windows Terminal (Admin)).
+1. Open **Windows PowerShell (Admin)** (right-click Start → Windows PowerShell (Admin)).
+
+1. On the **Do you want to allow this app to make changes to your device?** prompt, select **Yes**.
 
 1. Navigate to the Win32 Content Prep Tool directory:
 
@@ -169,22 +173,22 @@ Win32 apps are traditional Windows desktop applications (.exe, .msi installers).
 
 1. Select **+ Create** from the top toolbar.
 
-1. In the **Select app type** pane, set **Platform** to **Windows** and **App type** to **Windows app (Win32)**. Select **Create**.
+1. In the **Select app type** pane, set **Platform** to **Windows** and **App type** to **Windows app (Win32)**. Select **Select**.
 
-1. On the **App information** page, select **Select app package file**.
+1. On the **App information** tab, select **Select app package file**.
 
-1. In the **App package file** pane, select **Browse** and navigate to `C:\LabAssets\Win32-App\Output\`.
+1. In the **App package file** pane, select the folder icon next to **Select a file**, and navigate to `C:\LabAssets\Win32-App\Output\`.
 
 1. Select **7z-portable.intunewin** and select **OK**.
 
-1. On the **App information** page, configure:
+1. On the **App information** tab, configure:
    - **Name:** `7-Zip Portable`
    - **Description:** `7-Zip portable file archiver for Windows`
    - **Publisher:** `Igor Pavlov`
 
 1. Select **Next**.
 
-1. On the **Program** page, configure:
+1. On the **Program** tab, configure:
    - **Install command:** `7z-portable.exe /S /D="%ProgramFiles%\7-Zip"`
    - **Uninstall command:** `"%ProgramFiles%\7-Zip\Uninstall.exe" /S`
    - **Install behavior:** System
@@ -195,16 +199,16 @@ Win32 apps are traditional Windows desktop applications (.exe, .msi installers).
 
 1. Select **Next**.
 
-1. On the **Requirements** page, configure:
-   - **Operating system architecture:** 64-bit
+1. On the **Requirements** tab, configure:
+   - **Check operating system architecture:** Select **Yes. Specify the systems the app can be installed on** then check **Install on x64 system**.
    - **Minimum operating system:** Windows 10 1607
 
 1. Select **Next**.
 
-1. On the **Detection rules** page, configure:
+1. On the **Detection rules** tab, configure:
    - **Rules format:** Manually configure detection rules
 
-1. Select **Add** under **Detection rules**.
+1. Select **+Add** under **Detection rules**.
 
 1. In the **Detection rule** pane, configure:
    - **Rule type:** File
@@ -220,16 +224,16 @@ Win32 apps are traditional Windows desktop applications (.exe, .msi installers).
 
 1. Select **Next**.
 
-1. On the **Dependencies** page, select **Next** (no dependencies required).
+1. On the **Dependencies** tab, select **Next** (no dependencies required).
 
-1. On the **Supersedence** page, select **Next** (will configure supersedence in a later task).
+1. On the **Supersedence** tab, select **Next** (will configure supersedence in a later task).
 
-1. On the **Scope tags** page, select **+ Select scope tags**, add **Pharmacy** (created in **Lab 01 Exercise 2 Task 6**), select **Select**, then select **Next**.
+1. On the **Scope tags** tab, select **+ Select scope tags**, add **Pharmacy** (created in **Lab 01 Exercise 2 Task 6**), select **Select**, then select **Next**.
 
    > [!NOTE]
    > 7-Zip is the canonical archive tool for the Contoso clinical document workflow (research-data exports, anonymized DICOM bundles). Tagging the deployment with `Pharmacy` keeps it visible to the Pharmacy Helpdesk role (assigned in **Lab 05 Exercise 3**).
 
-1. On the **Assignments** page, under **Required**, select **Add group**.
+1. On the **Assignments** tab, under **Required**, select **+Add group**.
 
 1. Search for and select **sg-Intune-Pilot-Users**.
 
@@ -237,7 +241,7 @@ Win32 apps are traditional Windows desktop applications (.exe, .msi installers).
 
 1. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully added a Win32 app with a custom detection rule.**
 
@@ -281,23 +285,23 @@ Microsoft 365 Apps (formerly Office 365 ProPlus) provide Word, Excel, PowerPoint
 
 1. Select **+ Create** from the top toolbar.
 
-1. In the **Select app type** pane, set **Platform** to **Windows** and **App type** to **Microsoft 365 Apps for Windows 10 and later**. Select **Create**.
+1. In the **Select app type** pane, set **Platform** to **Windows** and **App type** to **Microsoft 365 Apps for Windows 10 and later**. Select **Select**.
 
-1. On the **App suite information** page, configure:
+1. On the **App suite information** tab, configure:
    - **Suite Name:** `Microsoft 365 Apps (Current Channel)`
    - **Suite Description:** `Microsoft 365 Apps with Current Channel updates`
 
 1. Select **Next**.
 
-1. On the **Configure app suite** page, under **Select Office apps**, check the following:
+1. On the **Configure app suite** tab, under **Select Office apps**, check the following:
    - **Excel**
    - **Outlook**
    - **PowerPoint**
    - **Word**
-   - **OneDrive Desktop** (sync client)
 
-1. Under **App suite settings**, configure:
-   - **Update channel:** Current Channel
+1. Under **App suite information** and **Properties**, configure:
+   - **Default file format:** Office Open XML Format
+   - **Update channel:** Current Channel (Preview)
    - **Remove other versions:** Yes
    - **Version to install:** Latest
    - **Use shared computer activation:** No
@@ -309,7 +313,7 @@ Microsoft 365 Apps (formerly Office 365 ProPlus) provide Word, Excel, PowerPoint
 
 1. Select **Next**.
 
-1. On the **Assignments** page, under **Required**, select **Add group**.
+1. On the **Assignments** tab, under **Required**, select **+ Add group**.
 
 1. Search for and select **dyn-Windows-Devices**.
 
@@ -317,7 +321,7 @@ Microsoft 365 Apps (formerly Office 365 ProPlus) provide Word, Excel, PowerPoint
 
 1. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully configured and assigned Microsoft 365 Apps.**
 

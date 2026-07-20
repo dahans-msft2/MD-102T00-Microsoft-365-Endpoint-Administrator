@@ -66,14 +66,14 @@ This lab requires:
 > 5. On the **Microsoft Intune Suite** offer page, select **Start free trial**.
 > 6. On the **Checkout** page, confirm: **Microsoft Intune Suite Trial**, 90-day term, 250 licenses, **USD 0.00**, no payment method required.
 > 7. Select **Edit**, fill the organization profile form with the following information, then select **Save**:
-> - First name: MOD
-> - Last name: Administrator1
-> - Address line 1: 1 Microsoft Way
-> - City: Redmond
-> - State: Washington
-> - ZIP: 98052
-> - Phone: 425-555-1234
-> - Email address: admin@<TenantPrefix>.onmicrosoft.com
+> - **First name**: MOD
+> - **Last name**: Administrator1
+> - **Address line 1**: 1 Microsoft Way
+> - **City**: Redmond
+> - **State**: Washington
+> - **ZIP**: 98052
+> - **Phone**: 425-555-1234
+> - **Email address**: admin@<TenantPrefix>.onmicrosoft.com
 > 8. Select **Try Now** to activate the trial.
 > 9. Return to the Intune admin center. Refresh **Tenant administration → Intune add-ons**. Select the **Your add-ons** tab — within a few minutes you should see **Microsoft Intune Suite Trial** listed with a **Purchased quantity** of **250**. The Suite includes: **Intune Plan 2**, **Remote Help**, **Endpoint Privilege Management**, **Enterprise App Management**, **Advanced Analytics**, and **Cloud PKI**.
 >
@@ -93,7 +93,7 @@ Contoso has 33 existing users across multiple departments (Marketing, Legal, IT,
 
 1. On **SEA-DEV1**, open **Microsoft Edge**.
 
-1. Navigate to **https://admin.microsoft.com**.
+1. Navigate to **https://admin.cloud.microsoft.com**.
 
 1. Sign in with the **Global Administrator** account:
    - **Username:** `admin@<TenantPrefix>.onmicrosoft.com`
@@ -356,7 +356,7 @@ You need to delegate administrative access to team members who will manage diffe
    - **Assignment type:** **Active** (not **Eligible** — Eligible would require Allan Deyoung to manually activate the role later through PIM before he could use it; Active grants the permissions immediately)
    - **Permanently eligible / Permanently assigned:** Leave checked
    - **Assignment starts:** Leave the auto-populated current date and time
-   - **Assignment ends:** Leave blank (grayed out while the permanent checkbox is checked)
+   - **Assignment ends:** Leave blank (greyed out while the permanent checkbox is checked)
 
 1. In the **Justification** box, enter a reason (for example: `Lab 01 role delegation exercise — assigning Intune Administrator to the IT admin`). PIM requires a justification for every Active assignment, even permanent ones.
 
@@ -495,15 +495,15 @@ Microsoft Entra ID roles (Task 1–5) delegate Entra-level permissions. Intune i
 
 1. Select **+ Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `Pharmacy`
    - **Description:** `Pharmacy clinical devices and policies (Contoso Healthcare)`
 
 1. Select **Next**.
 
-1. On the **Assignments** page, leave **Groups** empty for now — you'll tag specific policies (not groups) starting in **Lab 02 Exercise 1**. Select **Next**.
+1. On the **Assignments** tab, leave **Groups** empty for now — you'll tag specific policies (not groups) starting in **Lab 02 Exercise 1**. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **Part B — Create the `Pharmacy Helpdesk` custom Intune role**
 
@@ -630,34 +630,34 @@ Microsoft Entra LAPS automatically manages and rotates local administrator passw
 
 1. Select **Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `Contoso LAPS Policy`
    - **Description:** `Manages and rotates the local Administrator password on Microsoft Entra joined devices`
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, configure the following:
+1. On the **Configuration settings** tab, configure the following:
    - **Backup Directory:** Backup the password to Microsoft Entra ID only
    - **Password Age Days:** `30`
    - **Administrator Account Name:** Leave as Not configured (uses the built-in Administrator)
    - **Password Complexity:** Large letters + small letters + numbers + special characters (Default)
    - **Password Length:** `14`
-   - **Automatic Account Management Enabled:** **No** (leave default)
+   - **Automatic Account Management Enabled:** The target account will not be automatically managed (Default)
    - **Post Authentication Actions:** Reset the password and logoff the managed account...
    - **Post Authentication Reset Delay:** select Configured and enter `24` for hours
 
    > [!NOTE]
-   > **Automatic Account Management** (Windows 11 24H2+ only) lets LAPS create/enable a local admin account itself. Leave it **No** here — the lab VMs aren't guaranteed to be on 24H2, and we're already using the existing built-in Administrator account, so it isn't needed. **Post Authentication Actions** options are: *Reset the password* / *Reset the password and logoff the managed account* (the default, and what we're using) / *Reset the password and reboot*.
+   > **Automatic Account Management** (Windows 11 24H2+ only) lets LAPS create/enable a local admin account itself. Leave it **the target account will not be automatically managed (Default)** here — the lab VMs aren't guaranteed to be on 24H2, and we're already using the existing built-in Administrator account, so it isn't needed. **Post Authentication Actions** options are: *Reset the password* / *Reset the password and logoff the managed account* (the default, and what we're using) / *Reset the password and reboot*.
 
 1. Select **Next**.
 
-1. On the **Scope tags** page, select **Next**.
+1. On the **Scope tags** tab, select **Next**.
 
-1. On the **Assignments** page, under **Groups**, select **All devices**.
+1. On the **Assignments** tab, under **Groups**, select **All devices**.
 
 1. Select **Next**.
 
-1. On the **Review + create** page, review the settings and select **Create**.
+1. On the **Review + create** tab, review the settings and select **Create**.
 
    > [!NOTE]
    > Microsoft Entra LAPS automatically rotates the local administrator password every 30 days and stores the password securely in Microsoft Entra ID. Authorized administrators can retrieve the password from the Entra admin center under **Devices** > **Local administrator password recovery**.
@@ -704,7 +704,7 @@ In this exercise you'll:
 
 1. Leave the **MDM terms of use URL**, **MDM discovery URL**, and **MDM compliance URL** at their auto-populated defaults.
 
-1. If you made any change, select **Save** at the top of the page. Otherwise, close the **Automatic Enrollment** pane.
+1. If you made any change, select **Save**. Otherwise, close the **Automatic Enrollment** pane.
 
 **You have verified that automatic MDM enrollment is configured for your tenant.**
 
@@ -742,9 +742,9 @@ The **Enrollment Status Page (ESP)** is shown to users during Windows enrollment
 
 Pilot users at Contoso Healthcare receive corporate laptops pre-staged for clinical workflows. You'll create a stricter ESP profile that blocks device use until required apps are installed, and assign it to `sg-Intune-Pilot-Users` so it takes priority over the Default.
 
-1. On the **Enrollment Status Page** list, select **Create**.
+1. On the **Enrollment Status Page** list, select **+Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `ESP - Pilot - Blocking`
    - **Description:** `Blocks pilot devices from use until clinical apps and security baseline are installed`
 
@@ -770,7 +770,7 @@ Pilot users at Contoso Healthcare receive corporate laptops pre-staged for clini
 
 1. Select **Next**, then **Next** again to skip **Scope tags**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 1. Back on the **Enrollment Status Page** list, confirm `ESP - Pilot - Blocking` appears with **Priority 1** (above **Default**). The first profile a user/device matches wins.
 
@@ -846,9 +846,9 @@ Contoso Healthcare doesn't want personal Android phones enrolling in Intune — 
 
 1. Under **Enrollment options**, select **Device platform restriction**.
 
-1. Select **Android restriction → Create restriction**.
+1. Select **Android restriction → + Create restriction**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `Android - Block personal`
    - **Description:** `Block personally owned Android enrollment; allow corporate-owned Android Enterprise only`
 
@@ -1129,7 +1129,7 @@ Autopilot deployment profiles define the OOBE experience and determine which set
 
 1. Select **Next** and **Next** again to skip **Scope tags**.
 
-1. On the **Assignments** page, under **Include groups**, select **Add groups**.
+1. On the **Assignments** tab, under **Include groups**, select **Add groups**.
 
 1. Search for and select **dyn-Autopilot-Devices**.
 
@@ -1140,7 +1140,7 @@ Autopilot deployment profiles define the OOBE experience and determine which set
 
 1. Select **Next**.
 
-1. On the **Review + create** page, review the settings and select **Create**.
+1. On the **Review + create** tab, review the settings and select **Create**.
 
 **You have successfully created a Windows Autopilot deployment profile.**
 
