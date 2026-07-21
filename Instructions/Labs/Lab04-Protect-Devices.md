@@ -55,9 +55,11 @@ The Intune ↔ Defender for Endpoint connector is a **two-portal** setup: you fl
 
 1. Sign in as **admin@<TenantPrefix>.onmicrosoft.com**.
 
-1. In the **Microsoft Defender portal**, in the left navigation, select **System** → **Settings** → **Endpoints**.
+1. In the **Microsoft Defender** portal, in the left navigation, expand **Assets** and select **Devices**.
 
-1. Under **General**, select **Advanced features**.
+1. On the **Device inventory** page, select **Onboard**.
+
+1. Under **General**, select **Optional features**.
 
 1. Locate the **Microsoft Intune connection** toggle and set it to **On**.
 
@@ -70,13 +72,16 @@ The Intune ↔ Defender for Endpoint connector is a **two-portal** setup: you fl
 
 1. Switch back to the Intune admin center tab (or open **https://intune.microsoft.com**).
 
-1. In the **Microsoft Intune admin center**, expand **Endpoint security** and (under the **Setup** group) select **Microsoft Defender for Endpoint**.
+1. In the **Microsoft Intune admin center**, select **Endpoint security**, and under the **Setup** section, select **Microsoft Defender for Endpoint**.
 
 1. At the top of the page, select **Refresh**. **Connection status** should change from **Unavailable** to **Available** within a minute (it may take 1–2 minutes the first time).
 
-1. On the **Microsoft Defender for Endpoint** page, under **MDM Compliance Policy Settings**, configure:
-   - **Connect Windows devices version 10.0.15063 and above to Microsoft Defender for Endpoint:** **On**
-   - **Allow Microsoft Defender for Endpoint to enforce Endpoint Security Configurations:** **On**
+1. On the **Endpoint security | Microsoft Defender for Endpoint** configure the following:
+
+- **Endpoint Security Profile Settings:** 
+   - **Allow Microsoft Defender for Endpoint to enforce Endpoint Security Configurations:** On
+- **Compliance policy evaluation:**
+   - **Connect Windows devices version 10.0.15063 and above to Microsoft Defender for Endpoint:** On
 
    > [!NOTE]
    > Enabling the connector allows Intune to send device data to Defender for Endpoint and receive threat intelligence. The second setting allows Defender to enforce security configurations even on devices that aren't yet fully managed by Intune.
@@ -93,39 +98,39 @@ Endpoint Detection and Response policies onboard devices to Defender for Endpoin
 
 1. In the **Microsoft Intune admin center**, navigate to **Endpoint security** → **Endpoint detection and response**.
 
-1. Select **Create Policy**.
+1. Select **+ Create Policy**.
 
 1. In the **Create a profile** pane, configure:
-   - **Platform:** Windows 10, Windows 11, and Windows Server
+   - **Platform:** Windows
    - **Profile:** Endpoint detection and response
 
 1. Select **Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `EDR - Defender Onboarding`
    - **Description:** `Onboards Windows devices to Microsoft Defender for Endpoint`
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, configure:
-   - **Endpoint detection and response:** Select **Require**
-   - **Sample Sharing:** Select **All samples**
-   - **Telemetry reporting frequency:** Select **Expedite**
+1. On the **Configuration settings** tab, expand **Microsoft Defender for Endpoint** and configure:
+   - **Microsoft Defender for Endpoint client configuration package type:** Select **Auto from connector**
+   - **Sample Sharing:** Select **All (default)**
+   - **[Deprecated] Telemetry Reporting Frequency:** Leave **Not configured**
 
    > [!NOTE]
-   > "Expedite" sends telemetry data more frequently for faster threat detection. "All samples" allows Defender to submit suspicious files to Microsoft for analysis.
+   > **Auto from connector** pulls the onboarding package automatically from the Defender for Endpoint tenant you connected in Task 1 — no manual onboarding blob required. "All samples" allows Defender to submit suspicious files to Microsoft for analysis. **Telemetry Reporting Frequency** is deprecated and has no effect, so it's left unconfigured.
 
 1. Select **Next**.
 
-1. On the **Assignments** page, under **Assign to**, select **Add groups**.
+1. On the **Scope tags** tab, select **Next**.
+
+1. On the **Assignments** tab, select **search by group name...** to see the list of available groups.
 
 1. Search for and select **dyn-Windows-Devices**.
 
-1. Select **Select**.
-
 1. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully created an EDR policy to onboard devices to Defender for Endpoint.**
 
@@ -149,7 +154,7 @@ Endpoint Detection and Response policies onboard devices to Defender for Endpoin
 1. Review the device details:
    - **Risk level:** Low, Medium, High, or Secure
    - **Exposure level:** Based on security configuration score
-   - **Health status:** Active, Inactive, or Misconfigured
+   - **Sensor health state:** Active, Inactive, or Misconfigured
    - **Onboarding status:** Onboarded
 
 **You have successfully verified device onboarding to Microsoft Defender for Endpoint.**
@@ -168,9 +173,11 @@ Security baselines are pre-configured collections of recommended settings based 
 
 1. In the **Microsoft Intune admin center**, navigate to **Endpoint security** → **Security baselines**.
 
-1. Select **Microsoft Defender for Endpoint Baseline** from the list.
+1. Select **Microsoft Defender for Endpoint Security Baseline** from the list.
 
-1. Select **Create profile**.
+1. Select **+ Create policy**.
+
+1. In the **Create a profile** pane, select **Create**.
 
 1. On the **Basics** page, enter:
    - **Name:** `Security Baseline - Defender for Endpoint`
@@ -178,7 +185,7 @@ Security baselines are pre-configured collections of recommended settings based 
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, review the default settings.
+1. On the **Configuration settings** tab, review the default settings.
 
    > [!NOTE]
    > The baseline includes settings for:
@@ -193,9 +200,11 @@ Security baselines are pre-configured collections of recommended settings based 
 
 1. Select **Next**.
 
-1. On the **Scope tags** page, add **Pharmacy** (created in **Lab 01 Exercise 2 Task 6**) and select **Next**.
+1. On the **Scope tags** tab, select **+ Select scope tags**, select **Pharmacy** (created in **Lab 01 Exercise 2 Task 6**) and select **Select**. Remove the **Default** scope tag if present.
 
-1. On the **Assignments** page, under **Assign to**, select **Add groups**.
+1. Select **Next**.
+
+1. On the **Assignments** tab, under **Included groups**, select **Add groups**.
 
 1. Search for and select **dyn-Windows-Devices**.
 
@@ -203,7 +212,7 @@ Security baselines are pre-configured collections of recommended settings based 
 
 1. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully deployed the Microsoft Defender security baseline.**
 
