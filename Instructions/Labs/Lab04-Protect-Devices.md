@@ -76,7 +76,7 @@ The Intune ↔ Defender for Endpoint connector is a **two-portal** setup: you fl
 
 1. At the top of the page, select **Refresh**. **Connection status** should change from **Unavailable** to **Available** within a minute (it may take 1–2 minutes the first time).
 
-1. On the **Endpoint security | Microsoft Defender for Endpoint** configure the following:
+1. On the **Endpoint security | Microsoft Defender for Endpoint** page, configure the following:
 
 - **Endpoint Security Profile Settings:** 
    - **Allow Microsoft Defender for Endpoint to enforce Endpoint Security Configurations:** On
@@ -224,44 +224,42 @@ Antivirus policies configure Microsoft Defender Antivirus settings, including re
 
 1. In the **Microsoft Intune admin center**, navigate to **Endpoint security** → **Antivirus**.
 
-1. Select **Create Policy**.
+1. Select **+ Create Policy**.
 
 1. In the **Create a profile** pane, configure:
-   - **Platform:** Windows 10, Windows 11, and Windows Server
+   - **Platform:** Windows
    - **Profile:** Microsoft Defender Antivirus
 
 1. Select **Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `Antivirus - Defender Configuration`
    - **Description:** `Configures real-time protection, cloud protection, and scan settings`
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, expand **Defender** and configure:
+1. On the **Configuration settings** tab, expand **Defender** and configure:
    - **Allow Real Time Monitoring:** Allowed
    - **Allow Behavior Monitoring:** Allowed
-   - **Allow Intrusion Prevention System:** Allowed
-   - **Allow IO AV Protection:** Allowed
+   - **[Deprecated] Allow Intrusion Prevention System:** Allowed
+   - **Allow scanning of all downloaded files and attachments:** Allowed
    - **Allow On Access Protection:** Allowed
    - **Allow Scanning Network Files:** Allowed
    - **Allow Cloud Protection:** Allowed
    - **Cloud Block Level:** High
-   - **Cloud Extended Timeout:** 50 seconds
+   - **Cloud Extended Timeout:** Configured, 50 seconds
    - **Submit Samples Consent:** Send all samples automatically
-
-1. Expand **Scans** and configure:
-   - **Scan Type:** Quick scan
-   - **Schedule Scan Day:** Every day
-   - **Schedule Scan Time:** 2:00 AM
-   - **Scan Archive Files:** Allowed
-   - **Scan Removable Drives During Full Scan:** Allowed
+   - **Scan Parameter:** Quick scan (Default)
+   - **Schedule Scan Day:** Every day (Default)
+   - **Schedule Scan Time:** Configured, 120 (2:00 AM)
+   - **Allow Archive Scanning:** Allowed
+   - **Allow Full Scan Removable Drive Scanning:** Allowed
 
 1. Select **Next**.
 
-1. On the **Scope tags** page, add **Pharmacy** and select **Next**.
+1. On the **Scope tags** tab, select **Search for scope tags...**, add **Pharmacy** and select **Next**.
 
-1. On the **Assignments** page, assign to **dyn-Windows-Devices**.
+1. On the **Assignments** tab, search and select **dyn-Windows-Devices**.
 
 1. Select **Next** → **Create**.
 
@@ -278,38 +276,44 @@ Firewall policies configure Windows Defender Firewall rules and behavior.
 
 1. In the **Microsoft Intune admin center**, navigate to **Endpoint security** → **Firewall**.
 
-1. Select **Create Policy**.
+1. Select **+ Create Policy**.
 
 1. In the **Create a profile** pane, configure:
-   - **Platform:** Windows 10, Windows 11, and Windows Server
-   - **Profile:** Microsoft Defender Firewall
+   - **Platform:** Windows
+   - **Profile:** Windows Firewall
 
 1. Select **Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `Firewall - Defender Configuration`
    - **Description:** `Enables firewall for all network profiles and configures logging`
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, expand **Domain Profile** and configure:
-   - **Enable Firewall:** Yes
-   - **Enable Stealth Mode:** Yes
-   - **Enable Log Success Connections:** Yes
-   - **Enable Log Dropped Packets:** Yes
+1. On the **Configuration settings** tab, expand **Firewall** and configure:
+   - **Enable Domain Network Firewall:** True (Default)
+   - **Disable Stealth Mode:** False (Default)
+   - **Enable Log Success Connections:** Enable Logging of Successful Connections
+   - **Enable Log Dropped Packets:** Enable Logging of Dropped Packets
 
-1. Expand **Private Profile** and configure the same settings as Domain Profile.
+1. Configure **Private Network Firewall** and use the same settings as Domain Profile:
+   - **Enable Private Network Firewall:** True (Default)
+   - **Disable Stealth Mode:** False (Default)
+   - **Enable Log Success Connections:** Enable Logging of Successful Connections
+   - **Enable Log Dropped Packets:** Enable Logging of Dropped Packets
 
-1. Expand **Public Profile** and configure:
-   - **Enable Firewall:** Yes
-   - **Enable Stealth Mode:** Yes
-   - **Block Inbound Connections:** Yes (more restrictive for public networks)
-   - **Enable Log Success Connections:** Yes
-   - **Enable Log Dropped Packets:** Yes
+1. Configure **Public Network Firewall**:
+   - **Enable Public Network Firewall:** True (Default)
+   - **Disable Stealth Mode:** False (Default)
+   - **Default Inbound Action for Public Profile:** Block (Default)
+   - **Enable Log Success Connections:** Enable Logging of Successful Connections
+   - **Enable Log Dropped Packets:** Enable Logging of Dropped Packets
 
 1. Select **Next**.
 
-1. On the **Assignments** page, assign to **dyn-Windows-Devices**.
+1. On the **Scope tags** tab, select **Next**.
+
+1. On the **Assignments** tab, search and select **dyn-Windows-Devices**.
 
 1. Select **Next** → **Create**.
 
@@ -325,21 +329,21 @@ Attack Surface Reduction rules block behaviors commonly used by malware, such as
 
 1. In the **Microsoft Intune admin center**, navigate to **Endpoint security** → **Attack surface reduction**.
 
-1. Select **Create Policy**.
+1. Select **+ Create Policy**.
 
 1. In the **Create a profile** pane, configure:
-   - **Platform:** Windows 10, Windows 11, and Windows Server
-   - **Profile:** Attack surface reduction rules
+   - **Platform:** Windows
+   - **Profile:** Attack Surface Reduction Rules
 
 1. Select **Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `ASR - Block (Pilot)`
    - **Description:** `ASR rules in Block mode for pilot cohort — real enforcement on a small group`
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, configure the following ASR rules **all in Block mode**:
+1. On the **Configuration settings** tab, configure the following ASR rules **all in Block mode**:
 
    - **Block executable content from email client and webmail:** Block
    - **Block all Office applications from creating child processes:** Block
@@ -348,38 +352,42 @@ Attack Surface Reduction rules block behaviors commonly used by malware, such as
    - **Block JavaScript or VBScript from launching downloaded executable content:** Block
    - **Block execution of potentially obfuscated scripts:** Block
    - **Block Win32 API calls from Office macros:** Block
-   - **Block credential stealing from the Windows local security authority subsystem (lsass.exe):** Block
+   - **Block credential stealing from the Windows local security authority subsystem:** Block
    - **Block process creations originating from PSExec and WMI commands:** Block
    - **Block untrusted and unsigned processes that run from USB:** Block
    - **Block persistence through WMI event subscription:** Block
 
 1. Select **Next**.
 
-1. On the **Scope tags** page, add **Pharmacy** and select **Next**.
+1. On the **Scope tags** tab, select **Search for scope tags...**, add **Pharmacy** and select **Next**.
 
-1. On the **Assignments** page, assign to **sg-Intune-Pilot-Users** (the pilot cohort from **Lab 01 Exercise 1**).
+1. On the **Assignments** tab, assign to **sg-Intune-Pilot-Users** (the pilot cohort from **Lab 01 Exercise 1**).
 
 1. Select **Next** → **Create**.
 
 #### Policy 2 — ASR Audit mode for the broader fleet
 
-1. On the **Attack surface reduction** page, select **Create Policy** again.
+1. On the **Endpoint security | Attack surface reduction** page, select **+ Create Policy** again.
 
-1. **Platform:** Windows 10, Windows 11, and Windows Server. **Profile:** Attack surface reduction rules. Select **Create**.
+1. In the **Create a profile** pane, configure:
+   - **Platform:** Windows
+   - **Profile:** Attack Surface Reduction Rules
 
-1. On the **Basics** page, enter:
+1. Select **Create**.
+
+1. On the **Basics** tab, enter:
    - **Name:** `ASR - Audit (Fleet)`
    - **Description:** `Same ASR rules in Audit mode for the broader fleet — generates Audit logs without enforcement`
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, configure the **same ASR rules listed above**, but set each one to **Audit mode** instead of **Block mode**. (One exception: keep `Block credential stealing from lsass.exe` in **Block mode** — it's the lowest false-positive rate ASR rule and worth enforcing fleet-wide on day one.)
+1. On the **Configuration settings** tab, configure the **same ASR rules listed above**, but set each one to **Audit** mode instead of **Block** mode. (One exception: keep `Block credential stealing from lsass.exe` in **Block** mode — it's the lowest false-positive rate ASR rule and worth enforcing fleet-wide on day one.)
 
 1. Select **Next**.
 
-1. On the **Scope tags** page, leave the **Default** scope tag (this is fleet-wide). Select **Next**.
+1. On the **Scope tags** tab, leave the **Default** scope tag (this is fleet-wide). Select **Next**.
 
-1. On the **Assignments** page, assign to **dyn-Windows-Devices**. Under **Exclude groups**, add **sg-Intune-Pilot-Users** (so pilot members only get the Block policy, not both).
+1. On the **Assignments** tab, search and select **dyn-Windows-Devices**. Add **sg-Intune-Pilot-Users** (so pilot members only get the Block policy, not both) and set its **Target type** to **Exclude**.
 
 1. Select **Next** → **Create**.
 
@@ -400,55 +408,53 @@ BitLocker encrypts the entire OS drive, protecting data at rest. You'll configur
 
 1. In the **Microsoft Intune admin center**, navigate to **Endpoint security** → **Disk encryption**.
 
-1. Select **Create Policy**.
+1. Select **+ Create Policy**.
 
 1. In the **Create a profile** pane, configure:
-   - **Platform:** Windows 10 and later
+   - **Platform:** Windows
    - **Profile:** BitLocker
 
 1. Select **Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `BitLocker - Full Disk Encryption`
    - **Description:** `Requires BitLocker encryption with TPM and PIN, recovery keys escrowed to Entra ID`
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, expand **BitLocker – Base Settings** and configure:
-   - **Require storage cards to be encrypted (mobile only):** Not configured
-   - **Enable full disk encryption for OS and fixed data drives:** Yes
-   - **Hide prompt about third-party encryption:** Yes
+1. On the **Configuration settings** tab, expand **BitLocker** and configure:
+   - **Require Device Encryption:** Enabled
+   - **Allow Warning for Other Disk Encryption:** Yes
 
-1. Expand **BitLocker - Fixed Drive Settings** and configure:
-   - **BitLocker fixed drive policy:** Enable
-   - **Fixed drive recovery:** Configure recovery options
-   - **Configure storage of recovery information to Microsoft Entra ID:** Required
-   - **Store recovery information in Microsoft Entra ID before enabling BitLocker:** Require
+1. Expand **Fixed Data Drives** and configure:
+   - **Enforce drive encryption type on fixed data drives:** Enable
+   - **Choose how BitLocker-protected fixed drives can be recovered:** Enabled
+   - **Save BitLocker recovery information to AD DS for operating system drives:** True
+   - **Do not enable BitLocker until recovery information is stored in AD DS for operating system drives:** True
 
-1. Expand **BitLocker – OS Drive Settings** and configure:
-   - **BitLocker system drive policy:** Enable
-   - **Startup authentication required:** Yes
-   - **Compatible TPM startup:** Required
-   - **Compatible TPM startup PIN:** Required
-   - **Compatible TPM startup key:** Not allowed
-   - **Compatible TPM startup key and PIN:** Not allowed
-   - **Require additional authentication at startup:** Allow
-   - **Configure PCR validation profile for UEFI firmware configurations:** Configure
-   - **Minimum PIN length:** 6
-   - **System drive recovery:** Configure recovery options
-   - **Configure storage of recovery information to Microsoft Entra ID:** Required
-   - **Store recovery information in Microsoft Entra ID before enabling BitLocker:** Require
+1. Expand **Operating System Drives** and configure:
+   - **Enforce drive encryption type on fixed data drives:** Enable
+   - **Require additional authentication at startup:** Enabled
+   - **Configure TPM startup key:** Require startup key with TPM
+   - **Compatible TPM startup key and PIN:** Require startup key and PIN with TPM
+   - **Configure TPM startup:** Do not allow TPM
+   - **Configure TPM startup PIN:** Do not allow startup PIN with TPM
+   - **Configure minimum PIN length for startup:** Enabled
+   - **Minimum characters:** 6
+   - **Choose how BitLocker-protected operating system drives can be recovered:** Enabled
+   - **Save BitLocker recovery information to AD DS for operating system drives:** True
+   - **Configure user storage of BitLocker recovery information:** Require 48-digit recovery password
 
    > [!NOTE]
    > Requiring TPM+PIN provides two-factor protection: something you have (TPM chip) + something you know (PIN). Recovery keys escrowed to Entra ID allow IT admins to retrieve keys when users forget their PIN.
 
 1. Select **Next**.
 
-1. On the **Scope tags** page, add **Pharmacy** and select **Next**. BitLocker on Pharmacy clinical workstations is a HIPAA control \u2014 keeping the policy under the `Pharmacy` scope tag means the Pharmacy Helpdesk (assigned in **Lab 05 Exercise 3**) can see and audit it.
+1. On the **Scope tags** tab, search and select **Pharmacy**, then select **Next**. BitLocker on Pharmacy clinical workstations is a HIPAA control — keeping the policy under the `Pharmacy` scope tag means the Pharmacy Helpdesk (assigned in **Lab 05 Exercise 3**) can see and audit it.
 
-1. On the **Assignments** page, assign to **dyn-Windows-Devices**.
+1. On the **Assignments** tab, search and select **dyn-Windows-Devices**.
 
-1. Select **Next** \u2192 **Create**.
+1. Select **Next** → **Create**.
 
 **You have successfully created a BitLocker encryption policy.**
 
@@ -461,7 +467,9 @@ BitLocker encrypts the entire OS drive, protecting data at rest. You'll configur
    > [!NOTE]
    > BitLocker encryption can take 1–3 hours to complete depending on drive size and system performance. For lab purposes, you'll verify the policy was applied and encryption started.
 
-1. On **SEA-DEV1**, open **Windows Terminal (Admin)**.
+1. On **SEA-DEV1**, open **Windows PowerShell (Admin)**.
+
+1. On the **Do you want to allow this app to make changes to your device?** prompt, select **Yes**.
 
 1. Check BitLocker status:
 
@@ -484,11 +492,17 @@ BitLocker encrypts the entire OS drive, protecting data at rest. You'll configur
    > [!NOTE]
    > Recovery keys are stored in Entra ID and can be retrieved by Global Administrators or Helpdesk Administrators when a user forgets their BitLocker PIN.
 
+   > [!NOTE]
+   > **No BitLocker recovery key found for this device** message is expected at first. The key isn't escrowed until encryption starts (**Protection On**) *and* the device syncs afterward — with TPM+PIN this can lag 10–30 minutes.
+
 **You have successfully monitored BitLocker encryption status and verified recovery key escrow.**
 
 ---
 
 ### Task 3: Retrieve a BitLocker recovery key
+
+> [!NOTE]
+> If no recovery key is shown yet, skip this task and return to it later. The key only appears here once BitLocker has started encrypting (**Protection On**) and the device has escrowed the key to Microsoft Entra ID — which can take some time. Continue with **Exercise 4** and revisit **Task 3** once the key populates on the **Recovery keys** blade.
 
 1. In the **Microsoft Intune admin center**, navigate to **Devices** → **All devices** → **SEA-DEV1**.
 
@@ -607,10 +621,14 @@ Microsoft Tunnel is a VPN gateway solution that provides secure access to on-pre
 
 1. Select **Create** to create a new Tunnel site.
 
-1. On the **Create a site** page, enter:
+1. On the **Create a site** page, under the **Basics** tab, enter:
    - **Name:** `Contoso HQ Tunnel`
    - **Description:** `Microsoft Tunnel Gateway for mobile device VPN access`
-   - **Public address:** Enter the LIN-SRV1 server's internal IP or hostname (e.g., `10.0.1.10` or `LIN-SRV1.lab.local`). In production this would be the public FQDN mobile clients connect to; for this lab it's a required field with no client traffic behind it.
+ 
+1. On the **Settings** tab, configure:
+   - **Public IP address or FQDN:** Enter the LIN-SRV1 server's internal IP or hostname (e.g., `10.0.1.10` or `LIN-SRV1.lab.local`). In production this would be the public FQDN mobile clients connect to; for this lab it's a required field with no client traffic behind it.
+
+1. Select **Next** until you reach the **Review + create** tab.
 
 1. Select **Create**.
 
@@ -646,9 +664,9 @@ Microsoft Tunnel is a VPN gateway solution that provides secure access to on-pre
 > [!NOTE]
 > You'll author the VPN profile end-to-end and assign it to a group — the same workflow you'd use in production. In this lab environment no mobile device is enrolled to consume it, so the profile is authored and assigned but **client connection through the tunnel is out of scope** (see the scope callout at the top of Exercise 4).
 
-1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Configuration profiles**.
+1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Configuration**.
 
-1. Select **Create** → **New policy**.
+1. Select **+ Create** → **New policy**.
 
 1. In the **Create a profile** pane, configure:
    - **Platform:** iOS/iPadOS (or Android, depending on your test devices)
@@ -656,22 +674,24 @@ Microsoft Tunnel is a VPN gateway solution that provides secure access to on-pre
 
 1. Select **Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `VPN - Microsoft Tunnel`
    - **Description:** `VPN profile for secure access via Microsoft Tunnel Gateway`
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, configure:
+1. On the **Configuration settings** tab, configure:
    - **Connection name:** `Contoso VPN`
    - **Connection type:** Microsoft Tunnel (Standalone client)
-   - **Server address:** Enter the LIN-SRV1 server's address (e.g., `LIN-SRV1.lab.local` — same value used when registering the Tunnel site in Task 3)
+   - **Address:** Enter the LIN-SRV1 server's address (e.g., `LIN-SRV1.lab.local` — same value used when registering the Tunnel site in Task 3)
    - **Per-app VPN:** Not configured (or configure specific apps if desired)
-   - **Always-on VPN:** Enable (recommended for corporate-owned devices)
+   - **On-Demand VPN Rules:** Add a rule that connects the VPN for all domains. Optionally set **Block users from disabling automatic VPN** to Yes.
 
 1. Select **Next**.
 
-1. On the **Assignments** page, assign to a mobile device group (e.g., **All users** or a pilot group).
+1. On the **Scope tags** tab, select **Next**.
+
+1. On the **Assignments** tab, assign to a mobile device group (e.g., **All users** or a pilot group).
 
 1. Select **Next** → **Create**.
 
@@ -703,10 +723,10 @@ The root CA is the trust anchor for your Cloud PKI hierarchy. You must create at
 1. Select **Next** to continue to **Configuration settings**.
 
 1. On the **Configuration settings** tab, configure:
-   - **CA type:** **Root CA**
+   - **CA type:** Root CA
    - **Validity period:** **25 years** (allowed values: 5, 10, 15, 20, or 25)
 
-1. Under **Extended Key Usages**, choose how the CA can be used. For this lab, leave **Client Authentication (1.3.6.1.5.5.7.3.2)** and **Server Authentication (1.3.6.1.5.5.7.3.1)** selected (the common defaults for SCEP-issued device certificates).
+1. Under **Extended Key Usages**, choose how the CA can be used. For this lab, leave **Client Auth (1.3.6.1.5.5.7.3.2)** and **Server Authentication (1.3.6.1.5.5.7.3.1)** selected (the common defaults for SCEP-issued device certificates).
 
    > [!IMPORTANT]
    > Root CA EKU constraints are a **superset** of the issuing CA. Any EKU you want on a downstream issuing CA must be defined here on the root first. The **Any Purpose (2.5.29.37.0)** EKU is intentionally absent — it's overly permissive and a security risk.
@@ -714,7 +734,7 @@ The root CA is the trust anchor for your Cloud PKI hierarchy. You must create at
 1. Under **Subject attributes**, enter:
    - **Common name (CN):** `Contoso Root Certificate Authority`
    - **Organization (O):** `Contoso Healthcare`
-   - **Country (C):** `US` (Intune enforces a two-character limit per PKI standards)
+   - **Country (C):** United States of America (the) (Intune enforces a two-character limit per PKI standards)
 
 1. Under **Encryption**, set **Key size and algorithm** to **RSA-4096 and SHA-512** (the strongest available; this is the upper bound that downstream issuing CAs and SCEP profiles can use).
 
@@ -722,7 +742,7 @@ The root CA is the trust anchor for your Cloud PKI hierarchy. You must create at
 
 1. On the **Scope tags** tab, leave the **Default** scope tag (Cloud PKI infrastructure is typically tenant-wide). Select **Next**.
 
-1. On the **Review + create** tab, review the summary. CA properties **can't be edited after creation** — if anything's wrong, select **Back** now.
+1. On the **Review + create** tab, review the summary. CA properties can't be edited after creation — if anything's wrong, select **Back** now.
 
 1. Select **Create**.
 
@@ -745,23 +765,25 @@ Issuing CAs are subordinate to a root CA and they're what your devices actually 
 1. Select **Next**.
 
 1. On the **Configuration settings** tab, configure:
-   - **CA type:** **Issuing CA**
-   - **Root CA source:** **Intune** (use a root CA you created in this tenant)
+   - **CA type:** Issuing CA
+   - **Root CA source:** Intune (use a root CA you created in this tenant)
    - **Root CA:** Select **Contoso Root CA** (the root you created in Task 1)
-   - **Validity period:** **10 years** (allowed: 2, 4, 6, 8, or 10 — must be less than or equal to the root CA's remaining lifetime)
+   - **Validity period:** 10 years (allowed: 2, 4, 6, 8, or 10 — must be less than or equal to the root CA's remaining lifetime)
 
-1. Under **Extended Key Usages**, the picker is constrained to EKUs you defined on the root in Task 1. Confirm **Client Authentication** and **Server Authentication** are selected.
+1. Under **Extended Key Usages**, the picker is constrained to EKUs you defined on the root in Task 1. Confirm **Client Auth** and **Server Auth** are selected.
 
 1. Under **Subject attributes**, enter:
    - **Common name (CN):** `Contoso Issuing Certificate Authority`
    - **Organization (O):** `Contoso Healthcare`
-   - **Country (C):** `US`
+   - **Country (C):** United States of America (the)
 
-1. Under **Encryption**, set **Key size and algorithm** to **RSA-2048 and SHA-256** (sufficient for SCEP leaf certificates; smaller key = faster TLS handshakes on devices).
+1. Under **Encryption**, note that **Key size and algorithm** is read-only and inherited from the root CA — it displays **RSA-4096 and SHA-512** and can't be changed on the issuing CA.
 
 1. Select **Next** → **Scope tags** (leave Default) → **Next** → **Review + create**.
 
-1. Select **Create**. Provisioning takes 2–3 minutes while the root CA signs the issuing CA's certificate.
+1. On the **Scope tags** tab, select **Next**.
+
+1. On the **Review + create** tab, select **Create**. Provisioning takes 2–3 minutes while the root CA signs the issuing CA's certificate.
 
 **You have successfully created an issuing Certificate Authority.**
 
@@ -771,11 +793,11 @@ Issuing CAs are subordinate to a root CA and they're what your devices actually 
 
 1. On the **Cloud PKI** page, select **Contoso Root CA** from the list.
 
-1. Select **Download certificate** and save the file as `ContosRootCA.cer`.
+1. Under **Properties**, select **Download certificate** and save the file as `ContosoRootCA.cer`.
 
 1. Return to the **Cloud PKI** page and select **Contoso Issuing CA**.
 
-1. Select **Download certificate** and save the file as `ContosoIssuingCA.cer`.
+1. Under **Properties**, select **Download certificate** and save the file as `ContosoIssuingCA.cer`.
 
    > [!NOTE]
    > These certificates will be deployed to devices as trusted roots, allowing them to trust certificates issued by the Cloud PKI infrastructure.
@@ -788,9 +810,9 @@ Issuing CAs are subordinate to a root CA and they're what your devices actually 
 
 Trusted certificate profiles deploy root and intermediate CA certificates to devices.
 
-1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Configuration profiles**.
+1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Configuration**.
 
-1. Select **Create** → **New policy**.
+1. Select **+ Create** → **+ New policy**.
 
 1. In the **Create a profile** pane, configure:
    - **Platform:** Windows 10 and later
@@ -798,26 +820,32 @@ Trusted certificate profiles deploy root and intermediate CA certificates to dev
 
 1. Select **Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `Trusted Cert - Contoso Root CA`
    - **Description:** `Deploys the Contoso Root CA certificate to the Trusted Root store`
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, configure:
+1. On the **Configuration settings** tab, configure:
    - **Certificate file:** Browse and select `ContosoRootCA.cer`
    - **Destination store:** Computer certificate store - Root
 
 1. Select **Next**.
 
-1. On the **Assignments** page, assign to **dyn-Windows-Devices**.
+1. On the **Scope tags** tab, select **Next**.
 
-1. Select **Next** → **Create**.
+1. On the **Assignments** tab, under **Included groups**, select **Add groups** and then search and select **dyn-Windows-Devices**.
 
-1. Repeat steps 1–11 to create a second trusted certificate profile for the issuing CA:
+1. Select **Next**.
+
+1. On the **Applicability rules** tab, select **Next**.
+
+1. On the **Review + create** tab, select **Create**.
+
+1. Repeat steps 1–13 to create a second trusted certificate profile for the issuing CA:
    - **Name:** `Trusted Cert - Contoso Issuing CA`
    - **Certificate file:** `ContosoIssuingCA.cer`
-   - **Destination store:** Computer certificate store - Intermediate Certification Authorities
+   - **Destination store:** Computer certificate store - Intermediate
 
 **You have successfully created trusted certificate profiles to deploy the CA chain.**
 
@@ -827,9 +855,9 @@ Trusted certificate profiles deploy root and intermediate CA certificates to dev
 
 SCEP (Simple Certificate Enrollment Protocol) profiles allow devices to request certificates from the Cloud PKI issuing CA.
 
-1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Configuration profiles**.
+1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Configuration**.
 
-1. Select **Create** → **New policy**.
+1. Select **+ Create** → **+ New policy**.
 
 1. In the **Create a profile** pane, configure:
    - **Platform:** Windows 10 and later
@@ -837,32 +865,35 @@ SCEP (Simple Certificate Enrollment Protocol) profiles allow devices to request 
 
 1. Select **Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `SCEP - Device Authentication`
    - **Description:** `Issues device authentication certificates from Cloud PKI`
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, configure:
+1. On the **Configuration settings** tab, configure:
    - **Certificate type:** Device
    - **Subject name format:** Common name
    - **Subject alternative name:** DNS = `{{DeviceName}}.contoso.com`
    - **Certificate validity period:** 1 year
-   - **Key storage provider (KSP):** Enroll to Trusted Platform Module (TPM) KSP
+   - **Key storage provider (KSP):** Enroll to Trusted Platform Module (TPM) KSP if present, otherwise Software KSP
    - **Key usage:** Digital signature, Key encipherment
    - **Key size (bits):** 2048
    - **Hash algorithm:** SHA-2
-   - **Root Certificate:** Select **Trusted Cert - Contoso Root CA**
-   - **Extended key usage:** Client Authentication (1.3.6.1.5.5.7.3.2)
+   - **Root Certificate:** Select **+ Root Certificate** and then select **Trusted Cert - Contoso Root CA**
+   - **Extended key usage:** Enter `Client Authentication` for **Name** and select **Client Authentication (1.3.6.1.5.5.7.3.2)** for **Predefined values**.
    - **Renewal threshold (%):** 20
-   - **SCEP Server URLs:** (Auto-populated by Cloud PKI integration)
-   - **Certificate authority:** Select **Contoso Issuing CA**
+   - **SCEP Server URLs:** Paste the **SCEP URI** copied from the issuing CA (**Tenant administration** → **Cloud PKI** → **Contoso Issuing CA** → **Properties** → **SCEP URI**). This field isn't auto-populated — it's required and shows a validation error until you provide it.
 
 1. Select **Next**.
 
-1. On the **Assignments** page, assign to **dyn-Windows-Devices**.
+1. On the **Scope tags** tab, select **Next**.
 
-1. Select **Next** → **Create**.
+1. On the **Assignments** tab, under **Included groups**, select **Add groups** and then search and select **dyn-Windows-Devices**.
+
+1. On the **Applicability Rules** tab, select **Next**.
+
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully created a SCEP certificate profile for device authentication.**
 
@@ -872,19 +903,22 @@ SCEP (Simple Certificate Enrollment Protocol) profiles allow devices to request 
 
 1. On **SEA-DEV1**, wait 10–15 minutes for the SCEP profile to apply and the certificate to be issued.
 
-1. Open **Windows Terminal (Admin)** and run:
+1. Open **Windows PowerShell (Admin)** and run:
 
    ```powershell
-   Get-ChildItem -Path Cert:\LocalMachine\My
+   Get-ChildItem -Path Cert:\LocalMachine\My |
+       Where-Object { $_.Issuer -like "*Contoso Issuing*" } |
+       Format-List Subject, Issuer, DnsNameList, EnhancedKeyUsageList, NotAfter
    ```
 
-1. Verify a certificate issued by **Contoso Issuing CA** is present with:
-   - **Subject:** CN=SEA-DEV1.contoso.com (or similar)
-   - **Enhanced Key Usage:** Client Authentication
+1. Verify a certificate issued by **Contoso Issuing Certificate Authority** is present with:
+   - **Issuer:** CN=Contoso Issuing Certificate Authority
+   - **DnsNameList:** `SEA-DEV1.contoso.com` (from the SAN; the **Subject** CN may appear as the device name or a GUID depending on the subject name format)
+   - **EnhancedKeyUsageList:** Client Authentication (1.3.6.1.5.5.7.3.2)
 
-1. Open **Microsoft Management Console** (`mmc.exe`).
+1. Open **Microsoft Management Console** by entering `mmc.exe` in PowerShell.
 
-1. Add the **Certificates** snap-in (Computer account → Local computer).
+1. Add the **Certificates** snap-in (File → Add/Remove Snap-in... → Certificates → Add → Computer account → Local computer (the computer this console is running on) → Finish → OK).
 
 1. Navigate to **Certificates (Local Computer)** → **Personal** → **Certificates**.
 
@@ -906,14 +940,15 @@ You'll use the Microsoft Defender portal and Intune admin center to monitor devi
 
 1. Sign in as **admin@<TenantPrefix>.onmicrosoft.com**.
 
-1. In the **Microsoft Defender portal**, select **Secure Score** from the left navigation.
+1. In the **Microsoft Defender portal**, expand **Exposure management** and select **Secure Score** from the left navigation.
 
 1. Review the **Secure Score** dashboard:
-   - **Overall score:** Percentage of achieved vs. maximum possible points
-   - **Improvement actions:** Recommended security configurations to increase score
-   - **Score over time:** Trend chart showing security posture changes
-
-1. Select an improvement action (e.g., "Enable BitLocker on all devices") to view details and remediation guidance.
+   - **Overall score:** On the **Overview** tab, the percentage of achieved vs. maximum possible points
+   - **Recommended actions:** On the **Recommended actions** tab, security configurations you can take to increase the score
+    - **History:** On the **History** tab, the score trend chart plus a dated activity log of each point change (Date/Time, Activity, Resulting points, Category, Attributed to)
+   - **Score over time:** On the **Metrics & trends** tab, the trend chart showing security posture changes
+  
+1. Select an improvement action (e.g., "Encrypt all BitLocker-supported drives") to view details and remediation guidance.
 
 **You have successfully reviewed the Microsoft Defender Secure Score.**
 
@@ -921,7 +956,7 @@ You'll use the Microsoft Defender portal and Intune admin center to monitor devi
 
 ### Task 2: Review threat detections and alerts
 
-1. In the **Microsoft Defender portal**, select **Incidents & alerts** → **Alerts**.
+1. In the **Microsoft Defender portal**, expand **Investigation & response**, select **Incidents & alerts**, and then select **Alerts**.
 
 1. Review the list of security alerts (if any):
    - **Severity:** High, Medium, Low, Informational
@@ -950,29 +985,30 @@ In **Lab 02 Exercise 2 Task 3** you created the Conditional Access policy `CA - 
 
 1. Open a new browser tab to **https://entra.microsoft.com** and sign in as **admin@<TenantPrefix>.onmicrosoft.com**.
 
-1. Navigate to **Protection** → **Conditional Access** → **Policies**.
+1. Navigate to **Identity Secure Score** → **Conditional Access** → **Policies**.
 
 1. Select `CA - Require compliant device (Pharmacy pilot)`.
 
-1. Confirm:
-   - **Users → Include:** `sg-Intune-Pilot-Users`
-   - **Users → Exclude:** `admin@<TenantPrefix>.onmicrosoft.com` (or whichever Global Admin you use)
-   - **Target resources:** All cloud apps
+1. On the **Policy details** pane, select **View or Edit** and confirm:
+   - **Users or agents** include `sg-Intune-Pilot-Users`
+   - **Users or agents** exclude `admin@<TenantPrefix>.onmicrosoft.com` (or whichever Global Admin you use)
+   - **Target resources:** All resources (formerly "All cloud apps")
    - **Grant:** Require device to be marked as compliant
 
 1. Before flipping the switch, run a **What If** analysis:
-   - From the **Conditional Access** overview, select **What If** from the top toolbar.
-   - **User or workload identity:** select a pilot-cohort user (e.g., Megan Bowen if she's in the pilot group).
-   - **Cloud apps, actions, or authentication context:** All cloud apps.
-   - Leave other conditions at defaults.
+   - From the **Conditional Access | Policies** page, select **What If** from the top toolbar.
+   - Under **Identity**, set **Select identity type** to **Users**, select **Edit user**, and choose a pilot-cohort user (e.g., Megan Bowen).
+   - Under **Target resource**, set **Select target type** to **Cloud apps**, then under **Cloud apps** select **Select cloud app** and choose the app to test (e.g., Office 365 Configure).
+   - For **Device platform**, select **Windows**
+   - For **Client app** select **Mobile apps and desktop clients - Modern authentication**
    - Select **What If**.
 
-1. Review the results. The bottom panel shows **Policies that would apply** and **Policies that won't apply**. Confirm `CA - Require compliant device (Pharmacy pilot)` appears under **Policies that would apply** with the grant **Require device to be marked as compliant**.
+1. Review the results. The bottom panel shows **Policies that would apply** and **Policies that won't apply**. Confirm `CA - Require compliant device (Pharmacy pilot)` appears under **Policies that will apply** with the grant controls **Require compliant device**.
 
    > [!NOTE]
    > **What If** is the production-safe rehearsal for enabling any CA policy. It runs the full evaluation engine against a simulated sign-in without affecting real users. If a non-pilot user accidentally lands under "would apply" — stop and fix the assignment scope before flipping the switch.
 
-1. Return to the policy detail view and scroll to **Enable policy**.
+1. Return to the **CA - Require compliant device (Pharmacy pilot)** policy details view and scroll to **Enable policy**.
 
 1. Change **Enable policy** from **Report-only** to **On**.
 
@@ -981,7 +1017,7 @@ In **Lab 02 Exercise 2 Task 3** you created the Conditional Access policy `CA - 
    > [!IMPORTANT]
    > The policy is now **enforced**. The next time a pilot-cohort user signs in to any cloud app on a non-compliant device, the sign-in will be blocked with the message "Your device is not compliant with the policies set by your IT department." The user can self-remediate by addressing the failing compliance setting (e.g., enable BitLocker, install missing security updates).
 
-1. Switch back to **Identity** → **Monitoring & health** → **Sign-in logs**. Filter to a pilot-cohort user. Open a recent sign-in entry and confirm the **Conditional Access** tab now shows the policy as **Success** or **Failure** (not **Report-only: ...**).
+1. Switch back to **Identity Secure Score** → **Conditional Access** → **Sign-in logs**. Filter to a pilot-cohort user. Open a recent sign-in entry and confirm the **Conditional Access** tab now shows the policy with a status of **Success** or **Failure** (not **Report-only: ...**).
 
 **You have successfully enabled the Conditional Access policy, completing the compliance → CA enforcement story that started in Lab 02.**
 
