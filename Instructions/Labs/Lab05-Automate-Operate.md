@@ -28,6 +28,7 @@ By the end of this lab, you'll have:
 
 This lab requires:
 - Completion of **Lab 01** (devices enrolled, groups configured)
+- Completion of **Lab 02** (update rings, feature updates, and compliance policies deployed)
 - Access to the Contoso Microsoft 365 tenant (`<TenantPrefix>.onmicrosoft.com`)
 - Global Administrator credentials
 - **SEA-DEV1** (enrolled device, Megan Bowen signed in)
@@ -43,7 +44,9 @@ Microsoft Graph is a REST API that provides programmatic access to Microsoft 365
 
 ### Task 1: Install the Microsoft Graph PowerShell SDK
 
-1. On **SEA-DEV1**, open **Windows Terminal (Admin)**.
+1. On **SEA-DEV1**, open **Windows PowerShell (Admin)**.
+
+1. On the **Do you want to allow this app to make changes to your device?** prompt, select **Yes**.
 
 1. Install the Microsoft Graph PowerShell SDK:
 
@@ -83,7 +86,7 @@ For interactive automation, you can use delegated permissions (user signs in). F
 
 1. On the **Register an application** page, enter:
    - **Name:** `Intune Automation App`
-   - **Supported account types:** **Single tenant only - Contoso** (the default; this is the modern label for "Accounts in this organizational directory only")
+   - **Supported account types:** Single tenant only - Contoso (the default; this is the modern label for "Accounts in this organizational directory only")
    - **Redirect URI:** Leave blank
 
 1. Select **Register**.
@@ -100,7 +103,7 @@ For interactive automation, you can use delegated permissions (user signs in). F
 
 1. In the **Intune Automation App** details, select **API permissions** from the left navigation.
 
-1. Select **Add a permission**.
+1. Select **+ Add a permission**.
 
 1. In the **Request API permissions** pane, select **Microsoft Graph**.
 
@@ -110,13 +113,14 @@ For interactive automation, you can use delegated permissions (user signs in). F
    - **DeviceManagementManagedDevices.Read.All** (read device information)
    - **DeviceManagementConfiguration.ReadWrite.All** (read/write configuration policies)
    - **DeviceManagementApps.ReadWrite.All** (read/write applications)
+   - **Group.Read.All** (read directory groups — required by `Get-MgGroup` in Task 8)
 
    > [!NOTE]
    > Application permissions run with the application's identity, not the user's identity. They are suitable for unattended automation but require admin consent.
 
 1. Select **Add permissions**.
 
-1. On the **API permissions** page, select **Grant admin consent for <TenantPrefix>**.
+1. On the **Intune Automation App | API permissions** page, select **Grant admin consent for Contoso**.
 
 1. In the confirmation dialog, select **Yes**.
 
@@ -130,7 +134,7 @@ For interactive automation, you can use delegated permissions (user signs in). F
 
 1. In the **Intune Automation App** details, select **Certificates & secrets** from the left navigation.
 
-1. Under **Client secrets**, select **New client secret**.
+1. Under **Client secrets**, select **+ New client secret**.
 
 1. In the **Add a client secret** pane, enter:
    - **Description:** `Automation secret for PowerShell scripts`
@@ -151,7 +155,7 @@ For interactive automation, you can use delegated permissions (user signs in). F
 
 ### Task 5: Authenticate with Microsoft Graph using application credentials
 
-1. On **SEA-DEV1**, open **Windows Terminal** (Admin).
+1. On **SEA-DEV1**, open **Windows PowerShell** (Admin).
 
 1. Create a folder for automation scripts:
 
@@ -159,9 +163,10 @@ For interactive automation, you can use delegated permissions (user signs in). F
    New-Item -Path "C:\LabScripts" -ItemType Directory -Force
    ```
 
-1. Create a PowerShell script to authenticate with the application credentials:
+1. Create and save the authentication script to `C:\LabScripts\Connect-GraphApp.ps1`. First replace `<Your Tenant ID>`, `<Your Application (client) ID>`, and `<Your Client Secret>` between the single quotes with the values you copied earlier, then run the following to write the file:
 
    ```powershell
+   @'
    $tenantId = "<Your Tenant ID>"
    $clientId = "<Your Application (client) ID>"
    $clientSecret = "<Your Client Secret>"
@@ -177,15 +182,16 @@ For interactive automation, you can use delegated permissions (user signs in). F
 
    # Verify connection
    Get-MgContext
+   '@ | Out-File -FilePath "C:\LabScripts\Connect-GraphApp.ps1" -Encoding UTF8
    ```
 
-   Replace `<Your Tenant ID>`, `<Your Application (client) ID>`, and `<Your Client Secret>` with the values you copied earlier.
+   > [!NOTE]
+   > The single-quoted here-string (`@'...'@`) writes the `$tenantId`, `$clientId`, and other variables to the file **literally** instead of expanding them now.
 
-1. Save the script as `C:\LabScripts\Connect-GraphApp.ps1`.
-
-1. Run the script:
+1. Change to the script folder, then run the script:
 
    ```powershell
+   cd C:\LabScripts
    .\Connect-GraphApp.ps1
    ```
 
@@ -205,7 +211,7 @@ For interactive automation, you can use delegated permissions (user signs in). F
    ```powershell
    Get-MgDeviceManagementManagedDevice | Select-Object DeviceName, OperatingSystem, ComplianceState, LastSyncDateTime
    ```
-
+   
 1. Review the output. You should see SEA-DEV1 and SEA-DEV2 listed with their compliance status.
 
 1. Query devices with specific filters:
@@ -352,7 +358,7 @@ You'll create a Windows compliance policy using the Graph API (instead of the In
    > Compliance-policy assignment is a Graph **action** (`/assign`) rather than a sub-collection POST (`/assignments`). The action takes the full assignment set and replaces any existing assignments \u2014 useful for idempotent automation scripts.
 
 1. Verify the assignment in the Intune admin center:
-   - Navigate to **Devices** → **Compliance policies** → **Graph API - Windows Compliance Policy** → **Assignments**
+   - Navigate to **Devices** → **Compliance** → **Graph API - Windows Compliance Policy** → **Properties**
 
 **You have successfully assigned a compliance policy to a group using Microsoft Graph API.**
 
@@ -419,19 +425,23 @@ Proactive remediations automatically detect and fix common device issues before 
 
 1. Sign in as **admin@<TenantPrefix>.onmicrosoft.com**.
 
-1. In the **Microsoft Intune admin center**, expand **Devices** and select **Scripts and remediations**.
+1. Navigate to **Tenant administration** → **Connectors and tokens** → **Windows data**.
+
+1. Expand **Windows data** and set **Enable features that require Windows diagnostic data in processor configuration** to **On**. Expand **Windows license verification** and set **I confirm that my tenant owns one of these licenses** to **On**.
+
+1. In the **Microsoft Intune admin center**, select **Devices**, and then select **Scripts and remediations**.
 
 1. Select the **Remediations** tab.
 
-1. Select **Create** → **Windows 10 and later**.
+1. Select **+ Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `Remediation - Clear Stale Windows Update Cache`
    - **Description:** `Detects and removes Windows Update cache files older than 30 days`
 
 1. Select **Next**.
 
-1. On the **Settings** page, configure:
+1. On the **Settings** tab, configure:
    - **Detection script file:** Browse and select `C:\LabScripts\Remediations\Detect-StaleWindowsUpdateCache.ps1`
    - **Remediation script file:** Browse and select `C:\LabScripts\Remediations\Remediate-StaleWindowsUpdateCache.ps1`
    - **Run this script using the logged on credentials:** No (run as SYSTEM)
@@ -440,7 +450,9 @@ Proactive remediations automatically detect and fix common device issues before 
 
 1. Select **Next**.
 
-1. On the **Assignments** page, under **Assign to**, select **Add groups**.
+1. On the **Scope tags** tab, select **Next**.
+
+1. On the **Assignments** tab, under **Assign to**, select **+ Select groups to include**.
 
 1. Search for and select **sg-Intune-Pilot-Users** (the pilot cohort from Lab 01 — you'll expand to the fleet in Task 4 after watching detection-vs-remediation results).
 
@@ -480,7 +492,7 @@ Once the pilot device status (Task 3) shows the detection script running cleanly
 
 1. Select **Properties** from the left navigation, then in the **Assignments** section select **Edit**.
 
-1. Add a second assignment under **Assign to** → **Add groups** → select **dyn-Windows-Devices**. Under **Exclude groups**, add **sg-Intune-Pilot-Users** (pilot already has it; no need to assign twice).
+1. Add a second assignment under **Assign to** → **+ Select groups to include**, and select **dyn-Windows-Devices**. Remove the **sg-Intune-Pilot-Users** group from the included groups. Under **Exclude groups**, select **+ Select groups to exclude** and add **sg-Intune-Pilot-Users** (Pilot already has it; no need to assign twice).
 
 1. Select **Review + save** → **Save**.
 
@@ -501,23 +513,27 @@ This is the culmination of Thread A across the whole lab series. By the end of t
 
 ### Task 1: Review the `Pharmacy Helpdesk` role and `Pharmacy` scope tag
 
-1. In the **Microsoft Intune admin center**, expand **Tenant administration** and select **Roles**.
+1. In the **Microsoft Intune admin center**, select **Tenant administration** and select **Roles**.
 
-1. Select **All roles**. Locate and select **Pharmacy Helpdesk** (created in **Lab 01 Exercise 2 Task 6**).
+1. Select **All roles**. Locate and select **Pharmacy Helpdesk** (created in **Lab 01 Exercise 2 Task 6**). 
 
-1. Review the **Permissions** tab. Confirm:
-   - **Managed devices:** Read, Set primary user, Update (no Delete, no Wipe)
-   - **Remote tasks:** Sync devices, Restart now, Collect diagnostics
-   - **Organization:** Read
-   - **Roles:** Read
-   - **Apps**, **Device compliance policies**, **Device configurations**, **Endpoint protection**: all No
+1. Select **Properties** from the left navigation.
+
+1. Select **Edit** next to **Permissions**.
+
+1. Review the **Permissions** tab. Confirm the permissions are set correctly:
+   - **Managed devices:** Read, Set primary user, Update = **Yes**; Delete and Wipe = **No**
+   - **Remote tasks:** Sync devices, Reboot now, Collect diagnostics = **Yes**
+   - **Organization:** Read = **Yes**
+   - **Roles:** Read = **Yes**
+   - **Device compliance policies**, **Device configurations**, **Managed apps**, **Mobile apps**, **Endpoint Protection Reports**, **Security baselines:** Read = **Yes**; Create, Update, Delete, and Assign = **No**
 
    > [!NOTE]
    > This is the principle-of-least-privilege role you defined in Lab 01: enough to operate devices day-to-day, but no authority to change policy. The Pharmacy Helpdesk can sync a device, force a restart, or collect diagnostics — but can't author or delete the compliance policy that says "BitLocker must be on."
 
-1. Switch to the **Scope (Tags)** tab on the role. Confirm the **Pharmacy** scope tag is listed.
+1. Go back to **Pharmacy Helpdesk | Properties** and confirm the **Pharmacy** scope tag is listed under **Scope tags**.
 
-1. Navigate back to **Tenant administration** → **Roles** → **Scope (Tags)** and select **Pharmacy**. Review the tag and note that it's been applied to numerous objects across Labs 02–04 (you'll see object counts).
+1. Navigate back to **Tenant administration** → **Roles** → **Scope tags** and select **Pharmacy**. On the **Scope tag Pharmacy** page, review the **Basics** section (name and description) and the **Assignments** section, which lists the groups the scope tag is assigned to.
 
 **You have successfully reviewed the role and scope tag created in Lab 01.**
 
@@ -533,9 +549,9 @@ Before assigning the role, confirm which objects Lee Gu will gain visibility to.
 
 1. Navigate to **Devices** → **Manage devices** → **Compliance**. Confirm `Compliance - Windows Security Baseline` shows **Pharmacy**.
 
-1. Navigate to **Apps** → **All apps**. Confirm `7-Zip Portable` and `7-Zip Portable v2.0` show **Pharmacy**.
+1. Navigate to **Apps** → **All apps**. Select `7-Zip Portable` and `7-Zip Portable v2.0` (or your custom portable apps) and select **Properties**. Confirm the **Scope tags** section shows **Pharmacy**.
 
-1. Navigate to **Endpoint security** → **Security baselines** and **Antivirus** and **Attack surface reduction** and **Disk encryption**. Confirm `Security Baseline - Defender for Endpoint`, `Antivirus - Defender Configuration`, `ASR - Block (Pilot)`, and the BitLocker policy all show **Pharmacy**.
+1. Navigate to **Endpoint security**. Select each option separately: **Security baselines**, **Antivirus**, **Attack surface reduction**, and **Disk encryption**. Confirm `Security Baseline - Defender for Endpoint`, `Antivirus - Defender Configuration`, `ASR - Block (Pilot)`, and the `BitLocker - Full Disk Encryption` policy all have **Pharmacy** listed in their **Scope tags**.
 
    > [!NOTE]
    > If any expected object doesn't show **Pharmacy**, go back to that lab's exercise and add the scope tag (it's never too late — scope tags are editable after the fact via the policy **Properties** → **Scope tags** → **Edit**).
@@ -546,13 +562,27 @@ Before assigning the role, confirm which objects Lee Gu will gain visibility to.
 
 ### Task 3: Assign the `Pharmacy Helpdesk` role to Lee Gu
 
-1. In the **Microsoft Intune admin center**, navigate to **Tenant administration** → **Roles** → **All roles**.
+   > [!IMPORTANT]
+   > Intune role assignments accept **security groups only** — you can't add an individual user directly on the **Admin Groups** or **Scope (Groups)** tabs. So you first create a security group, add Lee Gu as a member, then assign that group to the role.
+
+1. In the **Microsoft Intune admin center**, navigate to **Groups** → **All groups**.
+
+1. Select **+ New group** and enter:
+   - **Group type:** Security
+   - **Group name:** `sg-Pharmacy-Helpdesk-Admins`
+   - **Membership type:** Assigned
+
+1. Under **Members**, select **No members selected**. Search for and select **Lee Gu** (`LeeG@<TenantPrefix>.OnMicrosoft.com`), then select **Select**.
+
+1. Select **Create**.
+
+1. Navigate to **Tenant administration** → **Roles** → **All roles**.
 
 1. Select **Pharmacy Helpdesk**.
 
 1. Select **Assignments** from the left navigation.
 
-1. Select **Assign**.
+1. Select **+ Assign**.
 
 1. On the **Basics** page, enter:
    - **Assignment name:** `Pharmacy Helpdesk - Lee Gu`
@@ -560,18 +590,18 @@ Before assigning the role, confirm which objects Lee Gu will gain visibility to.
 
 1. Select **Next**.
 
-1. On the **Admin Groups** page, select **Add groups**.
+1. On the **Admin Groups** tab, select **Add groups**.
 
    > [!NOTE]
-   > In production you'd assign to a group (e.g., `sg-Pharmacy-Helpdesk-Admins`). For this lab, assigning directly to Lee Gu demonstrates the concept.
+   > The Admin Groups tab defines *who* holds the role. Because it accepts groups only, you assign `sg-Pharmacy-Helpdesk-Admins` (which contains Lee Gu) rather than Lee Gu directly.
 
-1. Search for and select **Lee Gu** (`LeeG@<TenantPrefix>.OnMicrosoft.com`).
+1. Search for and select **sg-Pharmacy-Helpdesk-Admins**.
 
 1. Select **Select**, then **Next**.
 
-1. On the **Scope (Groups)** page, select **Add groups** and add **dyn-Windows-Devices** (the device target for Pharmacy operations). Select **Select**, then **Next**.
+1. On the **Scope Groups** tab, select **Add groups** and add **dyn-Windows-Devices** (the device target for Pharmacy operations). Select **Select**, then **Next**.
 
-1. On the **Scope (Tags)** page, select **Add scope tags** and choose **Pharmacy**. Select **Select**.
+1. On the **Scope Tags** tab, select **+ Select scope tags** and choose **Pharmacy**. Select **Select**.
 
    > [!IMPORTANT]
    > **Scope (Tags) is what makes the role actually scoped.** Without a scope tag on the assignment, Lee Gu would see all objects in the device target group. The scope tag intersects with the role's permissions and the assignment's group target to produce the final visibility — only Pharmacy-tagged objects that are also in dyn-Windows-Devices.
@@ -597,23 +627,23 @@ This is the moment of truth for Thread A. You'll sign in as Lee Gu and confirm t
 
 1. In the Intune admin center as Lee Gu, navigate to **Devices** → **Manage devices** → **Configuration**.
 
-1. Confirm Lee Gu sees **only** the configuration profiles tagged with **Pharmacy**. Profiles tagged with **Default** only (the Feature update profile, Expedited Quality update policy, ASR Audit Fleet policy) should **not** appear in Lee Gu's view.
+1. Confirm Lee Gu sees **only** the configuration profiles tagged with **Pharmacy**. Some profiles tagged with **Default** only (the Feature update profile, Expedited Quality update policy) should **not** appear in Lee Gu's view.
 
 1. Navigate to **Devices** → **Manage devices** → **Compliance**. Confirm `Compliance - Windows Security Baseline` is visible; no other compliance policies appear.
 
-1. Navigate to **Apps** → **All apps**. Confirm `7-Zip Portable` and `7-Zip Portable v2.0` are visible; Microsoft 365 Apps, Microsoft To Do, Google Chrome (Default-tagged) do **not** appear.
+1. Navigate to **Apps** → **All apps**. Confirm `7-Zip Portable` and `7-Zip Portable v2.0` (or your custom portable apps) are visible; Microsoft 365 Apps, Microsoft To Do, Google Chrome (Default-tagged) do **not** appear.
 
 1. Navigate to **Endpoint security** → **Security baselines** / **Antivirus** / **Attack surface reduction** / **Disk encryption**. Confirm only the Pharmacy-tagged policies are visible.
 
-1. Try to **edit** the `Compliance - Windows Security Baseline` policy:
+1. Try to **edit** the `Antivirus - Defender Configuration` policy:
    - Open the policy.
-   - Select **Properties** → attempt to select **Edit** on the Settings section.
-   - The Edit button should be grayed out or selecting it returns an authorization error. Lee Gu's role grants **Read** on compliance policies but not **Create/Update/Delete**.
+   - Scroll to **Properties** → attempt to select **Edit** on the Settings section.
+   - The Edit button should be grayed out, unavailable, or selecting it returns an authorization error. Lee Gu's role grants **Read** on compliance policies but not **Create/Update/Delete**.
 
    > [!NOTE]
    > **You've just proven that Lee Gu can see and audit Pharmacy clinical policies, sync devices, and run remote tasks — but cannot edit or delete policy.** That's exactly the upper-intermediate delegation pattern: scoped visibility + bounded write authority. The Pharmacy Helpdesk handles day-to-day device operations; central IT (Jordan Chen, Global Admin) retains policy authorship.
 
-1. Try **Remote Help** preview (you'll exercise this fully in **Lab 06 Exercise 2**): navigate to a Pharmacy-managed device and select **Remote Help**. Lee Gu can initiate; she can't on a device outside her scope.
+1. Try **Remote Help** (you'll enable and exercise this fully in **Lab 06 Exercise 2**): in the Intune admin center as Lee Gu, navigate to **Tenant administration** → **Remote Help**. Lee Gu sees **"You don't have access"**.
 
 1. Sign out of the InPrivate window and return to your Jordan Chen admin session.
 
@@ -629,7 +659,7 @@ Audit logs track administrative actions in Intune, providing accountability and 
 
 ### Task 1: Review audit logs
 
-1. In the **Microsoft Intune admin center**, expand **Tenant administration** and select **Audit logs**.
+1. In the **Microsoft Intune admin center**, select **Tenant administration**, and then select **Audit logs**.
 
 1. On the **Audit logs** page, review the list of recent administrative actions:
    - **Activity:** Type of action (Create, Update, Delete, Assign, etc.)
@@ -656,9 +686,7 @@ Audit logs track administrative actions in Intune, providing accountability and 
 
 1. On the **Audit logs** page, select **Export** from the top toolbar.
 
-1. Wait for the export to complete (typically 1–2 minutes for small datasets).
-
-1. Select **Download** to save the CSV file.
+1. Wait for the export to complete and download the CSV file (typically 1–2 minutes for small datasets).
 
 1. Open the CSV file in **Excel** and review the columns:
    - **Date**
@@ -700,21 +728,21 @@ Diagnostic settings route Intune logs to Azure Monitor Log Analytics for long-te
 Audit logs are how you reconstruct "who changed what, when, and why" — the bedrock of post-incident review. You'll trace the specific operations you performed across the lab series:
 
 1. In the **Microsoft Intune admin center**, in **Tenant administration** → **Audit logs**, filter the log:
-   - **Date range:** Last 7 days
-   - **Activity:** **Create** (to find policy/role creation events)
+   - **Date:** In the **Date** filter, set **Start** and **End** to cover the last 7 days, then select **Apply**
+   - **Activity:** In the **Activity** search box, enter `Create` and select the relevant creation activities (for example, **Create DeviceCompliancePolicy** or **Create DeviceAndAppManagementRoleAssignment**) to find policy/role creation events, then select **Apply**
 
 1. Locate the audit log entry for **Pharmacy Helpdesk** custom role creation (from **Lab 01 Exercise 2 Task 6**). Select it and review the **Properties** → JSON payload showing the role's permission grants.
 
-1. Locate the audit log entry for **Compliance - Windows Security Baseline** creation (from **Lab 02 Exercise 2 Task 1**). Note the **Initiated by** field shows your Global Admin account and the **Target** shows the compliance policy ID.
+1. Locate the audit log entry for **Compliance - Windows Security Baseline** creation (from **Lab 02 Exercise 2 Task 1**). Note the **Initiated by** field shows your Global Admin account and the **Target** shows the Compliance - Windows Security Baseline policy.
 
 1. Locate the audit log entry for the **Pharmacy Helpdesk → Lee Gu** role assignment (just created in **Exercise 3 Task 3** of this lab). Confirm the assignment payload includes the **Pharmacy** scope tag and the **dyn-Windows-Devices** group.
 
 1. Locate the audit log entry where you **deleted** `WIN - Camera - Enabled (Pilot)` to resolve the conflict in **Lab 02 Exercise 6 Task 2**. The activity will be **Delete deviceConfiguration**. The Properties pane includes the deleted object's last-known state — useful for rollback decisions.
 
-1. Switch to the **Microsoft Entra admin center** at **https://entra.microsoft.com**. Navigate to **Identity** → **Monitoring & health** → **Audit logs** (the Entra audit log, distinct from Intune's).
+1. Switch to the **Microsoft Entra admin center** at **https://entra.microsoft.com**. Navigate to **Monitoring & health** → **Audit logs** (the Entra audit log, distinct from Intune's).
 
 1. Filter the Entra audit log:
-   - **Service:** **Conditional Access**
+   - **Service:** Conditional Access
    - **Date:** Last 7 days
 
 1. Locate the entry where you **switched** `CA - Require compliant device (Pharmacy pilot)` from **Report-only** to **On** (from **Lab 04 Exercise 6 Task 3**). The Properties show the policy's state change.
@@ -736,20 +764,20 @@ Intune provides built-in reports for devices, compliance, configuration, applica
 
 1. In the **Microsoft Intune admin center**, navigate to **Reports** → **Device compliance**.
 
-1. Select **Noncompliant devices** report.
+1. Select the **Reports** tab, then select **Noncompliant devices and settings**.
 
 1. Select **Generate report** (or **Run report** if previously generated).
 
 1. Review the report data:
    - **Device name**
-   - **User principal name**
-   - **Compliance state**
+   - **Primary User principal name**
+   - **Setting compliance state**
    - **Last check-in**
    - **Operating system**
 
 1. Use the **Filter** option to narrow results (e.g., filter by OS = Windows).
 
-1. Select **Export** to download the report as CSV.
+1. Select **Export**, then select **Yes** to download the report as CSV.
 
 **You have successfully generated and exported a device compliance report.**
 
@@ -759,18 +787,17 @@ Intune provides built-in reports for devices, compliance, configuration, applica
 
 1. In the **Microsoft Intune admin center**, navigate to **Reports** → **Device configuration**.
 
-1. Select **Assignment status** report.
-
 1. Select **Generate report**.
 
-1. Review the report data:
+1. On the **Summary** tab, review the **Top 5 configuration policy status** overview:
    - **Policy name**
-   - **Assigned devices**
-   - **Succeeded**
-   - **Failed**
-   - **Pending**
+   - **Policy type**
+   - **Successful devices**
+   - **Devices with errors**
+   - **Devices with conflicts**
 
-1. Select a policy to drill down into per-device status.
+   > [!NOTE]
+   > The **Top 5 configuration policy status** table on the **Summary** tab is a read-only overview — the policy rows aren't selectable. To drill down into per-device status, navigate to **Devices** → **Manage devices** → **Configuration**, select the policy, and select **View report**.
 
 **You have successfully generated a device configuration report.**
 
@@ -781,13 +808,14 @@ Intune provides built-in reports for devices, compliance, configuration, applica
 1. In the **Microsoft Intune admin center**, navigate to **Tenant administration** → **Tenant status**.
 
 1. Review the **Tenant status** dashboard:
-   - **Service health:** Shows active incidents or advisories affecting Intune
+   - **Tenant details:** total enrolled devices, licensed users, and Intune licenses
+   - **Service health and message center:** Shows active incidents or advisories affecting Intune
    - **Connector status:** Shows health of connectors (Defender for Endpoint, Microsoft Tunnel, etc.)
    - **Intune news:** Product updates and feature announcements
 
-1. Select **Service health** to view detailed incident information.
+1. Locate **Service health** to view detailed incident information.
 
-1. Select **Message center** to view upcoming changes and feature rollouts.
+1. Locate **Message center** to view upcoming changes and feature rollouts.
 
 **You have successfully reviewed the Tenant status dashboard.**
 
