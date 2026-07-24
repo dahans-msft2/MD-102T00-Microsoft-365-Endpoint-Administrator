@@ -48,20 +48,22 @@ Microsoft Store apps are modern Windows applications distributed through the Mic
 
 1. Sign in as **admin@<TenantPrefix>.onmicrosoft.com**.
 
-1. In the **Microsoft Intune admin center**, expand **Apps** and select **All apps**.
+1. If prompted to stay signed in, select **No**.
+
+1. In the **Microsoft Intune admin center**, select **Apps**, and then select **All apps**.
 
 1. Select **+ Create** from the top toolbar.
 
-1. In the **Select app type** pane, set **Platform** to **Windows**, then set **App type** to **Microsoft Store app (new)**. Select **Create**.
+1. In the **Select app type** pane, set **Platform** to **Windows**, then set **App type** to **Microsoft Store app (new)**. Select **Select**.
 
    > [!NOTE]
    > The portal flow is a two-step picker: choose Platform first (Windows / iOS/iPadOS / macOS / Android), then the App type list filters to that platform. The "new" Microsoft Store app type uses the Microsoft Store for Business backend and provides better reliability than the legacy connector.
 
-1. On the **App information** page, select **Search the Microsoft Store app (new)**.
+1. On the **App information** tab, select **Search the Microsoft Store app (new)**.
 
-1. In the Store search dialog, search for `Microsoft To Do`.
+1. In the **Search the Microsoft Store app (new)** pane, search for `Microsoft To Do`.
 
-1. Select **Microsoft To Do** from the search results.
+1. Select **Microsoft To Do: Lists, Tasks & Reminders** from the search results.
 
 1. Select **Select**.
 
@@ -70,7 +72,7 @@ Microsoft Store apps are modern Windows applications distributed through the Mic
    - **Publisher:** Microsoft Corporation
    - **Description:** (auto-populated from Store)
 
-1. Select **Next** and skip **Scope tags**.
+1. Select **Next**, then select **Next** again to skip the **Scope tags** tab.
 
 1. On the **Assignments** page, under **Required**, select **Add group**.
 
@@ -83,7 +85,7 @@ Microsoft Store apps are modern Windows applications distributed through the Mic
 
 1. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully added and assigned a Microsoft Store app.**
 
@@ -143,7 +145,12 @@ Win32 apps are traditional Windows desktop applications (.exe, .msi installers).
 
 1. Note the exact downloaded filename (it changes with each 7-Zip release, e.g. `7z2408-x64.msi`) — you'll need it for the next command.
 
-1. Open **Windows Terminal (Admin)** (right-click Start → Windows Terminal (Admin)).
+   > [!NOTE]
+   > This lab uses `7z-portable.exe` as the example payload. If you use a different installer (for example, Notepad++ `npp.8.9.7.Installer.x64.exe`), substitute the **filename**, **app name/publisher**, **install/uninstall commands**, and **detection path** consistently throughout Exercises 2, 5, and 7.
+
+1. Open **Windows PowerShell (Admin)** (right-click Start → Windows PowerShell (Admin)).
+
+1. On the **Do you want to allow this app to make changes to your device?** prompt, select **Yes**.
 
 1. Navigate to the Win32 Content Prep Tool directory:
 
@@ -184,11 +191,11 @@ Win32 apps are traditional Windows desktop applications (.exe, .msi installers).
 
 1. Select **+ Create** from the top toolbar.
 
-1. In the **Select app type** pane, set **Platform** to **Windows** and **App type** to **Windows app (Win32)**. Select **Create**.
+1. In the **Select app type** pane, set **Platform** to **Windows** and **App type** to **Windows app (Win32)**. Select **Select**.
 
-1. On the **App information** page, select **Select app package file**.
+1. On the **App information** tab, select **Select app package file**.
 
-1. In the **App package file** pane, select **Browse** and navigate to `C:\LabAssets\Win32-App\Output\`.
+1. In the **App package file** pane, select the folder icon next to **Select a file**, and navigate to `C:\LabAssets\Win32-App\Output\`.
 
 1. Select the `.intunewin` file you created in Task 1 and select **OK**.
 
@@ -228,10 +235,10 @@ Win32 apps are traditional Windows desktop applications (.exe, .msi installers).
 
 1. Select **Next**.
 
-1. On the **Detection rules** page, configure:
+1. On the **Detection rules** tab, configure:
    - **Rules format:** Manually configure detection rules
 
-1. Select **Add** under **Detection rules**.
+1. Select **+Add** under **Detection rules**.
 
 1. In the **Detection rule** pane, configure:
    - **Rule type:** MSI
@@ -244,16 +251,16 @@ Win32 apps are traditional Windows desktop applications (.exe, .msi installers).
 
 1. Select **Next**.
 
-1. On the **Dependencies** page, select **Next** (no dependencies required).
+1. On the **Dependencies** tab, select **Next** (no dependencies required).
 
-1. On the **Supersedence** page, select **Next** (will configure supersedence in a later task).
+1. On the **Supersedence** tab, select **Next** (will configure supersedence in a later task).
 
-1. On the **Scope tags** page, select **+ Select scope tags**, add **Pharmacy** (created in **Lab 01 Exercise 2 Task 6**), select **Select**, then select **Next**.
+1. On the **Scope tags** tab, select **+ Select scope tags**, add **Pharmacy** (created in **Lab 01 Exercise 2 Task 6**), select **Select**, then select **Next**.
 
    > [!NOTE]
    > 7-Zip is the canonical archive tool for the Contoso clinical document workflow (research-data exports, anonymized DICOM bundles). Tagging the deployment with `Pharmacy` keeps it visible to the Pharmacy Helpdesk role (assigned in **Lab 05 Exercise 3**).
 
-1. On the **Assignments** page, under **Required**, select **Add group**.
+1. On the **Assignments** tab, under **Required**, select **+Add group**.
 
 1. Search for and select **sg-Intune-Pilot-Users**.
 
@@ -261,7 +268,7 @@ Win32 apps are traditional Windows desktop applications (.exe, .msi installers).
 
 1. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully added a Win32 app with a custom detection rule.**
 
@@ -305,9 +312,9 @@ Microsoft 365 Apps (formerly Office 365 ProPlus) provide Word, Excel, PowerPoint
 
 1. Select **+ Create** from the top toolbar.
 
-1. In the **Select app type** pane, set **Platform** to **Windows** and **App type** to **Microsoft 365 Apps for Windows 10 and later**. Select **Create**.
+1. In the **Select app type** pane, set **Platform** to **Windows** and **App type** to **Microsoft 365 Apps for Windows 10 and later**. Select **Select**.
 
-1. On the **App suite information** page, configure:
+1. On the **App suite information** tab, configure:
    - **Suite Name:** `Microsoft 365 Apps (Current Channel)`
    - **Suite Description:** `Microsoft 365 Apps with Current Channel updates`
 
@@ -328,7 +335,7 @@ Microsoft 365 Apps (formerly Office 365 ProPlus) provide Word, Excel, PowerPoint
 1. Under **App suite information**, configure:
    - **Architecture:** **64-bit** (toggle, already selected by default)
    - **Default file format:** **Office Open XML Format** — this field is required; the page shows a validation error until you pick one
-   - **Update channel:** **Current Channel** — also required
+   - **Update channel:** **Current Channel (Preview)** — also required
    - **Remove other versions:** Yes (default)
    - **Version to install:** Latest (default; leave **Specific version** disabled)
 
@@ -354,7 +361,7 @@ Microsoft 365 Apps (formerly Office 365 ProPlus) provide Word, Excel, PowerPoint
 
 1. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully configured and assigned Microsoft 365 Apps.**
 
@@ -405,7 +412,7 @@ The Enterprise App Catalog (part of Microsoft Intune Suite) provides a curated l
    > [!NOTE]
    > Enterprise App Catalog app is now generally available (the "(preview)" suffix that appeared earlier has been dropped). It's part of **Enterprise App Management**, an Intune Suite capability — active because of the Suite trial from Lab 01 prerequisites. If this option doesn't appear, the Suite trial may not have fully provisioned yet. Wait 5–10 minutes after activation and refresh — capability tiles can take a few minutes to surface after the trial flips to **Active**.
 
-1. On the **Select app** page, browse the available apps in the catalog.
+1. On the **Select app** page, select **Search the Enterprise App Catalog** to browse the available apps in the catalog.
 
    The catalog includes popular enterprise apps such as:
    - **Google Chrome**
@@ -439,7 +446,13 @@ The Enterprise App Catalog (part of Microsoft Intune Suite) provides a curated l
 
 1. Review the read-only **App information** (App name, Package name, Version, Publisher, Architecture, Application size, Privacy URL, App store URL) and **App commands** (**Install command**, pre-built as `"%SystemRoot%\System32\msiexec.exe" /i "googlechromestandaloneenterprise64.msi" /qn`) — none of this needs editing.
 
-1. Select **Select**.
+1. Select **Next**.
+
+1. On the **Configuration** tab, select the package **Chrome for Business 64-bit**.
+
+1. Select **Next**.
+
+1. On the **Updates** tab, select **Select**.
 
 **You have successfully browsed the Enterprise App Catalog and selected an app.**
 
@@ -473,9 +486,9 @@ The Enterprise App Catalog (part of Microsoft Intune Suite) provides a curated l
 
 1. On the **Requirements** page, review the pre-configured requirements and select **Next**.
 
-1. On the **Detection rules** page, review the pre-configured detection rule:
+1. On the **Detection rules** tab, review the pre-configured detection rule:
    - **Rule type:** File or registry-based detection
-   - **Detection logic:** Checks for Chrome installation path
+   - **Path/Code:** Checks for Chrome installation path
 
 1. Select **Next**.
 
@@ -494,23 +507,26 @@ The Enterprise App Catalog (part of Microsoft Intune Suite) provides a curated l
 
 1. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Add app**.
 
 **You have successfully added and assigned an app from the Enterprise App Catalog.**
 
 ---
 
-### Task 3: Verify app availability in Company Portal
+### Task 3: Verify app availability in the Company Portal
 
 1. On **SEA-DEV1**, open the **Start menu** and search for `Company Portal`.
 
 1. Launch the **Company Portal** app.
 
+   > [!NOTE]
+   > If the **Company Portal** app isn't available on the device, open **Microsoft Edge** and navigate to **https://apps.microsoft.com/detail/9wzdncrfj3pz?hl=en-GB&gl=PT** to install the Company Portal app from the Microsoft Store.
+
 1. Sign in as **MeganB@<TenantPrefix>.OnMicrosoft.com** (if not already signed in).
 
 1. Navigate to the **Apps** section.
 
-1. Verify **Google Chrome** appears in the available apps list.
+1. Verify **Chrome for Business 64-bit** appears in the available apps list.
 
 1. Select **Install** to install the app.
 
@@ -550,7 +566,7 @@ For this task, you'll simulate a new version by creating a second Win32 app entr
    - **Scope tags:** add **Pharmacy** (same as the original app) — keeps Pharmacy delegation consistent across both versions.
    - **Assignments:** assign **Required** to **sg-Intune-Pilot-Users** (same as the original app).
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully configured app supersedence to automatically upgrade from v1 to v2.**
 
@@ -568,7 +584,7 @@ For this task, you'll simulate a new version by creating a second Win32 app entr
 
 1. Navigate to **7-Zip** (the original app) and select **Device install status**.
 
-1. Verify the status shows **Superseded** or **Uninstalled**.
+1. Verify the status shows **Superseded** or **Not installed**.
 
 **You have successfully verified app supersedence automatically replaced the old app with the new version.**
 
@@ -582,17 +598,17 @@ App Protection Policies (APP) secure corporate data on mobile devices and BYOD (
 
 ### Task 1: Create an iOS App Protection Policy
 
-1. In the **Microsoft Intune admin center**, expand **Apps > Manage** and select **Protection**.
+1. In the **Microsoft Intune admin center**, select **Apps**, and then select **Protection**.
 
-1. Select **+ Create** → **iOS/iPadOS**.
+1. Select **+ Create** → **iOS/iPadOS** to create a new policy.
 
-1. On the **Basics** page, configure:
+1. On the **Basics** tab, configure:
    - **Name:** `APP - iOS Data Protection`
    - **Description:** `Protects corporate data in Microsoft apps on iOS devices`
 
 1. Select **Next**.
 
-1. On the **Apps** page, select **Select public apps**.
+1. On the **Apps** tab, select **+ Select public apps**.
 
 1. In the app picker, search for and select:
    - **Microsoft Outlook**
@@ -603,11 +619,11 @@ App Protection Policies (APP) secure corporate data on mobile devices and BYOD (
    - **Microsoft OneDrive**
    - **Microsoft 365 Copilot**
 
-1. Select **OK**.
+1. Select **Select**.
 
 1. Select **Next**.
 
-1. On the **Data protection** page, configure:
+1. On the **Data protection** tab, configure:
    - **Data transfer:**
      - **Send org data to other apps:** Policy managed apps
      - **Receive data from other apps:** Policy managed apps
@@ -623,11 +639,11 @@ App Protection Policies (APP) secure corporate data on mobile devices and BYOD (
 
 1. Select **Next**.
 
-1. On the **Access requirements** page, configure:
+1. On the **Access requirements** tab, configure:
    - **PIN for access:** Require
    - **PIN type:** Numeric
    - **Select Minimum PIN length:** 6
-   - **Face ID instead of PIN for access (iOS 11+/iPadOS):** Require
+   - **Override biometrics with PIN after timeout:** Require
    - **Work or school account credentials for access:** Require
    - **Recheck the access requirements after (minutes of inactivity):** 30
 
@@ -657,7 +673,7 @@ App Protection Policies (APP) secure corporate data on mobile devices and BYOD (
 
 1. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully created an iOS App Protection Policy.**
 
@@ -665,7 +681,7 @@ App Protection Policies (APP) secure corporate data on mobile devices and BYOD (
 
 ### Task 2: Create an Android App Protection Policy
 
-1. On the **App protection policies** page, select **Create policy** → **Android**.
+1. On the **App | Protection** page, select **+ Create** → **Android** to create a new policy.
 
 1. On the **Basics** page, configure:
    - **Name:** `APP - Android Data Protection`
@@ -673,11 +689,11 @@ App Protection Policies (APP) secure corporate data on mobile devices and BYOD (
 
 1. Select **Next**.
 
-1. On the **Apps** page, select **Select public apps**.
+1. On the **Apps** tab, select **+ Select public apps**.
 
 1. Search for and select the same Microsoft apps as the iOS policy (Outlook, Teams, Word, Excel, PowerPoint, OneDrive).
 
-1. Select **OK** and select **Next**.
+1. Select **Select** and then select **Next**.
 
 1. On the **Data protection** page, configure:
    - **Backup org data to Android backup services:** Allow (default)
@@ -715,7 +731,9 @@ App Protection Policies (APP) secure corporate data on mobile devices and BYOD (
 
 1. Select **Next**.
 
-1. On the **Conditional launch** page, review the default conditions and select **Next**.
+1. On the **Conditional launch** tab, review the default conditions and select **Next**.
+
+1. On the **Scope tags** tab, select **Next**.
 
 1. On the **Assignments** page, under **Included groups**, select **Add groups** and select **sg-Intune-Pilot-Users**.
 
@@ -767,13 +785,24 @@ You'll use the Intune admin center to monitor app deployment across all devices,
    - **Android:** Number of users with protected apps
    - **Windows:** (App Protection Policies not applicable to Windows)
 
-1. Review the **App install status** dashboard:
-   - **Failed:** Apps that failed to install
-   - **In progress:** Apps currently installing
-   - **Installed:** Successfully installed apps
-   - **Not installed:** Apps not yet evaluated
+1. In the **App install status** tile, note the number of **Apps with failures**.
 
-1. Select **Failed** to view a list of failed app installations.
+1. Select **App install status** to open the report. The report lists the apps with failures and includes these columns:
+   - **App name**
+   - **Publisher**
+   - **Platform**
+   - **Version**
+   - **Install failure %**
+   - **Device failures**
+   - **User failures**
+
+1. Select the **App name** to open the app, then under **Monitor** select **Device install status**.
+
+1. Review the **Status** column for each device (see **Status details** for the reason on failures):
+   - **Installed:** The app installed successfully and passed its detection rule.
+   - **Failed:** The installation failed — check **Status details** for the error.
+   - **Pending:** The installation is in progress or awaiting the next device sync.
+   - **Not installed:** The app is not installed on the device.
 
 **You have successfully reviewed the App overview dashboard.**
 
@@ -810,18 +839,19 @@ You'll use the Intune admin center to monitor app deployment across all devices,
 
 1. Select an app from the list (e.g., **Microsoft 365 Apps (Current Channel)**).
 
-1. On the **Device install status** page, select **Export** from the top toolbar.
+1. On the **Device install status** page, select **Export** from the top toolbar, and then select **Yes** to confirm.
 
 1. Wait for the export to complete (typically 1–2 minutes).
 
-1. Select **Download** to save the CSV file.
+1. Open the exported **.zip** file (for example, `DeviceInstallStatusByApp_<id>.zip`). It contains the CSV report.
 
 1. Open the CSV in **Excel** and review the columns:
    - **Device name**
-   - **User name**
+   - **UserPrincipalName**
    - **Platform**
-   - **Status** (Installed, Failed, In Progress)
-   - **Last check-in**
+   - **AppInstallState_Ioc (status)** (Installed, Failed, In Progress)
+   - **AppInstallStateDetails (error message)**
+   - **Last ModifiedDate**
 
 **You have successfully exported app installation data for reporting.**
 
@@ -835,7 +865,7 @@ App assignment intents can collide just like configuration profiles can. The cla
 
 1. Select **Properties** from the left navigation, then in the **Assignments** section select **Edit**.
 
-1. Under **Uninstall**, select **Add group**.
+1. Under **Uninstall**, select **+ Add group**.
 
 1. Search for and select **sg-Intune-Pilot-Users** (the same pilot cohort that already has **7-Zip v2.0** assigned as **Required** via supersedence). Select **Select**.
 

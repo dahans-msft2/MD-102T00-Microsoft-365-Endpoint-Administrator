@@ -414,24 +414,34 @@ The **Send email to end user** noncompliance action needs a message template to 
    - **Microsoft Defender Antimalware:** Require
    - **Microsoft Defender Antimalware minimum version:** Leave blank (any version)
    - **Microsoft Defender Antimalware intelligence up-to-date:** Require
-   - **Real-tiem protection:** Require
+   - **Real-time protection:** Require
 
 1. Select **Next**.
 
-1. On the **Actions for noncompliance** page, configure the default action:
-   - **Mark device noncompliant:** 7
+1. On the **Actions for noncompliance** page, review the default action:
+   - **Mark device noncompliant:** Immediately
 
-   > [!NOTE]
-   > This provides a 7-day grace period before the device is officially marked non-compliant in Microsoft Entra ID (triggering Conditional Access blocks).
+1. Select **Add** to add an additional action.
 
-1. Configure a new action:
+1. Configure the new action:
    - **Action:** Send email to end user
    - **Schedule (days after noncompliance):** 1
-   - **Message template:** Select **Default** (created in **Task 1**)
+   - **Message template:** Select **Default** (or create a custom template)
    - **Additional recipients:** Leave blank
 
    > [!NOTE]
    > This sends an email to the device's primary user 1 day after the device becomes non-compliant, giving them time to remediate the issue.
+   >
+   > If no Default message template is available, navigate to the **Notifications** tab on the **Compliance** page first and select **+ Create notification** to create one before configuring this action.
+
+1. Select **Add** to add another action.
+
+1. Configure:
+   - **Action:** Mark device non-compliant
+   - **Schedule (days after noncompliance):** 7
+
+   > [!NOTE]
+   > This provides a 7-day grace period before the device is officially marked non-compliant in Microsoft Entra ID (triggering Conditional Access blocks).
 
 1. Select **Next** and on the **Scope tags** page, add **Pharmacy** and select **Next**.
 
@@ -478,26 +488,26 @@ A compliance policy on its own doesn't block anything — it just marks devices 
 
 1. Open a new browser tab and navigate to **https://entra.microsoft.com** (Microsoft Entra admin center). Sign in as **admin@<TenantPrefix>.onmicrosoft.com** if prompted.
 
-1. In the left navigation, select **Conditional Access**.
+1. In the left navigation, under **Entra ID**, select **Conditional Access**.
 
-1. On the **Conditional Access | Overview** page, select **+ Create new policy**.
+1. On the left navigation, select **Policies**, then select **+ New policy**.
 
 1. On the **New** policy page, configure:
    - **Name:** `CA - Require compliant device (Pharmacy pilot)`
 
-1. Under **Assignments** → **Users**, select **0 users and groups selected**:
+1. Under **Assignments** → **Users or agents**, select **0 users and groups selected**:
    - On the **Include** tab, select **Select users and groups** → check **Users and groups** → select **sg-Intune-Pilot-Users** → **Select**.
    - On the **Exclude** tab, select **Users and groups** → select **admin@<TenantPrefix>.onmicrosoft.com** (or whichever account you signed in with) → **Select**.
 
    > [!WARNING]
    > **Always exclude at least one Global Administrator (break-glass account) from any Conditional Access policy that could block sign-in.** Report-only mode doesn't enforce, but this policy switches to **On** in **Lab 04 Exercise 6** — the exclusion must be in place *before* that switch, or you risk locking yourself out of the tenant.
 
-1. Under **Assignments** → **Target resources**, select **0 resources selected**:
-   - **Select what this policy applies to:** Resources (formerly 'cloud apps')
-   - **Include:** All resources (formerly 'All cloud apps')
+1. Under **Assignments** → **Target resources**, select **No target resources selected**:
+   - **Select what this policy applies to:** Resources (formerly "All cloud apps")
+   - **Include:** All resources (formerly "All cloud apps")
    - Acknowledge the warning about including all apps.
 
-1. Under **Conditions**, select **0 conditions selected** → **Client apps** → **Configure: Yes** → check both **Browser** and **Mobile apps and desktop clients** → **Done**.
+1. Under **Assignments** → **Conditions**, select **0 conditions selected** → **Client apps** → **Not configured** → **Configure: Yes** → check both **Browser** and **Mobile apps and desktop clients** → **Done**.
 
 1. Under **Access controls** → **Grant**, select **0 controls selected**:
    - Select **Grant access**.
