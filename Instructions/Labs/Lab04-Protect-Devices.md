@@ -37,6 +37,9 @@ This lab requires:
 - **SEA-DEV1** and **SEA-DEV2** (enrolled Windows 11 devices)
 - **LIN-SRV1** (Ubuntu 22.04 server for Microsoft Tunnel Gateway)
 
+> [!IMPORTANT]
+> **Start this lab early.** The first-time Microsoft Defender for Endpoint tenant onboarding (Exercise 1) can take **several hours** to fully provision — device inventory, onboarding status, and security signals don't appear in the Defender portal immediately after you flip the connector on. Don't wait until Exercise 1 to check status and expect it to be fast: enable the connector and onboard your devices as soon as you start the lab, then continue with the remaining exercises while Defender finishes provisioning in the background. If you come back to verify onboarding status later and devices still show **Pending**, that's expected — give it more time before troubleshooting.
+
 ---
 
 ## Exercise 1: Integrate Microsoft Defender for Endpoint
@@ -57,7 +60,7 @@ The Intune ↔ Defender for Endpoint connector is a **two-portal** setup: you fl
 
 1. In the **Microsoft Defender portal**, in the left navigation, select **System** → **Settings** → **Endpoints**.
 
-1. Under **General**, select **Advanced features**.
+1. Under **General**, select **Optional features**.
 
 1. Locate the **Microsoft Intune connection** toggle and set it to **On**.
 
@@ -70,13 +73,13 @@ The Intune ↔ Defender for Endpoint connector is a **two-portal** setup: you fl
 
 1. Switch back to the Intune admin center tab (or open **https://intune.microsoft.com**).
 
-1. In the **Microsoft Intune admin center**, expand **Endpoint security** and (under the **Setup** group) select **Microsoft Defender for Endpoint**.
+1. In the **Microsoft Intune admin center**, expand **Endpoint security** and select **Microsoft Defender for Endpoint** (under **Setup**).
 
 1. At the top of the page, select **Refresh**. **Connection status** should change from **Unavailable** to **Available** within a minute (it may take 1–2 minutes the first time).
 
 1. On the **Microsoft Defender for Endpoint** page, under **MDM Compliance Policy Settings**, configure:
-   - **Connect Windows devices version 10.0.15063 and above to Microsoft Defender for Endpoint:** **On**
    - **Allow Microsoft Defender for Endpoint to enforce Endpoint Security Configurations:** **On**
+   - **Connect Windows devices version 10.0.15063 and above to Microsoft Defender for Endpoint:** **On**
 
    > [!NOTE]
    > Enabling the connector allows Intune to send device data to Defender for Endpoint and receive threat intelligence. The second setting allows Defender to enforce security configurations even on devices that aren't yet fully managed by Intune.
@@ -93,10 +96,10 @@ Endpoint Detection and Response policies onboard devices to Defender for Endpoin
 
 1. In the **Microsoft Intune admin center**, navigate to **Endpoint security** → **Endpoint detection and response**.
 
-1. Select **Create Policy**.
+1. Select **Create**.
 
-1. In the **Create a profile** pane, configure:
-   - **Platform:** Windows 10, Windows 11, and Windows Server
+1. In the **Create a policy** pane, configure:
+   - **Platform:** Windows
    - **Profile:** Endpoint detection and response
 
 1. Select **Create**.
@@ -108,14 +111,11 @@ Endpoint Detection and Response policies onboard devices to Defender for Endpoin
 1. Select **Next**.
 
 1. On the **Configuration settings** page, configure:
-   - **Endpoint detection and response:** Select **Require**
-   - **Sample Sharing:** Select **All samples**
-   - **Telemetry reporting frequency:** Select **Expedite**
+   - **Microsoft Defender for Endpoint client configuration package type:** **Auto from connector**
+   - **Sample Sharing:** **All (Default)**
+   - **[Deprecated] Telemetry Reporting Frequency:** **Expedite**
 
-   > [!NOTE]
-   > "Expedite" sends telemetry data more frequently for faster threat detection. "All samples" allows Defender to submit suspicious files to Microsoft for analysis.
-
-1. Select **Next**.
+1. Select **Next** and skip **Scope tags**.
 
 1. On the **Assignments** page, under **Assign to**, select **Add groups**.
 
@@ -170,7 +170,7 @@ Security baselines are pre-configured collections of recommended settings based 
 
 1. Select **Microsoft Defender for Endpoint Baseline** from the list.
 
-1. Select **Create profile**.
+1. Select **+ Create policy**.
 
 1. On the **Basics** page, enter:
    - **Name:** `Security Baseline - Defender for Endpoint`
@@ -218,7 +218,7 @@ Antivirus policies configure Microsoft Defender Antivirus settings, including re
 1. Select **Create Policy**.
 
 1. In the **Create a profile** pane, configure:
-   - **Platform:** Windows 10, Windows 11, and Windows Server
+   - **Platform:** Windows
    - **Profile:** Microsoft Defender Antivirus
 
 1. Select **Create**.
@@ -230,23 +230,22 @@ Antivirus policies configure Microsoft Defender Antivirus settings, including re
 1. Select **Next**.
 
 1. On the **Configuration settings** page, expand **Defender** and configure:
-   - **Allow Real Time Monitoring:** Allowed
+   - **Allow Archive Scanning:** Allowed
    - **Allow Behavior Monitoring:** Allowed
-   - **Allow Intrusion Prevention System:** Allowed
-   - **Allow IO AV Protection:** Allowed
-   - **Allow On Access Protection:** Allowed
-   - **Allow Scanning Network Files:** Allowed
    - **Allow Cloud Protection:** Allowed
+   - **Allow Full Scan Removable Drive Scanning:** Allowed
+   - **Allow Realtime Monitoring:** Allowed
+   - **Allow Scanning Network Files:** Allowed
    - **Cloud Block Level:** High
    - **Cloud Extended Timeout:** 50 seconds
-   - **Submit Samples Consent:** Send all samples automatically
-
-1. Expand **Scans** and configure:
-   - **Scan Type:** Quick scan
+   - **Scan Parameter:** Quick scan
    - **Schedule Scan Day:** Every day
    - **Schedule Scan Time:** 2:00 AM
-   - **Scan Archive Files:** Allowed
-   - **Scan Removable Drives During Full Scan:** Allowed
+   - **Submit Samples Consent:** Send all samples automatically
+   - **Allow On Access Protection:** Allowed
+
+   > [!NOTE]
+   > All of these live under the single **Defender** category on this page — there's no separate "Scans" section to expand. The category has dozens of other settings (archive/CPU/network-parsing options, threat severity remediation actions, and more); leave everything not listed above at its default **Not configured**. You only need to touch the fields above for this lab.
 
 1. Select **Next**.
 
@@ -272,33 +271,27 @@ Firewall policies configure Windows Defender Firewall rules and behavior.
 1. Select **Create Policy**.
 
 1. In the **Create a profile** pane, configure:
-   - **Platform:** Windows 10, Windows 11, and Windows Server
-   - **Profile:** Microsoft Defender Firewall
+   - **Platform:** Window
+   - **Profile:** Microsoft Firewall
 
 1. Select **Create**.
 
 1. On the **Basics** page, enter:
    - **Name:** `Firewall - Defender Configuration`
-   - **Description:** `Enables firewall for all network profiles and configures logging`
+   - **Description:** `Enables the firewall for all network profiles`
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, expand **Domain Profile** and configure:
-   - **Enable Firewall:** Yes
-   - **Enable Stealth Mode:** Yes
-   - **Enable Log Success Connections:** Yes
-   - **Enable Log Dropped Packets:** Yes
-
-1. Expand **Private Profile** and configure the same settings as Domain Profile.
-
-1. Expand **Public Profile** and configure:
-   - **Enable Firewall:** Yes
-   - **Enable Stealth Mode:** Yes
-   - **Block Inbound Connections:** Yes (more restrictive for public networks)
-   - **Enable Log Success Connections:** Yes
-   - **Enable Log Dropped Packets:** Yes
+1. On the **Configuration settings** page, use the **Search** box to find and configure each setting below. **Enable Log Success Connections** and **Enable Log Dropped Packets** each return **three rows** (one for the Domain profile, one for Private, one for Public) — configure all three rows for each:
+   - **Enable Domain Network Firewall:** True (Default)
+   - **Enable Private Network Firewall:** True (Default)
+   - **Enable Public Network Firewall:** True (Default)
+   - **Enable Log Success Connections** (all 3 rows — Domain, Private, Public): change from the default **Disable Logging Of Successful Connections (Default)** to **Enable Logging Of Successful Connections**
+   - **Enable Log Dropped Packets** (all 3 rows — Domain, Private, Public): change from the default **Disable Logging Of Dropped Packets (Default)** to **Enable Logging Of Dropped Packets**
 
 1. Select **Next**.
+
+1. On the **Scope tags** page, add **Pharmacy** and select **Next**.
 
 1. On the **Assignments** page, assign to **dyn-Windows-Devices**.
 
@@ -934,7 +927,7 @@ You'll use the Microsoft Defender portal and Intune admin center to monitor devi
 
 ### Task 3: Switch the Conditional Access policy from Report-only to On
 
-In **Lab 02 Exercise 2 Task 3** you created the Conditional Access policy `CA - Require compliant device (Pharmacy pilot)` in **Report-only** mode. In **Lab 02 Exercise 6 Task 4** you inspected its impact via Sign-in logs. The endpoint security policies you deployed in Exercises 1–3 of this lab (Defender baseline, Antivirus, Firewall, ASR, BitLocker) should now have more pilot devices passing compliance evaluation. It's time to switch the CA policy from Report-only to **On**.
+In **Lab 02 Exercise 2 Task 4** you created the Conditional Access policy `CA - Require compliant device (Pharmacy pilot)` in **Report-only** mode. In **Lab 02 Exercise 6 Task 4** you inspected its impact via Sign-in logs. The endpoint security policies you deployed in Exercises 1–3 of this lab (Defender baseline, Antivirus, Firewall, ASR, BitLocker) should now have more pilot devices passing compliance evaluation. It's time to switch the CA policy from Report-only to **On**.
 
 > [!WARNING]
 > Before you enable the policy, **verify the break-glass exclusion is still in place**. If your Global Admin account is no longer in the **Exclude** list, fix that first or you risk locking yourself out of the tenant.
