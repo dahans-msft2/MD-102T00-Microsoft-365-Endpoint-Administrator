@@ -523,6 +523,7 @@ Microsoft Entra ID roles (Task 1–5) delegate Entra-level permissions. Intune i
    - **Remote tasks:** Sync devices, Restart now (or Reboot now), Collect diagnostics
    - **Organization:** Read
    - **Roles:** Read
+   - **Remote Help app**: Take full control, View screen
 
    > [!IMPORTANT]
    > Leave **all** permissions on **Apps**, **Device compliance policies**, **Device configurations**, **Endpoint protection**, **Enrollment programs**, and **Policy sets** set to **No**. The Pharmacy Helpdesk should be able to act on devices but **not** author or modify any policy. This is the upper-intermediate delegation pattern: a narrow remote-action role layered on top of broad read.
@@ -943,6 +944,14 @@ You'll now enroll two Windows 11 devices (SEA-DEV1 and SEA-DEV2) into Intune by 
    - **Overview:** Device name, operating system, compliance status, and last check-in time.
    - **Hardware:** Serial number, TPM version, total storage space
    - **Discovered apps:** (will populate over time as app inventory syncs)
+
+1. Tag this device as a Pharmacy clinical device so the delegated **Pharmacy Helpdesk** admin can see and act on it in later labs. On the **SEA-DEV1** device page, under **Manage**, select **Properties**.
+
+1. Next to **Scope tags**, select **Open** to open the **Select tags** pane.
+
+1. In the **Select tags** pane, select **Pharmacy** (the scope tag you created in **Exercise 2 Task 6**), then select **Select**.
+
+1. Select **Save**.
 
 **You have successfully verified SEA-DEV1 enrollment in Intune.**
 

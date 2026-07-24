@@ -527,6 +527,7 @@ This is the culmination of Thread A across the whole lab series. By the end of t
    - **Organization:** Read = **Yes**
    - **Roles:** Read = **Yes**
    - **Device compliance policies**, **Device configurations**, **Managed apps**, **Mobile apps**, **Endpoint Protection Reports**, **Security baselines:** Read = **Yes**; Create, Update, Delete, and Assign = **No**
+   - **Remote Help app**: Take full control = **Yes**; View screen = **Yes**; 
 
    > [!NOTE]
    > This is the principle-of-least-privilege role you defined in Lab 01: enough to operate devices day-to-day, but no authority to change policy. The Pharmacy Helpdesk can sync a device, force a restart, or collect diagnostics — but can't author or delete the compliance policy that says "BitLocker must be on."

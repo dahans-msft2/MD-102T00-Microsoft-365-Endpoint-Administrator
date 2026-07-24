@@ -74,7 +74,7 @@ Elevation settings policies define the default elevation behavior for devices �
 
 1. In the **Create a profile** pane, set:
    - **Platform:** Windows
-   - **Profile:** **Windows elevation settings policy**
+   - **Profile:** Windows elevation settings policy
 
 1. Select **Create**.
 
@@ -85,17 +85,20 @@ Elevation settings policies define the default elevation behavior for devices �
 1. Select **Next**.
 
 1. On the **Configuration settings** page, configure:
-   - **Endpoint Privilege Management:** **Enabled** (this is the toggle that actually enables EPM on the device; leaving it disabled or removing the policy disables EPM on those devices after seven days)
-   - **Default elevation response:** **Require user confirmation**
-   - **Validation:** **Business justification** (require the user to enter a reason)
-   - **Send data to Microsoft for reporting:** **Diagnostic data and managed elevations only** (enables the **Elevation report** under the **Reports** tab to populate)
+   - **Endpoint Privilege Management:** Enabled (this is the toggle that actually enables EPM on the device; leaving it disabled or removing the policy disables EPM on those devices after seven days)
+   - **Default elevation response:** Require user confirmation
+      - **Validation:** Business justification (require the user to enter a reason)
+   - **Send elevation data for reporting:** Yes
+      - **Reporting scope:** Diagnostic data and managed elevations only (enables the **Elevation report** under the **Reports** tab to populate)
 
    > [!NOTE]
    > The four elevation responses are **Not Configured**, **Deny all requests**, **Require support approval**, and **Require user confirmation**. "Not Configured" behaves the same as "Deny all requests". Pick `Require user confirmation` for this lab so you can see the EPM prompt later in Task 6 — in production, the security-stronger choice for unknown files is `Deny all requests` paired with explicit elevation rules.
 
 1. Select **Next**.
 
-1. On the **Assignments** page, under **Assign to**, select **Add groups**.
+1. On the **Scope tags** tab, select **Next**.
+
+1. On the **Assignments** tab, under **Included groups**, select **Add groups**.
 
 1. Search for and select **dyn-Windows-Devices**.
 
@@ -111,7 +114,7 @@ Automatic elevation rules allow specific applications to always run elevated wit
 
 1. On the **Endpoint Privilege Management** page, on the **Policies** tab, select **+ Create**.
 
-1. In the **Create a profile** pane, set **Platform** to **Windows** and **Profile** to **Windows elevation rules policy**. Select **Create**.
+1. In the **Create a profile** pane, set **Platform** to **Windows** and **Profile** to **Elevation rules policy**. Select **Create**.
 
 1. On the **Basics** page, enter:
    - **Name:** `EPM Rules - Automatic Elevation`
@@ -119,22 +122,29 @@ Automatic elevation rules allow specific applications to always run elevated wit
 
 1. Select **Next**.
 
-1. On the **Elevation rules** page, select **Add** → **File rule**.
+1. On the **Configuration settings** tab, expand **Privilege Management** and select **Add** to add a new elevation rule.
 
-1. In the **Create rule** pane, configure:
+1. Select **+ Edit instance**, then in the **Rule properties** pane, configure:
    - **Rule name:** `Elevate Registry Editor`
    - **Description:** `Automatically elevates regedit.exe without user prompt`
    - **Elevation type:** Automatic
+   - **File name:** `regedit.exe`
    - **File path:** `C:\Windows\regedit.exe`
-   - **File hash:** Leave blank (allow any version)
-   - **Certificate:** Leave blank (no certificate requirement)
+   - **Signature source:** Not configured
+
+1. On **SEA-DEV1**, open an elevated PowerShell window and run the following command to obtain the SHA256 hash for `regedit.exe`, then copy the hash value into the **File hash** field in the rule properties pane:
+     ```powershell
+     Get-FileHash -Path "C:\Windows\regedit.exe" -Algorithm SHA256
+     ```
 
    > [!NOTE]
    > File-based rules target specific executables by path. You can also create rules based on file hash, publisher certificate, or product name for more precise targeting.
 
-1. Select **OK** to add the rule.
+1. Select **Save** to add the rule.
 
-1. Select **Next** → **Assign to `sg-Intune-Pilot-Users`** (pilot-first rollout for EPM — same cohort as the blocking ESP, pilot update ring, and Block-mode ASR rules from earlier labs) → **Next** → **Create**.
+1. On the **Scope tags** tab, select **Next**.
+
+1. Select **Add groups** under **Included groups**, search and select `sg-Intune-Pilot-Users` (pilot-first rollout for EPM — same cohort as the blocking ESP, pilot update ring, and Block-mode ASR rules from earlier labs), then select **Next** → **Create**.
 
 **You have successfully created an automatic elevation rule scoped to the pilot cohort.**
 
@@ -146,23 +156,35 @@ User-confirmed elevation rules prompt the user to approve elevation (with option
 
 1. On the **Endpoint Privilege Management** page, on the **Policies** tab, select **+ Create**.
 
-1. In the **Create a profile** pane, set **Platform** to **Windows** and **Profile** to **Windows elevation rules policy**. Select **Create**.
+1. In the **Create a profile** pane, set **Platform** to **Windows** and **Profile** to **Elevation rules policy**. Select **Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `EPM Rules - User Confirmed Elevation`
    - **Description:** `Prompts user to approve elevation for MSConfig`
 
 1. Select **Next**.
 
-1. On the **Elevation rules** page, select **Add** → **File rule**.
+1. On the **Configuration settings** tab, expand **Privilege Management** and select **Add** to add a new elevation rule.
 
-1. In the **Create rule** pane, configure:
+1. In the **Rule properties** pane, configure:
    - **Rule name:** `Elevate MSConfig with User Confirmation`
    - **Elevation type:** User confirmed
+   - **Validation:** Business justification (require the user to enter a reason)
+   - **File name:** `msconfig.exe`
    - **File path:** `C:\Windows\System32\msconfig.exe`
-   - **Require business justification:** Yes
+   - **Signature source:** Not configured
 
-1. Select **OK** → **Next** → **Assign to `sg-Intune-Pilot-Users`** → **Next** → **Create**.
+
+1. On **SEA-DEV1**, open an elevated PowerShell window and run the following command to obtain the SHA256 hash for `msconfig.exe`, then copy the hash value into the **File hash** field in the rule properties pane:
+     ```powershell
+     Get-FileHash -Path "C:\Windows\System32\msconfig.exe" -Algorithm SHA256
+     ```
+
+1. Select **Save** → **Next**.
+
+1. On the **Scope tags** tab, select **Next**.
+
+1. On the **Assignments** tab, under **Included groups**, select **Add groups**, search and select `sg-Intune-Pilot-Users` (pilot-first rollout for EPM — same cohort as the blocking ESP, pilot update ring, and Block-mode ASR rules from earlier labs), then select **Next** → **Create**.
 
 **You have successfully created a user-confirmed elevation rule scoped to the pilot cohort.**
 
@@ -174,22 +196,33 @@ Support-approved elevation rules require a help desk agent to approve elevation 
 
 1. On the **Endpoint Privilege Management** page, on the **Policies** tab, select **+ Create**.
 
-1. In the **Create a profile** pane, set **Platform** to **Windows** and **Profile** to **Windows elevation rules policy**. Select **Create**.
+1. In the **Create a profile** pane, set **Platform** to **Windows** and **Profile** to **Elevation rules policy**. Select **Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `EPM Rules - Support Approved Elevation`
    - **Description:** `Requires help desk approval for CMD elevation`
 
 1. Select **Next**.
 
-1. On the **Elevation rules** page, select **Add** → **File rule**.
+1. On the **Configuration settings** tab, expand **Privilege Management** and select **Add** to add a new elevation rule.
 
-1. In the **Create rule** pane, configure:
+1. In the **Rule properties** pane, configure:
    - **Rule name:** `Elevate Command Prompt with Support Approval`
    - **Elevation type:** Support approved
+   - **File name:** `cmd.exe`
    - **File path:** `C:\Windows\System32\cmd.exe`
+   - **Signature source:** Not configured
 
-1. Select **OK** → **Next** → **Assign to `sg-Intune-Pilot-Users`** → **Next** → **Create**.
+1. On **SEA-DEV1**, open an elevated PowerShell window and run the following command to obtain the SHA256 hash for `cmd.exe`, then copy the hash value into the **File hash** field in the rule properties pane:
+     ```powershell
+     Get-FileHash -Path "C:\Windows\System32\cmd.exe" -Algorithm SHA256
+     ```   
+
+1. Select **Save** → **Next**
+
+1. On the **Scope tags** tab, select **Next**.
+
+1. On the **Assignments** tab, under **Included groups**, select **Add groups**, search and select `sg-Intune-Pilot-Users` (pilot-first rollout for EPM — same cohort as the blocking ESP, pilot update ring, and Block-mode ASR rules from earlier labs), then select **Next** → **Create**.
 
 > [!NOTE]
 > **Pilot-first EPM rollout.** All three elevation policies target the pilot cohort initially. Watch the **Endpoint privilege management** → **Reports** → **Elevation summary** for a week. Confirm the automatic rule isn't being abused (legitimate registry edits only), the user-confirmed rule's business-justifications look reasonable, and the support-approved rule's request volume is manageable. Then expand each policy's assignment to `dyn-Windows-Devices` (with `sg-Intune-Pilot-Users` excluded). Same pattern as the ASR rollout in Lab 04 Exercise 2.
@@ -200,7 +233,10 @@ Support-approved elevation rules require a help desk agent to approve elevation 
 
 ### Task 6: Test EPM elevation on SEA-DEV3
 
-1. Switch to **SEA-DEV3** (this device should be enrolled with a standard user account, e.g., Alex Wilber).
+1. Switch to **SEA-DEV3** (this device should be enrolled with a standard user account, e.g., Alex Wilber). 
+
+   > [!NOTE]
+   > If the user is not enrolled yet, sign in with the **Admin** account, select **Settings** → **Accounts** → **Access work or school** → **Connect** → **Join this device to Microsoft Entra ID** and sign in with **AlexW@<TenantPrefix>.OnMicrosoft.com**. Select **Join** and **Done** to complete enrollment. Then sign out and sign back in as **AlexW@<TenantPrefix>.OnMicrosoft.com**. If prompted to set up a PIN, do so.
 
 1. Sign in as **AlexW@<TenantPrefix>.OnMicrosoft.com** (standard user, not a local administrator).
 
@@ -211,22 +247,29 @@ Support-approved elevation rules require a help desk agent to approve elevation 
 
 1. Test **automatic elevation** (Registry Editor):
    - Open the **Start menu** and search for `regedit`
-   - Launch **Registry Editor**
+   - Select **Open file location**
+   - Select **Registry Editor**, right click and select **Run with elevated access** to launch **Registry Editor**
+   - Enter a business justification (e.g., "Testing automatic elevation") and select **Continue** to approve
    - **Expected behavior:** The app launches elevated without prompting (automatic elevation rule applied)
 
 1. Test **user-confirmed elevation** (MSConfig):
    - Open the **Start menu** and search for `msconfig`
-   - Launch **System Configuration**
+   - Select **Open file location**
+   - Select **System Configuration**, right click and select **Run with elevated access** to launch **System Configuration**
    - **Expected behavior:** A prompt appears asking the user to confirm elevation and provide business justification
-   - Enter a justification (e.g., "Troubleshooting startup issues") and approve
+   - Enter a justification (e.g., "Troubleshooting startup issues") and select **Continue** to approve
 
 1. Test **support-approved elevation** (Command Prompt):
    - Open the **Start menu** and search for `cmd`
-   - Right-click **Command Prompt** and select **Run with elevated access** (if EPM is configured)
-   - **Expected behavior:** A prompt appears indicating the request is pending help desk approval
+   - Select **Open file location**
+   - Right-click **Command Prompt** and select **Run with elevated access**
+   - Enter a business justification (e.g., "Need elevated command prompt for script execution") and select **Continue**
+   - **Expected behavior:** A prompt appears indicating the request is pending help desk approval.
 
    > [!NOTE]
    > In a production environment, a help desk agent would see the elevation request in the **Endpoint privilege management** dashboard and approve or deny it remotely.
+   >
+   > If Command Prompt opens elevated instead of prompting for approval, the support-approved rule hasn't reached the device yet. Confirm the **EPM Rules - Support Approved Elevation** policy shows a **Success** check-in for SEA-DEV3 (**Policies** → select the policy → **View report**), sync the device, and test again. If it still doesn't work after a few minutes, continue to the next task.
 
 **You have successfully tested EPM elevation scenarios.**
 
@@ -234,9 +277,9 @@ Support-approved elevation rules require a help desk agent to approve elevation 
 
 ### Task 7: Monitor EPM elevation reports
 
-1. On **SEA-DEV1**, in the **Microsoft Intune admin center**, navigate to **Endpoint security** → **Endpoint privilege management** → **Reports**.
+1. On **SEA-DEV1**, in the **Microsoft Intune admin center**, navigate to **Endpoint security** → **Endpoint Privilege Management** → **Reports**.
 
-1. Select **Elevation summary** report.
+1. Select **Elevation report** tile.
 
 1. Review the report data:
    - **Total elevations:** Count of all elevation requests
@@ -265,15 +308,14 @@ Remote Help provides secure, audited remote assistance for enrolled devices. IT 
 
 ### Task 1: Enable Remote Help
 
-1. In the **Microsoft Intune admin center**, expand **Tenant administration** and select **Remote Help**.
+1. In the **Microsoft Intune admin center**, select **Tenant administration** and select **Remote Help**.
 
 1. On the **Remote Help** page, select the **Settings** tab.
 
-1. Configure:
-   - **Enable Remote Help:** On
-   - **Require organization consent:** On (recommended for compliance)
-   - **Disable chat:** Off (allow chat during sessions)
-   - **Allow session logs:** On (audit trail for security)
+1. Select **Configure** and configure the following settings:
+   - **Enable Remote Help:** Enabled
+   - **Allow Remote Help to unenrolled devices:** Not allowed
+   - **Disable Chat:** No
 
 1. Select **Save**.
 
@@ -285,7 +327,7 @@ Remote Help provides secure, audited remote assistance for enrolled devices. IT 
 
 Remote Help requires Microsoft Intune Suite licensing.
 
-1. In **Microsoft Edge**, navigate to **https://admin.microsoft.com**.
+1. In **Microsoft Edge**, navigate to **https://admin.cloud.microsoft.com**.
 
 1. Sign in as **admin@<TenantPrefix>.onmicrosoft.com**.
 
@@ -297,7 +339,7 @@ Remote Help requires Microsoft Intune Suite licensing.
 
 1. Verify **Microsoft Intune Suite** is assigned (or assign it if not present).
 
-1. Repeat for **Joni Sherman** (sharer role—end user receiving help).
+1. Repeat for **Joni Sherman** (sharer role—end user receiving help) and for **Lee Gu** (Pharmacy Helpdesk role).
 
    > [!NOTE]
    > Both the helper (IT admin) and sharer (end user) require Remote Help licensing.
@@ -312,32 +354,47 @@ Remote Help requires Microsoft Intune Suite licensing.
 
 1. Select **+ Create** from the top toolbar.
 
-1. In the **Select app type** pane, set **Platform** to **Windows** and **App type** to **Windows app (Win32)**. Select **Create**.
+1. In the **Select app type** pane, set **Platform** to **Windows** and **App type** to **Windows app (Win32)**. Select **Select**.
 
    > [!NOTE]
    > Remote Help can also be deployed as a Microsoft Store app or pre-installed via OEM/image. For lab purposes, we'll deploy as a Win32 app.
 
 1. On the **App information** page, select **Select app package file**.
 
-1. Browse to the Remote Help installer (provided by your lab environment or download from **https://aka.ms/downloadremotehelp**).
+1. On the **App package file** pane, select the folder icon and locate the Remote Help installer (provided by your lab environment or download from **https://aka.ms/downloadremotehelp**).
 
 1. Upload the `.intunewin` package (if pre-packaged) or the `.msi` installer.
 
-1. On the **App information** page, enter:
+1. Select **OK**.
+
+1. On the **App information** tab, enter:
    - **Name:** `Remote Help`
    - **Description:** `Secure remote assistance app for enrolled devices`
    - **Publisher:** Microsoft Corporation
 
 1. Select **Next**.
 
-1. On the **Program** page, configure:
-   - **Install command:** `msiexec /i RemoteHelp.msi /quiet`
-   - **Uninstall command:** `msiexec /x {GUID} /quiet` (replace {GUID} with product code)
+1. On the **Program** tab, configure:
+   - **Install command:** `remotehelpinstaller.exe /quiet acceptTerms=1`
+   - **Uninstall command:** `remotehelpinstaller.exe /uninstall /quiet acceptTerms=1`
    - **Install behavior:** System
 
-1. Select **Next** → Configure detection rules (file-based: `C:\Program Files\Remote Help\RemoteHelp.exe`) → **Next**.
+1. On the **Requirements** tab, configure:
+   - **Check operating system architecture:** Select  **Yes. Specify the systems the app can be installed on**. Check **Install on x64-system**
+   - **Minimum operating system:** Windows 10 1607
 
-1. On the **Assignments** page, assign as **Required** to **dyn-Windows-Devices**.
+1. Select **Next**. On the **Detection rules** tab, set **Rules format** to **Manually configure detection rules**, then select **Add**.
+
+1. In the **Detection rule** pane, configure:
+   - **Rule type:** File
+   - **Path:** `C:\Program Files\Remote help`
+   - **File or folder:** `RemoteHelp.exe`
+   - **Detection method:** File or folder exists
+   - **Associated with a 32-bit app on 64-bit clients:** No
+
+1. Select **OK** → **Next** until you reach the **Assignments** tab.
+
+1. On the **Assignments** tab, select **+ Add group** and assign as **Required** the group **dyn-Windows-Devices**.
 
 1. Select **Next** → **Create**.
 
@@ -347,41 +404,46 @@ Remote Help requires Microsoft Intune Suite licensing.
 
 ### Task 4: Initiate a Remote Help session
 
+> [!NOTE]
+> If the **Remote Help** sign-in prompt shows **"Device must comply with your organization's compliance requirements":** on TPM-less lab VMs, the **Require encryption of data storage on device** compliance setting fails and marks the device noncompliant. Set it to **Not configured** in **both** the **Graph API - Windows Compliance Policy** and the **Compliance - Windows Security Baseline** (**Devices** → **Compliance** → **Graph API - Windows Compliance Policy** → **Properties** → **Compliance settings** → **System Security** → set **Require encryption of data storage on device** to **Not configured** → **Review + save**.), then **Sync** each device and confirm it shows **Compliant**.
+
 1. On **SEA-DEV1** (helper device—Megan Bowen), wait for Remote Help to install.
 
 1. After installation, launch **Remote Help** from the Start menu.
 
 1. Sign in as **MeganB@<TenantPrefix>.OnMicrosoft.com** (helper role).
 
-1. In the Remote Help app, select **Get help** → **Request help code**.
+1. In the **About your privacy** prompt, select **Accept**.
+
+1. In the Remote Help app, under **Give help**, select **Get a security code**.
 
 1. A 6-digit help code is displayed (e.g., `123-456`).
 
-1. On **SEA-DEV2** (sharer device—Joni Sherman), sign in as **JoniS@<TenantPrefix>.OnMicrosoft.com**.
+1. Switch to **SEA-DEV2** (sharer device—Joni Sherman) and sign in as **JoniS@<TenantPrefix>.OnMicrosoft.com**.
 
 1. Launch **Remote Help** from the Start menu.
 
 1. Sign in as **JoniS@<TenantPrefix>.OnMicrosoft.com** (sharer role).
 
-1. In the Remote Help app, select **Get help** → **Enter help code**.
+1. On the **About your privacy** prompt, select **Accept**.
 
-1. Enter the 6-digit code from SEA-DEV1.
+1. In the Remote Help app, under **Get Help**, in the **Security code from assistant** box, enter the 6-digit code from SEA-DEV1, then select **Submit**.
+
+1. Switch back to **SEA-DEV1**. The Remote Help app displays a prompt indicating Joni is ready to receive help. Select **View screen**.
 
 1. On **SEA-DEV2**, a consent prompt appears asking Joni to approve the remote session.
 
-1. Select **Allow** to grant Megan remote access.
-
-1. On **SEA-DEV1**, Megan can now view Joni's desktop.
+1. On **SEA-DEV2**, select **Allow**. Megan can now view Joni's desktop.
 
    > [!NOTE]
    > By default, Remote Help provides view-only access. Megan can request full control by selecting **Request control** in the Remote Help toolbar. Joni must approve the full control request.
 
-1. Test remote actions:
+1. Switch back to **SEA-DEV1** and test the remote actions:
    - Megan can use chat to communicate with Joni
    - Megan can request control to interact with applications
    - Megan can end the session at any time
 
-1. After testing, select **End session** to disconnect.
+1. After testing, select **Leave** to disconnect.
 
 **You have successfully initiated and tested a Remote Help session.**
 
@@ -396,13 +458,14 @@ Remote Help requires Microsoft Intune Suite licensing.
 
 1. Select the **Remote Help sessions** tab.
 
-1. Review the session log:
-   - **Helper:** Megan Bowen
-   - **Sharer:** Joni Sherman
-   - **Start time**
-   - **End time**
-   - **Duration**
-   - **Session ID** (for audit purposes)
+1. Review the session log columns:
+   - **Provider ID** (the helper — for example, `MeganB@<TenantPrefix>.onmicrosoft.com`)
+   - **Recipient ID** (the sharer — for example, `JoniS@<TenantPrefix>.onmicrosoft.com`)
+   - **Recipient name**
+   - **Device name**
+   - **OS**
+   - **Session start**
+   - **Session end**
 
    > [!NOTE]
    > Session logs provide an audit trail for compliance and security reviews. All actions during the session are logged.
@@ -422,9 +485,9 @@ The `Pharmacy Helpdesk` role assigned to **Lee Gu** in **Lab 05 Exercise 3** gra
 1. In the Intune admin center as Lee Gu, navigate to **Devices** → **All devices**.
 
    > [!NOTE]
-   > Lee Gu sees only devices that are in `dyn-Windows-Devices` AND are tagged with the Pharmacy scope tag (per the role assignment configured in Lab 05 Exercise 3 Task 3). Depending on which devices you tagged with Pharmacy when you created them, this list may be smaller than what your Global Admin sees.
+   > Lee Gu sees only devices that are in `dyn-Windows-Devices` and are tagged with the Pharmacy scope tag (per the role assignment configured in Lab 05 Exercise 3 Task 3). Depending on which devices you tagged with Pharmacy when you created them, this list may be smaller than what your Global Admin sees.
 
-1. Select a Pharmacy-tagged device (e.g., **SEA-DEV1** if you tagged it).
+1. Select a Pharmacy-tagged device (e.g., **SEA-DEV1** tagged with **Pharmacy**).
 
 1. In the device blade, locate the **New remote assistance session** option (toolbar or device actions menu).
 
@@ -432,7 +495,7 @@ The `Pharmacy Helpdesk` role assigned to **Lee Gu** in **Lab 05 Exercise 3** gra
 
 1. End the session.
 
-1. Now try to select a device that's NOT Pharmacy-tagged (Lee Gu won't see one in her list, so this is a thought experiment): if such a device existed in her view, she would lack the **New remote assistance session** option because the role's scope tag intersection excludes it.
+1. Now try to select a device that's not Pharmacy-tagged (Lee Gu won't see one in her list, so this is a thought experiment): if such a device existed in her view, she would lack the **New remote assistance session** option because the role's scope tag intersection excludes it.
 
    > [!NOTE]
    > **The takeaway.** Scope tags on a custom role aren't just for the Configuration / Compliance / Apps surfaces — they apply to **remote-task operations** like Sync, Restart, and Remote Help. That's what makes scope-tag-based delegation actually safe: the Pharmacy Helpdesk physically cannot help (or accidentally disrupt) devices outside her domain.
@@ -462,9 +525,11 @@ The Intune Suite trial (activated in **Lab 01** prerequisites) includes Advanced
 
 ### Task 1: Review Advanced Analytics dashboards
 
-1. In the **Microsoft Intune admin center**, navigate to **Reports** → **Endpoint analytics** → **Advanced analytics**.
+1. In the **Microsoft Intune admin center**, navigate to **Reports** → **Analytics** → **Endpoint analytics**.
 
-1. Review the **Anomaly detection** dashboard:
+1. Select **Start** to open the **Advanced Analytics**.
+
+1. Review the **Anomalies** dashboard:
    - **Device anomalies:** Devices exhibiting unusual behavior (high CPU, frequent crashes, app hangs)
    - **User anomalies:** Users experiencing degraded experience scores
    - **Application anomalies:** Apps with high crash rates or slow start times
@@ -594,7 +659,7 @@ Windows 365 provides cloud-hosted Windows desktops (Cloud PCs) that users access
 
 ### Task 1: Review Windows 365 provisioning policy (demonstration)
 
-1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Windows 365** → **Provisioning policies**.
+1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Windows** → **Windows 365** → **Provisioning policies**.
 
    > [!NOTE]
    > If Windows 365 is not available in your tenant, review the following steps conceptually.
