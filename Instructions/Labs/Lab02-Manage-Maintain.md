@@ -71,7 +71,7 @@ The Settings Catalog provides access to thousands of individual settings across 
 
 1. Sign in as **admin@<TenantPrefix>.onmicrosoft.com**.
 
-1. In the **Microsoft Intune admin center**, expand **Devices**, then under **Manage devices** select **Configuration**.
+1. In the **Microsoft Intune admin center**, select **Devices**, then under **Manage devices** select **Configuration**.
 
    > [!NOTE]
    > The page header reads **Devices | Configuration** and opens to the **Policies** tab by default. The other tabs are **Import ADMX** and **Monitor**.
@@ -84,13 +84,13 @@ The Settings Catalog provides access to thousands of individual settings across 
 
 1. Select **Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `Config - Power Settings`
    - **Description:** `Manages power plan and display timeout settings for corporate devices`
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, select **Add settings**.
+1. On the **Configuration settings** tab, select **+ Add settings**.
 
 1. In the settings picker, search for `power`.
 
@@ -109,14 +109,14 @@ The Settings Catalog provides access to thousands of individual settings across 
 
 1. Select **Next**.
 
-1. On the **Scope tags** page, select **+ Select scope tags**, add the **Pharmacy** scope tag (created in **Lab 01 Exercise 2 Task 6**), and select **Select**. Then select **Next**.
+1. On the **Scope tags** tab, select **+ Select scope tags**, add the **Pharmacy** scope tag (created in **Lab 01 Exercise 2 Task 6**), and select **Select**. Then select **Next**.
 
    > [!NOTE]
    > Applying scope tags at policy-creation time is what makes delegated administration actually work. The Pharmacy Helpdesk role you created in Lab 01 will be able to see and act on this policy (in **Lab 05 Exercise 3**) because of this tag.
    >
    > **Leave the Default scope tag checked too — don't remove it.** Unlike a role *definition's* own scope tag (Lab 01 Exercise 2 Task 6, where removing Default made sense because that role is Pharmacy-exclusive), this is a general policy assigned to every Windows device in the tenant, not a Pharmacy-only artifact. Adding Pharmacy alongside Default just gives the Pharmacy Helpdesk admin visibility into it too — it doesn't change what the policy actually applies to. This same rule applies everywhere else in the lab series you add the Pharmacy scope tag to a policy, app, or profile.
 
-1. On the **Assignments** page, under **Assign to**, select **Add groups**.
+1. On the **Assignments** tab, under **Included groups**, select **Add groups**.
 
 1. Search for and select **dyn-Windows-Devices**.
 
@@ -124,9 +124,7 @@ The Settings Catalog provides access to thousands of individual settings across 
 
 1. Select **Next**.
 
-1. On the **Applicability Rules** page, select **Next** (no rules needed).
-
-1. On the **Review + create** page, review the settings and select **Create**.
+1. On the **Review + create** tab, review the settings and select **Create**.
 
 **You have successfully created a Settings Catalog configuration profile.**
 
@@ -144,13 +142,13 @@ Templates provide pre-configured bundles of settings for common scenarios.
 
 1. Select **Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `Config - Device Restrictions`
    - **Description:** `Restricts Windows features and user capabilities on corporate devices`
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, expand **General** and configure:
+1. On the **Configuration settings** tab, expand **General** and configure:
    - **Screen capture (mobile only):** Block
    - **Copy and paste (mobile only):** Not configured
    - **Manual unenrollment:** Block
@@ -163,14 +161,14 @@ Templates provide pre-configured bundles of settings for common scenarios.
    - **Number of sign-in failures before wiping device:** 10
 
 1. Expand **Microsoft Defender Antivirus** and configure:
-   - **Real-time monitoring:** Require
-   - **Behavior monitoring:** Require
+   - **Real-time monitoring:** Enable
+   - **Behavior monitoring:** Enable
 
 1. Select **Next**.
 
-1. On the **Scope tags** page, select **+ Select scope tags**, add **Pharmacy**, and select **Select**. Then select **Next**.
+1. On the **Scope tags** tab, select **+ Select scope tags**, add **Pharmacy**, and select **Select**. Then select **Next**.
 
-1. On the **Assignments** page, under **Assign to**, select **Add groups**.
+1. On the **Assignments** tab, under **Included groups**, select **Add groups**.
 
 1. Search for and select **sg-Intune-Pilot-Users**.
 
@@ -178,9 +176,9 @@ Templates provide pre-configured bundles of settings for common scenarios.
 
 1. Select **Next**.
 
-1. On the **Applicability Rules** page, select **Next**.
+1. On the **Applicability Rules** tab, select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully created a Device Restrictions profile.**
 
@@ -199,14 +197,14 @@ Assignment filters refine policy targeting based on device properties without fo
 
 1. Select **Create** → **Managed devices**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `Filter - Microsoft corporate, no kiosks`
    - **Description:** `Compound rule: Microsoft-manufactured corporate devices that are not categorized as Kiosk`
    - **Platform:** Windows 10 and later
 
 1. Select **Next**.
 
-1. On the **Rule syntax** page, switch to the **rule syntax editor** (toggle near the top), then enter:
+1. On the **Rules** tab, switch to the **rule syntax editor** (select **Edit**), then enter:
 
    ```text
    (device.manufacturer -eq "Microsoft") -and (device.deviceCategory -ne "Kiosk")
@@ -215,22 +213,24 @@ Assignment filters refine policy targeting based on device properties without fo
    > [!NOTE]
    > Compound filter rules use the same `-and` / `-or` / parentheses syntax as dynamic group rules. The rule-syntax editor is the only way to author compound filters — the simple property/operator/value picker is single-clause.
 
-1. Select **Next**, skip **Scope Tags**.
+1. Select **OK** to save the rule.
 
-1. On the **Review + create** page, select **Create**.
+1. Select **Next** and skip the **Scope Tags** tab.
+
+1. On the **Review + create** tab, select **Create**.
 
 #### Filter 2 — simple exclude filter (SEA-DEV1)
 
 1. On the **Assignment filters** page, select **Create** → **Managed devices**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `Filter - SEA-DEV1 Exclude`
    - **Description:** `Excludes device SEA-DEV1 from policy assignments`
    - **Platform:** Windows 10 and later
 
 1. Select **Next**.
 
-1. On the **Rule syntax** page, configure:
+1. On the **Rules** tab, configure:
    - **Property:** Device name
    - **Operator:** Equals
    - **Value:** `SEA-DEV1`
@@ -238,9 +238,9 @@ Assignment filters refine policy targeting based on device properties without fo
    > [!NOTE]
    > You're targeting SEA-DEV1 with **Equals** here — the include-vs-exclude decision happens when you **apply** the filter to a policy in Task 4 (you'll choose **Exclude filtered devices from assignment**).
 
-1. Select **Next**, skip **Scope Tags**.
+1. Select **Next** and skip the **Scope Tags** tab.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 > [!IMPORTANT]
 > **Include vs. exclude is set at apply-time, not on the filter itself.** A filter just defines a set of devices. When you attach a filter to a policy assignment, you pick whether the policy should apply to those devices (**Include**) or skip them (**Exclude**). The same filter can be used in either mode on different policies.
@@ -257,13 +257,13 @@ You'll modify the Device Restrictions profile to exclude SEA-DEV1 using the filt
 
 1. Select **Config - Device Restrictions** from the list.
 
-1. Select **Properties** from the left navigation.
+1. Scroll down until you see **Properties**.
 
 1. In the **Assignments** section, select **Edit**.
 
-1. Under the **sg-Intune-Pilot-Users** group assignment, expand the **Filter** dropdown and select **Exclude filtered devices from assignment**.
+1. Under the **sg-Intune-Pilot-Users** group assignment, select **Edit filter**, and then select **Exclude filtered devices in assignment**.
 
-1. Under **Select filter**, choose **Filter - SEA-DEV1 Exclude**.
+1. Choose **Filter - SEA-DEV1 Exclude** and select **Select**.
 
 1. Select **Review + save** → **Save**.
 
@@ -290,13 +290,13 @@ You'll create two Settings Catalog profiles for the pilot cohort that disagree o
 
 1. Select **Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `WIN - Camera - Enabled (Pilot)`
    - **Description:** `Allow camera use on pilot devices (Teams meetings)`
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, select **+ Add settings**.
+1. On the **Configuration settings** tab, select **+ Add settings**.
 
 1. In the settings picker, search for `camera`. Expand **Camera** (or **Devices > Camera**, depending on portal build) and check the **Allow Camera** setting. Close the picker.
 
@@ -304,9 +304,9 @@ You'll create two Settings Catalog profiles for the pilot cohort that disagree o
 
 1. Select **Next**.
 
-1. On the **Scope tags** page, add **Pharmacy** and select **Next**.
+1. On the **Scope tags** tab, add **Pharmacy** and select **Next**.
 
-1. On the **Assignments** page, under **Assign to**, select **Add groups**, search for and select **sg-Intune-Pilot-Users**, then **Select**. Select **Next**.
+1. On the **Assignments** tab, under **Included groups**, select **Add groups**, search for and select **sg-Intune-Pilot-Users**, then **Select**. Select **Next**.
 
 1. On the **Review + create** page, select **Create**.
 
@@ -322,17 +322,17 @@ You'll create two Settings Catalog profiles for the pilot cohort that disagree o
 
 1. Select **Next**.
 
-1. On the **Configuration settings** page, select **+ Add settings**, search for `camera`, check **Allow Camera**, close the picker.
+1. On the **Configuration settings** tab, select **+ Add settings**, search for `camera`, expand **Camera** (or **Devices > Camera**, depending on portal build) and check **Allow Camera**, close the picker.
 
-1. Set **Allow Camera** to **Blocked**.
+1. Set **Allow Camera** to **Not allowed**.
 
 1. Select **Next**.
 
-1. On the **Scope tags** page, add **Pharmacy** and select **Next**.
+1. On the **Scope tags** tab, select **+ Select scope tags**, add **Pharmacy**, and select **Select**. Then select **Next**.
 
-1. On the **Assignments** page, assign to **sg-Intune-Pilot-Users** (same group). Select **Next**.
+1. On the **Assignments** tab, assign to **sg-Intune-Pilot-Users** (same group). Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 > [!IMPORTANT]
 > You've intentionally created two profiles that **conflict** on the **Allow Camera** setting for the same group (`sg-Intune-Pilot-Users`). Intune does **not** silently merge or pick a winner — it surfaces the conflict in the **Per-setting status** view, and the affected setting on the device shows as **Conflict** with neither value applied. You'll diagnose and resolve this conflict in **Exercise 6 Task 2** — don't fix it now.
@@ -351,23 +351,33 @@ Compliance policies define security and health requirements for devices. Non-com
 
 The **Send email to end user** noncompliance action needs a message template to send. There's no built-in **Default** template — you have to create one before you can select it in Task 2.
 
-1. In the **Microsoft Intune admin center**, expand **Devices**, then under **Manage devices** select **Compliance**.
+1. In the **Microsoft Intune admin center**, select **Devices**, then under **Manage devices** select **Compliance**.
 
 1. Select the **Notifications** tab.
 
 1. Select **+ Create notification**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `Default`
-   - **Subject:** `Your device needs attention`
-   - **Message:** `Your device is out of compliance with Contoso's security policy. Please contact the Service Desk or take the recommended action in the Company Portal app to restore access.`
-   - Leave **Include company logo**, **Include device details**, and **Include contact information** at their defaults.
 
 1. Select **Next**.
 
-1. On the **Locales** page, leave the default **English** locale. Select **Next**.
+1. On the **Header and footer settings** tab, configure:
+   - Leave **Show company logo**, **Show contact information**, and **Show company portal website link** at their defaults.
 
-1. On the **Review + create** page, select **Create**.
+1. Select **Next**.
+
+1. On the **Notification message templates** tab, select **Add** and configure:
+   - **Locale:** English (United States)
+   - **Subject:** `Your device needs attention`
+   - **Message:** `Your device is out of compliance with Contoso's security policy. Please contact the Service Desk or take the recommended action in the Company Portal app to restore access.`
+   - Toggle **Set to default locale**
+
+1. Select **Save** and select **Next**.
+
+1. Select **Next** and skip **Scope tags**.
+
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully created a compliance notification message template.**
 
@@ -375,25 +385,26 @@ The **Send email to end user** noncompliance action needs a message template to 
 
 ### Task 2: Create a Windows compliance policy
 
-1. In the **Microsoft Intune admin center**, expand **Devices**, then under **Manage devices** select **Compliance**.
+1. In the **Microsoft Intune admin center**, select **Devices**, then under **Manage devices** select **Compliance**.
 
    > [!NOTE]
    > The page header reads **Devices | Compliance** and opens to the **Policies** tab by default. The other tabs are **Notifications**, **Retire noncompliant devices**, **Compliance settings**, **Scripts**, and **Monitor**.
 
-1. Select **Create policy**.
+1. Select the **Policies** tab, and then select **Create policy**.
+
 1. In the **Create a policy** pane, configure:
    - **Platform:** Windows 10 and later
    - **Profile type:** Windows 10/11 compliance policy
 
 1. Select **Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `Compliance - Windows Security Baseline`
    - **Description:** `Requires BitLocker encryption, antivirus, firewall, and secure boot`
 
 1. Select **Next**.
 
-1. On the **Compliance settings** page, expand **Device Health** and configure:
+1. On the **Compliance settings** tab, expand **Device Health** and configure:
    - **BitLocker:** Require
    - **Secure Boot:** Require
    - **Code integrity:** Require
@@ -413,13 +424,13 @@ The **Send email to end user** noncompliance action needs a message template to 
    - **Antispyware:** Require
    - **Microsoft Defender Antimalware:** Require
    - **Microsoft Defender Antimalware minimum version:** Leave blank (any version)
-   - **Microsoft Defender Antimalware intelligence up-to-date:** Require
-   - **Real-tiem protection:** Require
+   - **Microsoft Defender Antimalware security intelligence up-to-date:** Require
+   - **Real-time protection:** Require
 
 1. Select **Next**.
 
-1. On the **Actions for noncompliance** page, configure the default action:
-   - **Mark device noncompliant:** 7
+1. On the **Actions for noncompliance** tab, configure the default action:
+   - **Mark device noncompliant:** 7 days
 
    > [!NOTE]
    > This provides a 7-day grace period before the device is officially marked non-compliant in Microsoft Entra ID (triggering Conditional Access blocks).
@@ -433,9 +444,9 @@ The **Send email to end user** noncompliance action needs a message template to 
    > [!NOTE]
    > This sends an email to the device's primary user 1 day after the device becomes non-compliant, giving them time to remediate the issue.
 
-1. Select **Next** and on the **Scope tags** page, add **Pharmacy** and select **Next**.
+1. Select **Next** and on the **Scope tags** tab, add **Pharmacy** and select **Next**.
 
-1. On the **Assignments** page, under **Assign to**, select **Add groups**.
+1. On the **Assignments** page, under **Included groups**, select **Add groups**.
 
 1. Search for and select **dyn-Windows-Devices**.
 
@@ -449,11 +460,20 @@ The **Send email to end user** noncompliance action needs a message template to 
 
 ### Task 3: Monitor compliance policy results
 
-1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Monitor**, then under **Compliance** select **Noncompliant devices**.
+1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Monitor**, then select **Noncompliant devices**.
 
-1. Review the compliance dashboard, which surfaces:
-   - **Device compliance trend:** Shows compliance over time
-   - **Policy compliance:** Shows per-policy compliance rates
+1. Review the **Noncompliant devices** report. It lists every device that has failed at least one compliance policy, with columns for:
+   - **Device name**
+   - **Primary UPN**
+   - **Compliance status**
+   - **Platform**
+   - **OS version**
+   - **Organization**
+   - **Last check-in**
+   - **Management agent**
+
+   > [!NOTE]
+   > This report can be delayed in showing the most recent information. In a new lab environment it may show **0 items**. Use **Refresh** to reload the data, **Add filters** to narrow the list, or **Export** to download the results.
 
 1. Navigate to **Devices** → **All devices**.
 
@@ -485,14 +505,14 @@ A compliance policy on its own doesn't block anything — it just marks devices 
 1. On the **New** policy page, configure:
    - **Name:** `CA - Require compliant device (Pharmacy pilot)`
 
-1. Under **Assignments** → **Users**, select **0 users and groups selected**:
+1. Under **Assignments** → **Users or agents**, select **0 users or agents selected**:
    - On the **Include** tab, select **Select users and groups** → check **Users and groups** → select **sg-Intune-Pilot-Users** → **Select**.
    - On the **Exclude** tab, select **Users and groups** → select **admin@<TenantPrefix>.onmicrosoft.com** (or whichever account you signed in with) → **Select**.
 
    > [!WARNING]
    > **Always exclude at least one Global Administrator (break-glass account) from any Conditional Access policy that could block sign-in.** Report-only mode doesn't enforce, but this policy switches to **On** in **Lab 04 Exercise 6** — the exclusion must be in place *before* that switch, or you risk locking yourself out of the tenant.
 
-1. Under **Assignments** → **Target resources**, select **0 resources selected**:
+1. Under **Assignments** → **Target resources**, select **No target resources selected**:
    - **Select what this policy applies to:** Resources (formerly 'cloud apps')
    - **Include:** All resources (formerly 'All cloud apps')
    - Acknowledge the warning about including all apps.
@@ -532,14 +552,14 @@ Contoso has existing Group Policy Objects (GPOs) from an on-premises Active Dire
    > [!NOTE]
    > If the files are not present, ask your lab instructor or copy them from the lab hosting platform's file share.
 
-1. In the **Microsoft Intune admin center**, expand **Devices**, then under **Manage devices** select **Group Policy analytics**.
+1. In the **Microsoft Intune admin center**, select **Devices**, then under **Manage devices** select **Group Policy analytics**.
 
    > [!NOTE]
    > Group Policy analytics is no longer flagged as **(preview)** — it's a generally available feature in the current portal.
 
 1. Select **Import** from the top toolbar.
 
-1. In the **Import GPO** pane, select **Browse** and navigate to `C:\LabAssets\GPO-Backups\`.
+1. In the **GPO file upload** tab, select **Select a file**, then browse and navigate to `C:\LabAssets\GPO-Backups\`.
 
 1. Select **GPO_Desktop_Settings.xml** and select **Open**.
 
@@ -550,7 +570,7 @@ Contoso has existing Group Policy Objects (GPOs) from an on-premises Active Dire
    > [!NOTE]
    > If you don't select a scope tag here, Default is applied automatically. Only admins scoped to whichever tag(s) you pick can see this imported GPO in the analytics list — leaving Default means any admin with Default scope (essentially everyone without a narrower custom role) can see it.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 1. Wait for the import to complete (typically 1–2 minutes).
 
@@ -582,17 +602,17 @@ Contoso has existing Group Policy Objects (GPOs) from an on-premises Active Dire
 
    Leave the **No**-support settings unchecked — migrating them wouldn't produce a working setting anyway. Select **Next**.
 
-1. On the **Configuration** page, review the imported values (carried over from the GPO), then select **Next**.
+1. On the **Configuration** tab, review the imported values (carried over from the GPO), then select **Next**.
 
-1. On the **Profile info** page, enter:
+1. On the **Profile info** tab, enter:
    - **Name:** `Migrated - GPO Desktop Settings`
    - **Description:** `Settings Catalog profile migrated from the on-premises GPO_Desktop_Settings GPO`
 
 1. Select **Next**.
 
-1. On the **Scope tags** page, select **+ Select scope tags**, add **Pharmacy**, and select **Select**. Then select **Next**.
+1. On the **Scope tags** tab, select **+ Select scope tags**, add **Pharmacy**, and select **Select**. Then select **Next**.
 
-1. On the **Assignments** page, under **Assign to**, select **Add groups**, search for and select **dyn-Windows-Devices**, then select **Select** and **Next**.
+1. On the **Assignments** tab, under **Included groups**, select **Add groups**, search for and select **dyn-Windows-Devices**, then select **Select** and **Next**.
 
 1. On the **Review + deploy** page, review the settings and select **Deploy**.
 
@@ -630,7 +650,7 @@ You'll use Windows Update for Business policies (Update rings) to control when d
 
 ### Task 1: Create a pilot update ring
 
-1. In the **Microsoft Intune admin center**, expand **Devices**, then under **By platform** select **Windows**, then on the Windows blade select **Windows updates**.
+1. In the **Microsoft Intune admin center**, select **Devices**, under **By platform** select **Windows**, then on the Windows blade select **Windows updates**.
 
    > [!NOTE]
    > The page header reads **Devices | Windows updates**. The tabs are **Releases**, **Update rings**, **Feature updates**, **Quality updates**, **Driver updates**, and **Monitor**. The page opens on **Releases** — you'll switch tabs in the next step.
@@ -642,15 +662,15 @@ You'll use Windows Update for Business policies (Update rings) to control when d
 
 1. Select the **Update rings** tab.
 
-1. Select **Create profile**.
+1. Select **+ Create profile**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `Update Ring - Pilot`
    - **Description:** `Pilot ring for early adopters—receives updates immediately`
 
 1. Select **Next**.
 
-1. On the **Update ring settings** page, configure:
+1. On the **Update ring settings** tab, configure:
    - **Microsoft product updates:** Allow
    - **Windows drivers:** Allow
    - **Quality update deferral period (days):** 0
@@ -661,18 +681,17 @@ You'll use Windows Update for Business policies (Update rings) to control when d
    - **Automatic update behavior:** Auto install and restart at maintenance time
    - **Active hours start:** 8 AM
    - **Active hours end:** 5 PM
-   - **Restart checks:** Allow
    - **Option to pause updates:** Disable
    - **Option to check for Windows updates:** Enable
 
 1. Select **Next**.
 
-1. On the **Scope tags** page, add **Pharmacy** and select **Next**.
+1. On the **Scope tags** tab, add **Pharmacy** and select **Next**.
 
    > [!NOTE]
    > Tagging the pilot ring with `Pharmacy` keeps it visible to the Pharmacy Helpdesk (who pilots clinical updates first) when you assign the role in **Lab 05 Exercise 3**.
 
-1. On the **Assignments** page, under **Assign to**, select **Add groups**.
+1. On the **Assignments** tab, under **Included groups**, select **Add groups**.
 
 1. Search for and select **sg-Intune-Pilot-Users**.
 
@@ -680,7 +699,7 @@ You'll use Windows Update for Business policies (Update rings) to control when d
 
 1. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully created a pilot update ring.**
 
@@ -688,7 +707,7 @@ You'll use Windows Update for Business policies (Update rings) to control when d
 
 ### Task 2: Create a standard update ring
 
-1. On the **Update rings** page, select **Create profile**.
+1. On the **Update rings** tab, select **+ Create profile**.
 
 1. On the **Basics** page, enter:
    - **Name:** `Update Ring - Standard`
@@ -696,7 +715,7 @@ You'll use Windows Update for Business policies (Update rings) to control when d
 
 1. Select **Next**.
 
-1. On the **Update ring settings** page, configure:
+1. On the **Update ring settings** tab, configure:
    - **Quality update deferral period (days):** 7
    - **Feature update deferral period (days):** 14
    - **Automatic update behavior:** Auto install and restart at maintenance time
@@ -706,13 +725,15 @@ You'll use Windows Update for Business policies (Update rings) to control when d
 
 1. Select **Next**.
 
-1. On the **Assignments** page, under **Assign to**, select **Add groups**.
+1. On the **Scope tags** tab, select  **Next**.
+
+1. On the **Assignments** tab, under **Included groups**, select **Add groups**.
 
 1. Search for and select **dyn-Windows-Devices**.
 
 1. Select **Select**.
 
-1. Under **Exclude groups**, select **Add groups**.
+1. Under **Excluded groups**, select **Add groups**.
 
 1. Search for and select **sg-Intune-Pilot-Users** (to exclude pilot users who already have the Pilot ring assigned).
 
@@ -720,7 +741,7 @@ You'll use Windows Update for Business policies (Update rings) to control when d
 
 1. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully created a standard update ring with deferrals.**
 
@@ -746,14 +767,13 @@ The pilot cohort (`sg-Intune-Pilot-Users`, created in **Lab 01 Exercise 1**) is 
    - **Cancelled**
    - **On hold**
 
-1. Navigate to **Devices** → **All devices** → Select **SEA-DEV1**.
+1. Navigate to **Devices** → **Windows** → Select **Windows updates**.
 
-1. In the SEA-DEV1 device blade, select **Monitor** in the left navigation, then select **Windows update**.
+1. Review the available Windows Update reports and policies, including **Update rings** and **Feature updates**.
 
-1. Review the update status:
-   - **Last check-in:** Timestamp of last Windows Update check
-   - **Pending updates:** List of available updates
-   - **Installed updates:** List of updates already installed
+1. Return to **Devices** > **All devices** and select **SEA-DEV1**.
+
+1. On the **Overview** page, review the device's Last check-in time and compliance status.
 
 **You have successfully monitored Windows Update deployment status.**
 
@@ -767,29 +787,24 @@ Update rings control *when* updates install. **Feature update profiles** control
 
 1. Select **+ Create > Create feature update policy**.
 
-1. On the **Basics** page, enter:
+1. On the **Deployment settings** tab, configure:
    - **Name:** `Feature Update - Win11 25H2`
    - **Description:** `Pin Contoso fleet to Windows 11 25H2`
-
-1. Select **Next**.
-
-1. On the **Deployment settings** page, configure:
-   - **Feature update to deploy:** **Windows 11, version 25H2**
-   - **Make available to users as a required update**
-   - **Rollout options:** **Make update available as soon as possible**
+   - **Feature update to deploy:** Windows 11, version 25H2
+   - Check **Make available to users as a required update**
 
    > [!NOTE]
    > Use the **Gradual rollout** option in production to release the feature update to subsets of the fleet on a schedule. For this lab, immediate availability keeps the flow simple.
 
 1. Select **Next**.
 
-1. On the **Scope tags** page, leave the **Default** scope tag (this profile is tenant-wide). Select **Next**.
+1. On the **Scope tags** tab, leave the **Default** scope tag (this profile is tenant-wide). Select **Next**.
 
-1. On the **Assignments** page, assign to **dyn-Windows-Devices**. Under **Exclude groups**, add **sg-Intune-Pilot-Users** (the pilot cohort runs ahead via the Pilot update ring, so excluding them here prevents the Feature update profile from holding them back).
+1. On the **Assignments** tab, assign to **dyn-Windows-Devices**. Under **Exclude groups**, add **sg-Intune-Pilot-Users** (the pilot cohort runs ahead via the Pilot update ring, so excluding them here prevents the Feature update profile from holding them back).
 
 1. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully created a Windows feature update policy.**
 
@@ -803,22 +818,21 @@ Update rings control *when* updates install. **Feature update profiles** control
 
 1. Select **+ Create > Expedite policy**.
 
-1. On the **Basics** page, enter:
+1. On the **Settings** tab, configure:
    - **Name:** `Quality Update - Expedited critical patches`
    - **Description:** `Push out-of-band security patches within 2 days, overriding ring deferrals`
-
-1. Next to **Select the quality update you would like to Expedite** - choose the latest update available.
-   - **Number of days from update release until restart is required:** `2`
-
-1. Select **Next**.
-
-1. On the **Scope tags** page, leave **Default**. Select **Next**.
-
-1. On the **Assignments** page, assign to **dyn-Windows-Devices** (no exclusions — expedited security updates apply to everyone, including pilot).
+   - **Select the quality update you would like to Expedite** - choose the latest update available.
+   - **If a reboot is required, select the number of days before it's enforced:** 2 days
 
 1. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Scope tags** tab, leave **Default**. Select **Next**.
+
+1. On the **Assignments** tab, assign to **dyn-Windows-Devices** (no exclusions — expedited security updates apply to everyone, including pilot).
+
+1. Select **Next**.
+
+1. On the **Review + create** tab, select **Create**.
 
    > [!NOTE]
    > Update rings + Feature update profiles + Expedited Quality update policies are the three layers of Windows Update for Business in Intune. Rings control timing for routine quality updates; Feature update profiles control which Windows version is offered; Expedited Quality update policies override timing for security-critical patches.
@@ -835,7 +849,7 @@ Endpoint analytics provides insights into device performance, startup times, and
 
 ### Task 1: Enable Endpoint analytics
 
-1. In the **Microsoft Intune admin center**, expand **Reports**, expand the **Analytics** group, and select **Endpoint analytics**.
+1. In the **Microsoft Intune admin center**, select **Reports**, expand the **Analytics** group, and select **Endpoint analytics**.
 
 1. The first time you visit Endpoint analytics in a tenant, you land on the **Endpoint analytics | Introduction** page. Leave **Collect device data from** set to **All cloud-managed devices** and select **Start** to enable data collection.
 
@@ -869,7 +883,7 @@ Endpoint analytics provides insights into device performance, startup times, and
 
 Proactive remediations require Windows license verification to be enabled at the tenant level before you can create or run a script package. You'll enable it now, before building the remediation in Task 3.
 
-1. In the **Microsoft Intune admin center**, expand **Tenant administration**, then select **Connectors and tokens**.
+1. In the **Microsoft Intune admin center**, select **Tenant administration**, then select **Connectors and tokens**.
 
 1. Select **Windows data**.
 
@@ -878,7 +892,7 @@ Proactive remediations require Windows license verification to be enabled at the
    > [!NOTE]
    > This requires being a **Global Administrator** or **Intune Service Administrator**. It confirms your tenant holds one of: Windows 10/later Enterprise E3/E5 (or Microsoft 365 F3/E3/E5), Windows 10/later Education A3/A5 (or Microsoft 365 A3/A5), or Windows Virtual Desktop Access E3/E5 — it isn't tied to the Intune Suite or a Remediations add-on. In a lab tenant without one of these licenses, you can still walk through the remediation wizard in Task 3, but the script package won't execute on devices.
 
-1. Select **Save**.
+1. Select **Save** if you made any changes.
 
 **You have successfully enabled Windows license verification.**
 
@@ -888,39 +902,49 @@ Proactive remediations require Windows license verification to be enabled at the
 
 Proactive remediations run PowerShell scripts on devices to detect and fix issues automatically.
 
-1. In the **Microsoft Intune admin center**, expand **Devices**, then under **Manage devices** select **Scripts and remediations**.
+1. In the **Microsoft Intune admin center**, select **Devices**, then under **Manage devices** select **Scripts and remediations**.
 
 1. Select the **Remediations** tab (the page opens on this tab by default).
 
-1. Select **Create**.
+1. Select **+ Create**.
 
-1. On the **Basics** page, enter:
+1. On the **Basics** tab, enter:
    - **Name:** `Remediation - Clear Temp Files`
    - **Description:** `Detects and clears temporary files older than 30 days`
 
 1. Select **Next**.
 
 1. On the **Settings** page, configure:
-   - **Detection script file:** Select **Browse** and navigate to `C:\LabAssets\Remediations\Detect-TempFiles.ps1` (provided in lab assets).
+   - **Detection script file:** Select **Select a file**, then browse and navigate to `C:\LabAssets\Remediations\Detect-TempFiles.ps1` (provided in lab assets).
 
      > [!NOTE]
-     > If the script is not present, you can create it inline:
-     > ```powershell
-     > $tempPath = "$env:TEMP"
-     > $oldFiles = Get-ChildItem -Path $tempPath -Recurse -File | Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-30) }
-     > if ($oldFiles.Count -gt 0) {
-     >     Write-Output "Found $($oldFiles.Count) old temp files"
-     >     exit 1  # Issue detected
-     > } else {
-     >     Write-Output "No old temp files found"
-     >     exit 0  # Compliant
-     > }
-     > ```
+     > If the script is not present, you can create it inline following the example below:
+     
+     Example detection script:
+     ```powershell
+     # Create the folder if it doesn't exist
+     New-Item -Path "C:\LabAssets\Remediations" -ItemType Directory -Force
 
-   - **Remediation script file:** Select **Browse** and navigate to `C:\LabAssets\Remediations\Remediate-TempFiles.ps1`.
+     # Detection script
+     @'
+     $tempPath = "$env:TEMP"
+     $oldFiles = Get-ChildItem -Path $tempPath -Recurse -File | Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-30) }
+     if ($oldFiles.Count -gt 0) {
+         Write-Output "Found $($oldFiles.Count) old temp files"
+         exit 1  # Issue detected
+     } else {
+         Write-Output "No old temp files found"
+         exit 0  # Compliant
+     }
+     '@ | Set-Content -Path "C:\LabAssets\Remediations\Detect-TempFiles.ps1" -Encoding UTF8
+     ```
+
+   - **Remediation script file:** Select **Select a file**, then browse and navigate to `C:\LabAssets\Remediations\Remediate-TempFiles.ps1`.
 
      Example remediation script:
      ```powershell
+     # Remediation script
+     @'
      $tempPath = "$env:TEMP"
      try {
          Get-ChildItem -Path $tempPath -Recurse -File | Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-30) } | Remove-Item -Force
@@ -930,15 +954,16 @@ Proactive remediations run PowerShell scripts on devices to detect and fix issue
          Write-Error "Failed to clear temp files: $_"
          exit 1  # Failure
      }
+     '@ | Set-Content -Path "C:\LabAssets\Remediations\Remediate-TempFiles.ps1" -Encoding UTF8
      ```
 
-   - **Run this script using the logged on credentials:** No (run as SYSTEM)
+   - **Run this script using the logged-on credentials:** No (run as SYSTEM)
    - **Enforce script signature check:** No
    - **Run script in 64-bit PowerShell:** Yes
 
 1. Select **Next**, add the **Pharmacy** scope tag and select **Next**.
 
-1. On the **Assignments** page, under **Assign to**, select **Add groups**.
+1. On the **Assignments** tab, under **Included groups**, select **+ Select groups to include**.
 
 1. Search for and select **dyn-Windows-Devices**.
 
@@ -946,7 +971,7 @@ Proactive remediations run PowerShell scripts on devices to detect and fix issue
 
 1. Select **Next**.
 
-1. On the **Review + create** page, select **Create**.
+1. On the **Review + create** tab, select **Create**.
 
 **You have successfully created a proactive remediation script package.**
 
@@ -978,7 +1003,7 @@ The Troubleshooting blade provides a consolidated view of a user's devices, poli
 
 ### Task 1: Investigate a user's device status
 
-1. In the **Microsoft Intune admin center**, expand **Troubleshooting + support** and select **Troubleshoot**.
+1. In the **Microsoft Intune admin center**, select **Troubleshooting + support** and select **Troubleshoot**.
 
 1. In the **User** field (placeholder text "Search by display name or email"), search for and select **Megan Bowen**.
 
@@ -991,11 +1016,11 @@ The Troubleshooting blade provides a consolidated view of a user's devices, poli
 1. Select that device from the list to open its device blade.
 
 1. Review:
-   - **Enrollment date**
-   - **Last check-in**
-   - **Compliance status**
+   - **Enrolled by**
+   - **Last check-in time**
+   - **Compliance**
    - **Primary user**
-   - **Management channel**
+   - **Management name**
 
 **You have successfully investigated a user's device status.**
 
@@ -1019,21 +1044,19 @@ In **Exercise 1 Task 5** you intentionally created two configuration profiles �
    > [!NOTE]
    > You may also see **Conflict** or **Error** on other unrelated policies in this list (for example, if two update rings both target this device, or an earlier profile has a genuine misconfiguration) — that's expected noise from everything else this lab series has deployed. Focus only on the two camera profiles for this task.
 
-1. Select `WIN - Camera - Disabled (Pilot)` to open its policy blade.
-
-1. Select **Device and user check-in status** → select this same device → then drill into **Per-setting status**.
+1. Select `WIN - Camera - Disabled (Pilot)` to open the **Policy Settings** page.
 
    > [!NOTE]
-   > The Per-setting status view shows every individual setting in the profile and the device's resolution state for each (**Success**, **Pending**, **Error**, **Conflict**, **Not applicable**). A **Conflict** row means two or more policies are trying to set the same setting to different values — Intune cannot resolve, so it applies neither, and the device retains its existing local value.
+   > The **Policy Settings** page lists every individual setting in the profile with its resolution state in a table of **Name**, **Status**, and **Error code** columns (status values include **Success**, **Pending**, **Error**, **Conflict**, and **Not applicable**). A **Conflict** status means two or more policies are trying to set the same setting to different values — Intune cannot resolve it, so it applies neither, and the device retains its existing local value.
 
-1. Find the **Allow Camera** row. Confirm it shows **Conflict**.
+1. Find the **Allow Camera** row and confirm the **Status** column shows **Conflict**.
 
 1. Resolve the conflict. Pharmacy clinical regulations win at Contoso — cameras off in clinical areas — so you'll keep the **Disabled** profile and delete the **Enabled** one:
    - Navigate back to **Devices** → **Manage devices** → **Configuration**.
    - Select **WIN - Camera - Enabled (Pilot)**.
-   - From the toolbar, select **Delete**, then confirm.
+   - From the toolbar, select **Delete**, then select **OK** to confirm.
 
-1. Trigger a device sync (**Devices** → the same device → **Sync**) and wait 2–5 minutes for the device to re-evaluate.
+1. Trigger a device sync (**Devices** → **All devices** → select the same device → **Sync**) and wait 2–5 minutes for the device to re-evaluate.
 
 1. Return to the device's **Monitor** → **Device configuration** report and confirm `WIN - Camera - Disabled (Pilot)` now shows **State: Succeeded** (no longer **Conflict**), with the **Disabled** value applied.
 
@@ -1046,9 +1069,9 @@ In **Exercise 1 Task 5** you intentionally created two configuration profiles �
 
 ### Task 3: Force a device sync from the Troubleshooting blade
 
-1. On the **Troubleshoot** page (with Megan Bowen selected), in the **Devices** section, select **SEA-DEV1**.
+1. On the **Troubleshooting + support | Troubleshoot** page (with Megan Bowen selected), in the **Devices** tab, select **SEA-DEV1**.
 
-1. Select **Sync** from the device actions toolbar.
+1. Select **Sync** from the device actions toolbar, then select **Yes**.
 
 1. Wait for the sync to complete (typically 1–2 minutes).
 
@@ -1065,22 +1088,22 @@ In **Exercise 1 Task 5** you intentionally created two configuration profiles �
 
 The `CA - Require compliant device (Pharmacy pilot)` Conditional Access policy you created in **Exercise 2 Task 4** is running in **Report-only** mode — it doesn't enforce, but it does log what *would* have happened on every sign-in. You'll inspect those logs now to see the policy's impact before flipping it to **On** in **Lab 04 Exercise 6**.
 
-1. On the **Troubleshoot** page, with a pilot-cohort user selected (Megan Bowen or another `sg-Intune-Pilot-Users` member), scroll to the **Compliance** section.
+1. On the **Troubleshooting + support | Troubleshoot** page, with a pilot-cohort user selected (Megan Bowen or another `sg-Intune-Pilot-Users` member), scroll to the **Compliance** section.
 
 1. Note the user's device compliance state. A **Not compliant** or **Not evaluated** state means the CA policy in enforcement mode would block the sign-in.
 
-1. Open a new browser tab to **https://entra.microsoft.com** → **Identity** → **Monitoring & health** → **Sign-in logs**.
+1. Open a new browser tab to **https://entra.microsoft.com** → **Monitoring & health** → **Sign-in logs**.
 
-1. Filter the **User sign-ins (interactive)** view to the same pilot user, time range = Last 24 hours.
+1. On the **User sign-ins (interactive)** tab, select **Add filter** to filter by **User principal name** for the same pilot user, and set the **Date range** filter to **Last 24 hours**.
 
 1. Select a sign-in entry where the **Application** column shows an actual cloud app or resource — for example **Microsoft Intune admin center**, **Office 365**, or **Microsoft 365 admin portal**. Avoid entries for **Device Registration Service** or similar system/enrollment apps.
 
    > [!NOTE]
    > Conditional Access only evaluates sign-ins to cloud resources — it doesn't apply to the local Windows sign-in process, Windows Hello for Business, or device registration/enrollment sign-ins ("bootstrap scenarios," exempt to avoid a circular dependency). If you pick one of those entries, the Conditional Access tab shows **Not applicable** regardless of the policy's configuration — that's expected for that entry, not a sign the policy is misconfigured. Pick a different entry with a real cloud-app resource to see an actual **Report-only** result.
 
-1. Select any recent sign-in entry to open its details pane.
+1. Select any recent sign-in entry to open its **Activity details: Sign-ins** pane.
 
-1. Switch to the **Conditional Access** tab in the details pane. You should see `CA - Require compliant device (Pharmacy pilot)` listed with a **Result** of **Report-only: Success**, **Report-only: Failure**, **Report-only: Not applied**, **Report-only: User action required**, or **Not applicable**.
+1. Switch to the **Conditional Access** tab in the details pane. You should see `CA - Require compliant device (Pharmacy pilot)` listed with a **Result** of **Report-only: Success**, **Report-only: Failure**, **Report-only: Not applied**, **Report-only: User action required**, or **Not applied**.
 
    > [!NOTE]
    > **Report-only result decoder:**
