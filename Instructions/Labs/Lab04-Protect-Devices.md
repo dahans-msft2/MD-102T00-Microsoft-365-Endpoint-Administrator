@@ -537,15 +537,42 @@ BitLocker encrypts the entire OS drive, protecting data at rest. You'll configur
 Microsoft Tunnel is a VPN gateway solution that provides secure access to on-premises and cloud resources for mobile devices. You'll deploy the Tunnel Gateway on an Ubuntu server (LIN-SRV1), register it with Intune, and author the VPN profile mobile devices would consume.
 
 > [!IMPORTANT]
-> **Scope.** This exercise covers gateway deployment, Intune registration, and VPN profile authoring. The lab environment doesn't include a mobile device, so **live client VPN connectivity through the gateway is out of scope** — similar to how Lab 01 scopes out the live Autopilot OOBE. The lab is complete when the LIN-SRV1 server appears as **Online** in **Tenant administration** → **Microsoft Tunnel Gateway** → **Servers** (Task 3), and the VPN profile is authored and assigned (Task 4).
+> **Scope.** This exercise covers gateway deployment, Intune registration, and VPN profile authoring. The lab environment doesn't include a mobile device, so **live client VPN connectivity through the gateway is out of scope** — similar to how Lab 01 scopes out the live Autopilot OOBE. The lab is complete when the LIN-SRV1 server appears as **Online** in **Tenant administration** → **Microsoft Tunnel Gateway** → **Servers** (Task 4), and the VPN profile is authored and assigned (Task 5).
 >
 > Microsoft Tunnel Gateway is included with **Intune Plan 1** (no Suite required). If LIN-SRV1 isn't available in your lab environment, review the steps conceptually or skip to Exercise 5.
+
+### Before you begin: working with the Linux terminal
+
+Unlike the other VMs in this course, **LIN-SRV1** runs **Ubuntu Linux** with no graphical desktop. You interact with it entirely through a text **terminal** by typing commands and pressing **Enter**.
+
+**Signing in.** When prompted, sign in with:
+
+- **Username:** `labuser`
+- **Password:** the password provided for LIN-SRV1 in the Skillable lab **Resources** panel (the same place you find credentials for the other VMs).
+
+**Running commands as administrator (`sudo`).** Many setup steps start with `sudo` ("superuser do"), which runs that one command with administrator rights — the Linux equivalent of "Run as administrator" on Windows. The first time you use `sudo` in a session, you may be prompted for the `labuser` password again. As you type the password, **nothing appears on screen** (no dots or asterisks) — that's normal. Type it and press **Enter**.
+
+**Common commands** you'll use to move around and inspect files:
+
+| Command | What it does |
+| --- | --- |
+| `pwd` | Print the current directory ("where am I?"). |
+| `ls` | List the files and folders in the current directory. |
+| `ls -l` | List with details (permissions, size, date). |
+| `cd foldername` | Change into a folder. |
+| `cd ..` | Move up one folder level. |
+| `cd ~` | Return to your home directory. |
+| `cat filename` | Print the contents of a file to the screen. |
+| `clear` | Clear the terminal screen. |
+
+> [!TIP]
+> If copy/paste or type-text isn't working reliably in the lab console, you can type the commands manually — they're short. Commands and file paths in Linux are **case-sensitive**, so type them exactly as shown.
 
 ### Task 1: Prepare the LIN-SRV1 server
 
 1. Switch to **LIN-SRV1** (Ubuntu 22.04 server).
 
-1. Sign in with the provided credentials (typically `ubuntu` user with key-based or password auth).
+1. Sign in as **`labuser`** using the password provided for LIN-SRV1 in the Skillable **Resources** panel.
 
 1. Verify Docker is installed:
 
@@ -558,7 +585,6 @@ Microsoft Tunnel is a VPN gateway solution that provides secure access to on-pre
    ```bash
    sudo apt update
    sudo apt install docker.io -y
-   sudo systemctl enable docker
    sudo systemctl start docker
    ```
 
@@ -575,53 +601,30 @@ Microsoft Tunnel is a VPN gateway solution that provides secure access to on-pre
    hostname -f
    ```
 
-   Note the internal IP/hostname (e.g., `10.0.1.10` or `LIN-SRV1.lab.local`). The gateway only needs **outbound** access to Microsoft Intune endpoints to register — no inbound ports, no public FQDN, and no publicly-trusted certificate are required for this lab.
+   Note the internal IP/hostname (e.g., `192.168.1.100` or `LIN-SRV1.lab.local`). You'll reuse this endpoint value when you create the Tunnel Site (Task 2) and generate the certificate on LIN-SRV1 (Task 3). The gateway only needs **outbound** access to Microsoft Intune endpoints to register — no inbound ports, no public FQDN, and no publicly-trusted certificate are required for this lab.
 
 **You have successfully prepared the LIN-SRV1 server for Microsoft Tunnel installation.**
 
 ---
 
-### Task 2: Download and install Microsoft Tunnel
+### Task 2: Create the Tunnel Server configuration and Site in Intune (SEA-DEV1)
 
-1. On **LIN-SRV1**, download the Microsoft Tunnel installation script:
+Before you install anything on LIN-SRV1, create the Intune objects the setup script expects. The setup script enrolls the server and asks which Site to join. If no Site exists yet, setup fails with: **Failed to get sites: No sites exist**.
 
-   ```bash
-   wget https://aka.ms/microsofttunneldownload -O mstunnel-setup
-   chmod +x mstunnel-setup
-   ```
+Create a **Server configuration** first. The Site wizard requires one, and if the **Server configuration** dropdown is empty it means none exist yet in this tenant.
 
-1. Run the installation script:
+1. On **SEA-DEV1**, in the **Microsoft Intune admin center**, navigate to **Tenant administration** -> **Microsoft Tunnel Gateway**.
 
-   ```bash
-   sudo ./mstunnel-setup
-   ```
+1. Select the **Server configurations** tab.
 
-1. Follow the installation prompts:
-   - Accept the license terms
-   - Choose installation path: `/opt/microsoft/mstunnel` (default)
-   - Configure TLS certificate:
-     - Option 1: Provide an existing certificate and private key
-     - Option 2: Generate a self-signed certificate (for lab purposes)
+1. Select **Create new** and configure:
+   - **Name:** `Contoso Tunnel Server Config`
+   - **IP address range:** `169.254.0.0/16`
+   - **Server port:** `443`
+   - **DNS servers:** Required. Enter `192.168.1.1`.
+   - Leave other settings at default for this lab.
 
-   For lab purposes, select **Option 2** to generate a self-signed certificate. No mobile client connects through the gateway in this lab, so a publicly-trusted certificate isn't required.
-
-1. Wait for the installation to complete (typically 5–10 minutes).
-
-1. Verify the Tunnel Gateway service is running:
-
-   ```bash
-   sudo systemctl status mstunnel
-   ```
-
-   The output should show **active (running)**.
-
-**You have successfully installed Microsoft Tunnel Gateway on LIN-SRV1.**
-
----
-
-### Task 3: Register the Tunnel Gateway in Intune
-
-1. On **SEA-DEV1**, in the **Microsoft Intune admin center**, navigate to **Tenant administration** → **Microsoft Tunnel Gateway**.
+1. Select **Create**.
 
 1. Select the **Sites** tab.
 
@@ -630,33 +633,125 @@ Microsoft Tunnel is a VPN gateway solution that provides secure access to on-pre
 1. On the **Create a site** page, under the **Basics** tab, enter:
    - **Name:** `Contoso HQ Tunnel`
    - **Description:** `Microsoft Tunnel Gateway for mobile device VPN access`
- 
+
 1. On the **Settings** tab, configure:
-   - **Public IP address or FQDN:** Enter the LIN-SRV1 server's internal IP or hostname (e.g., `10.0.1.10` or `LIN-SRV1.lab.local`). In production this would be the public FQDN mobile clients connect to; for this lab it's a required field with no client traffic behind it.
+   - **Public IP address or FQDN:** `192.168.1.100`
+   - **Server configuration:** Select `Contoso Tunnel Server Config`.
 
-1. Select **Next** until you reach the **Review + create** tab.
+   > [!NOTE]
+   > In this hosted Skillable lab, LIN-SRV1 is behind provider-managed NAT/infrastructure and does not expose a learner-controlled public inbound endpoint.
+   >
+   > For this lab workflow, this field is used to satisfy Site configuration and certificate name matching. It does not validate real internet-reachable client ingress unless you explicitly test end-user tunnel connectivity from outside the lab network.
+   >
+   > Observed values from this lab run:
+   > - Certificate SAN includes `DNS:lin-srv1` and `IP:192.168.1.100`.
+   > - Site entry tested in the portal included `LIN-SRV1.lab.local`.
+   >
+   > To avoid SAN mismatch, keep the Site endpoint as `192.168.1.100` unless you regenerate the cert to include `LIN-SRV1.lab.local`.
 
-1. Select **Create**.
+1. Select **Next** until you reach the **Review + create** tab, and then select **Create**.
 
-1. After the site is created, select **Servers** tab.
+**You have successfully created the Tunnel Server configuration and Site in Intune.**
 
-1. Select **Add** to register the LIN-SRV1 server.
+---
 
-1. On **LIN-SRV1**, generate a registration token:
+### Task 3: Install Microsoft Tunnel on LIN-SRV1
+
+With the Server configuration and Site in place, install the Tunnel Gateway on the Ubuntu server. The setup script enrolls the server, joins it to the Site, and imports the TLS certificate you stage.
+
+1. Switch to **LIN-SRV1**.
+
+1. On **LIN-SRV1**, download the Microsoft Tunnel installation script:
 
    ```bash
-   sudo mstunnel register
+   wget https://aka.ms/microsofttunneldownload -O mstunnel-setup
+   chmod +x mstunnel-setup
    ```
 
-   The command will output a registration token (a long alphanumeric string).
+1. Stage the TLS certificate files **before** you run setup. You may need to type these commands manually if copy/paste or text-to-type is not working correctly.
 
-1. On **SEA-DEV1**, in the **Add server** dialog, paste the registration token.
+   For this lab, use a self-signed certificate so setup can complete in a single CLI flow:
 
-1. Select **Add**.
+   ```bash
+   # Create required paths
+   sudo mkdir -p /etc/mstunnel/certs /etc/mstunnel/private
 
-1. Wait for the server to register and sync with Intune (typically 2–5 minutes).
+   # Create a lab-only self-signed cert and key
+   FQDN=$(hostname -f)
+   IP=$(hostname -I | awk '{print $1}')
+   sudo openssl req -x509 -newkey rsa:2048 -sha256 -nodes -days 365 \
+      -keyout /etc/mstunnel/private/site.key \
+      -out /etc/mstunnel/certs/site.crt \
+      -subj "/CN=${FQDN}" \
+      -addext "subjectAltName=DNS:${FQDN},IP:${IP}"
 
-1. Verify the server appears in the **Servers** list with status **Online**.
+   sudo chmod 600 /etc/mstunnel/private/site.key
+   sudo chmod 644 /etc/mstunnel/certs/site.crt
+   sudo ls -l /etc/mstunnel/certs/site.crt /etc/mstunnel/private/site.key
+   ```
+
+   ![Screenshot of the LIN-SRV1 Linux terminal showing the openssl command generating the self-signed TLS certificate and private key for Microsoft Tunnel.](media/tunnel-cert-generation.png)
+
+   > [!NOTE]
+   > Tunnel expects one of these certificate formats:
+   > - PEM chain at `/etc/mstunnel/certs/site.crt` and key at `/etc/mstunnel/private/site.key`
+   > - or PFX at `/etc/mstunnel/private/site.pfx`
+   >
+   > The certificate SAN must match the server FQDN or IP used as the Tunnel endpoint.
+
+
+1. Run the installation script:
+
+   ```bash
+   sudo ./mstunnel-setup
+   ```
+
+1. Follow the installation prompts:
+   - Accept the license terms 
+       - Press **Space** to scroll through the license agreement and enter **yes** at the prompt to accept.
+   - When prompted for additional Admin Tasks and certificate verification, enter **yes** (the certificate files are already staged from the previous step).
+     
+      ![Screenshot of the LIN-SRV1 terminal displaying the Microsoft Tunnel setup Admin Tasks prompt for installing the TLS certificate.](media/tunnel-setup-admin-tasks.png)
+   
+   - The setup process will ask you to complete a device login. Note the **Device Code** in the terminal and switch back to SEA-DEV1 and open a browser to https://microsoft.com/devicelogin. Enter the **Device Code** you saved earlier and authenticate with the admin account.
+
+     ![Screenshot of the LIN-SRV1 terminal showing the device code used to authenticate the Microsoft Tunnel Gateway agent at microsoft.com/devicelogin.](media/tunnel-setup-device-code.png)
+
+1. Wait for the installation to complete (typically 5–10 minutes).
+
+   ![Screenshot of the LIN-SRV1 terminal showing the Microsoft Tunnel installation completing successfully with the server and agent running.](media/tunnel-setup-installation-successful.png)
+
+1. Verify the Tunnel Gateway service is running:
+
+   ```bash
+    sudo mst-cli server status
+    sudo mst-cli agent status
+   ```
+
+    The output should show the server and agent as **running** and **healthy**.
+
+**You have successfully installed Microsoft Tunnel Gateway on LIN-SRV1.**
+
+---
+
+### Task 4: Verify the Tunnel Gateway server status in Intune
+
+1. On **SEA-DEV1**, in the **Microsoft Intune admin center**, navigate to **Tenant administration** -> **Microsoft Tunnel Gateway**.
+
+1. Select the **Health status** tab. You may need to wait 2-5 minutes for LIN-SRV1 to sync after setup completes.
+
+   ![Screenshot of the Microsoft Tunnel Gateway Health status page in the Intune admin center showing LIN-SRV1 with a Healthy status.](media/tunnel-gateway-health-status.png)
+
+1. Verify LIN-SRV1 appears in the **Servers** list with status **Online**.
+
+1. If status is **Unhealthy**, on LIN-SRV1 run:
+
+   ```bash
+   sudo mst-cli server status
+   sudo mst-cli agent status
+   sudo journalctl -u mstunnel_monitor -n 200 --no-pager
+   sudo journalctl -t ocserv -n 200 --no-pager
+   ```
 
 > [!TIP]
 > **Online** is the verifiable success criterion for this exercise. It confirms outbound registration worked, the install completed, and Intune is talking to your gateway — everything the gateway-deployment skill is meant to teach.
@@ -665,39 +760,48 @@ Microsoft Tunnel is a VPN gateway solution that provides secure access to on-pre
 
 ---
 
-### Task 4: Create a VPN profile for Microsoft Tunnel
+### Task 5: Create a VPN profile for Microsoft Tunnel
 
 > [!NOTE]
 > You'll author the VPN profile end-to-end and assign it to a group — the same workflow you'd use in production. In this lab environment no mobile device is enrolled to consume it, so the profile is authored and assigned but **client connection through the tunnel is out of scope** (see the scope callout at the top of Exercise 4).
 
-1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Configuration**.
+1. In the **Microsoft Intune admin center**, navigate to **Devices** → **Manage Devices > Configuration**.
 
-1. Select **+ Create** → **New policy**.
+1. Select **+ Create** → **+ New policy**.
 
 1. In the **Create a profile** pane, configure:
-   - **Platform:** iOS/iPadOS (or Android, depending on your test devices)
+   - **Platform:** iOS/iPadOS
    - **Profile type:** Templates → VPN
 
 1. Select **Create**.
 
 1. On the **Basics** tab, enter:
-   - **Name:** `VPN - Microsoft Tunnel`
-   - **Description:** `VPN profile for secure access via Microsoft Tunnel Gateway`
+   - **Name:** `VPN - Microsoft Tunnel for iOS/iPadOS`
+   - **Description:** `VPN profile for secure access via Microsoft Tunnel Gateway for iOS/iPadOS devices`
 
 1. Select **Next**.
 
-1. On the **Configuration settings** tab, configure:
-   - **Connection name:** `Contoso VPN`
-   - **Connection type:** Microsoft Tunnel (Standalone client)
-   - **Address:** Enter the LIN-SRV1 server's address (e.g., `LIN-SRV1.lab.local` — same value used when registering the Tunnel site in Task 3)
-   - **Per-app VPN:** Not configured (or configure specific apps if desired)
-   - **On-Demand VPN Rules:** Add a rule that connects the VPN for all domains. Optionally set **Block users from disabling automatic VPN** to Yes.
+1. On the **Configuration settings** tab, you must choose a **Connection type** before any other fields appear.
+
+   From the **Connection type** dropdown, scroll down past the third-party clients (Cisco, F5, Palo Alto, IKEv2, and so on) and select **Microsoft Tunnel**.
+1. After you select **Microsoft Tunnel**, expand **Base VPN**. This section holds the only settings you need for the lab:
+   - **Connection name:** `Contoso VPN` (this is the name users see on the device).
+   - **Microsoft Tunnel site:** Select **Select a site**, then choose `Contoso HQ Tunnel` — the site you created in Task 2.
+
+1. Leave the remaining sections at their defaults — none are required for this lab:
+   - **Per-app VPN:** Leave **Not configured**, and leave **Safari URLs**, **Associated Domains**, and **Excluded Domains** blank.
+   - **On-Demand VPN Rules:** Don't add any rules, and leave **Block users from disabling automatic VPN** at **Not configured**.
+   - **Proxy:** Leave **Use proxy server** off and the **Address**/**Port** fields blank.
+   - **Custom settings:** Leave empty.
+
+   > [!TIP]
+   > In production you'd use these optional sections to fine-tune behavior — for example, **On-Demand VPN Rules** to auto-connect for specific domains, **Per-app VPN** to scope the tunnel to chosen apps, or a **Proxy** for outbound filtering. For this lab, the two **Base VPN** values above are all you need.
 
 1. Select **Next**.
 
 1. On the **Scope tags** tab, select **Next**.
 
-1. On the **Assignments** tab, assign to a mobile device group (e.g., **All users** or a pilot group).
+1. On the **Assignments** tab, under Included groups, select **Add all users**.
 
 1. Select **Next** → **Create**.
 
